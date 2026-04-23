@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TimingFile xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.0" xmlns="http://www.ni.com/Semiconductor/Timing">
+  <TimingSheet>
+    <TimeSets>
+      <TimeSet name="tset80ns">
+        <Period>timing.period</Period>
+        <PinEdges>
+          <PinEdge pin="AllPins">
+            <ReturnToLow>
+              <On>0 ns</On>
+              <Data>0 ns</Data>
+              <Return>0.75*timing.period</Return>
+              <Off>timing.period</Off>
+            </ReturnToLow>
+            <CompareStrobe>
+              <Strobe>20 ns</Strobe>
+            </CompareStrobe>
+            <DataSource>Pattern</DataSource>
+          </PinEdge>
+        </PinEdges>
+      </TimeSet>
+      <TimeSet name="tsetScan">
+        <Period>timing.scanPeriod</Period>
+        <PinEdges>
+          <PinEdge pin="AllPins">
+            <ReturnToLow>
+              <On>0 ns</On>
+              <Data>0 ns</Data>
+              <Return>0.75*timing.scanPeriod</Return>
+              <Off>timing.scanPeriod</Off>
+            </ReturnToLow>
+            <CompareStrobe>
+              <Strobe>25 ns</Strobe>
+            </CompareStrobe>
+            <DataSource>Pattern</DataSource>
+          </PinEdge>
+        </PinEdges>
+      </TimeSet>
+    </TimeSets>
+  </TimingSheet>
+</TimingFile>

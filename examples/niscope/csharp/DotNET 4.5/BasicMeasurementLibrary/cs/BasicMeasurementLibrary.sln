@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicMeasurementLibrary", "BasicMeasurementLibrary.csproj", "{AA85801D-C40C-48D4-BBAA-80ECFD68B5B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA85801D-C40C-48D4-BBAA-80ECFD68B5B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA85801D-C40C-48D4-BBAA-80ECFD68B5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA85801D-C40C-48D4-BBAA-80ECFD68B5B3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AA85801D-C40C-48D4-BBAA-80ECFD68B5B3}.Debug|x86.Build.0 = Debug|Any CPU
+		{AA85801D-C40C-48D4-BBAA-80ECFD68B5B3}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA85801D-C40C-48D4-BBAA-80ECFD68B5B3}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{AA85801D-C40C-48D4-BBAA-80ECFD68B5B3}.Release|x86.ActiveCfg = Release|Any CPU
+		{AA85801D-C40C-48D4-BBAA-80ECFD68B5B3}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedPropertyAccess", "AdvancedPropertyAccess.csproj", "{10C4B679-E2FD-4F48-B501-B9BC0366712B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10C4B679-E2FD-4F48-B501-B9BC0366712B}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{10C4B679-E2FD-4F48-B501-B9BC0366712B}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{10C4B679-E2FD-4F48-B501-B9BC0366712B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10C4B679-E2FD-4F48-B501-B9BC0366712B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,11 @@
+
+file_format_version 1.0;
+timeset tset0;
+
+pattern new_pattern (PinGroup1)
+{
+capture_start(new_waveform)		tset0		XXXXXXXX;
+repeat(128), capture			-			VVVVVVVV;
+capture_stop					-			XXXXXXXX;
+halt							-			XXXXXXXX;
+}

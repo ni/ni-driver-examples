@@ -1,0 +1,16 @@
+
+file_format_version 1.0;
+timeset tset0;
+
+pattern new_pattern (PinGroup1)
+{
+							tset0		00000000;		// Drive all used lines to 0 to ensure intended behavior of the example.
+match						-			00HH00HH;		// This vector fails due to vector 0 driving all lines low on both instruments.
+repeat(79)					-			XXXXXXXX;		// Because match must be evaluated at exactly 80th cycle, wait 79 cycles and then evaluate matched condition on cycle 80.
+jump_if(matched, end)		-			XXXXXXXX;		// Jump_if is false, since vector 1 did not match. Execution moves to vector 4 which indicates error.
+set_seqflag(seqflag0)		-			XXXXXXXX;		// Set seqflag0 to true to indicate error
+error:
+halt						-			00000000;		// Program terminates with all lines driving 0.
+end:
+halt						-			00000000;		// Program terminates with all lines driving 0.
+}

@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContAcqPowerSamples_IntClk.2010", "ContAcqPowerSamples_IntClk.2010.csproj", "{C13A3391-47BC-4DD7-8734-8FBF921BA77D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C13A3391-47BC-4DD7-8734-8FBF921BA77D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C13A3391-47BC-4DD7-8734-8FBF921BA77D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C13A3391-47BC-4DD7-8734-8FBF921BA77D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C13A3391-47BC-4DD7-8734-8FBF921BA77D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

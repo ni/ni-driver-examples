@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadDigChan_ChangeDetection_Events", "ReadDigChan_ChangeDetection_Events.2010.csproj", "{DA55DBE5-5A53-4CBA-81AC-975FD4D1CD36}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA55DBE5-5A53-4CBA-81AC-975FD4D1CD36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA55DBE5-5A53-4CBA-81AC-975FD4D1CD36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA55DBE5-5A53-4CBA-81AC-975FD4D1CD36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA55DBE5-5A53-4CBA-81AC-975FD4D1CD36}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,13 @@
+
+file_format_version 1.0;
+timeset tset0;
+
+pattern new_pattern (PinGroup1)
+{
+source_start(new_waveform)		tset0		XXXXXXXX;
+set_loop(8)						-			XXXXXXXX;
+loop:
+source							-			DDDDDDDD;
+end_loop(loop)					-			XXXXXXXX;
+halt							-			XXXXXXXX;
+}

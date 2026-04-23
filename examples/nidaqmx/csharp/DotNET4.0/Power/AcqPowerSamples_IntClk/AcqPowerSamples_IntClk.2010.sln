@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcqPowerSamples_IntClk.2010", "AcqPowerSamples_IntClk.2010.csproj", "{D6D6173B-67B2-4B64-A2A5-EC50338E40A4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D6D6173B-67B2-4B64-A2A5-EC50338E40A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6D6173B-67B2-4B64-A2A5-EC50338E40A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6D6173B-67B2-4B64-A2A5-EC50338E40A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6D6173B-67B2-4B64-A2A5-EC50338E40A4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

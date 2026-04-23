@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NIDigital.BurstWithStartTrigger", "NIDigital.BurstWithStartTrigger.csproj", "{AC8765EF-0548-463E-ABA6-B75E8245219B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC8765EF-0548-463E-ABA6-B75E8245219B}.Debug|x64.ActiveCfg = Debug|x64
+		{AC8765EF-0548-463E-ABA6-B75E8245219B}.Debug|x64.Build.0 = Debug|x64
+		{AC8765EF-0548-463E-ABA6-B75E8245219B}.Debug|x86.ActiveCfg = Debug|x86
+		{AC8765EF-0548-463E-ABA6-B75E8245219B}.Debug|x86.Build.0 = Debug|x86
+		{AC8765EF-0548-463E-ABA6-B75E8245219B}.Release|x64.ActiveCfg = Release|x64
+		{AC8765EF-0548-463E-ABA6-B75E8245219B}.Release|x64.Build.0 = Release|x64
+		{AC8765EF-0548-463E-ABA6-B75E8245219B}.Release|x86.ActiveCfg = Release|x86
+		{AC8765EF-0548-463E-ABA6-B75E8245219B}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

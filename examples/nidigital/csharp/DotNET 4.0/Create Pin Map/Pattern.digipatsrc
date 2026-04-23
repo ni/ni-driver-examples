@@ -1,0 +1,18 @@
+
+file_format_version 1.0;
+timeset tset0;
+
+pattern new_pattern (I2C_Bus)
+{
+		tset0		00X;	// This is an example pattern.
+		-			X0X;	// It is not intended to run on 
+		-			00X;	// any real Device Under Test.
+		-			X0X;
+		-			0XX;
+		-			XXX;
+		-			0XX;
+		-			XXX;
+		-			0XX;
+		-			XXX;
+halt	-			XXX;
+}

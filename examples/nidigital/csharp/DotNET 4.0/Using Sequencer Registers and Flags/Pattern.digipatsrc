@@ -1,0 +1,17 @@
+
+file_format_version 1.0;
+timeset tset0;
+
+pattern new_pattern (PinGroup1)
+{
+set_loop(reg0)						tset0		XXXXXXXX;
+loop_reg0:
+end_loop(loop_reg0)					-			00001111;
+set_seqflag(seqflag0)				-			XXXXXXXX;
+loop_flag1:
+jump_if(!seqflag1, loop_flag1)		-			00000000;
+set_loop(reg1)						-			00000000;
+loop_reg1:
+end_loop(loop_reg1)					-			11110000;
+halt								-			XXXXXXXX;
+}

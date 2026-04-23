@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IviCurrentMeasurement", "IviCurrentMeasurement.csproj", "{7DCC8EA3-9CA3-4C26-AA99-9BB6150924EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7DCC8EA3-9CA3-4C26-AA99-9BB6150924EF}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{7DCC8EA3-9CA3-4C26-AA99-9BB6150924EF}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{7DCC8EA3-9CA3-4C26-AA99-9BB6150924EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DCC8EA3-9CA3-4C26-AA99-9BB6150924EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

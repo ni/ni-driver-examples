@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NIDigital.CaptureWaveform", "NIDigital.CaptureWaveform.csproj", "{D8861168-1C58-4375-A53A-1C04477F9964}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8861168-1C58-4375-A53A-1C04477F9964}.Debug|x64.ActiveCfg = Debug|x64
+		{D8861168-1C58-4375-A53A-1C04477F9964}.Debug|x64.Build.0 = Debug|x64
+		{D8861168-1C58-4375-A53A-1C04477F9964}.Debug|x86.ActiveCfg = Debug|x86
+		{D8861168-1C58-4375-A53A-1C04477F9964}.Debug|x86.Build.0 = Debug|x86
+		{D8861168-1C58-4375-A53A-1C04477F9964}.Release|x64.ActiveCfg = Release|x64
+		{D8861168-1C58-4375-A53A-1C04477F9964}.Release|x64.Build.0 = Release|x64
+		{D8861168-1C58-4375-A53A-1C04477F9964}.Release|x86.ActiveCfg = Release|x86
+		{D8861168-1C58-4375-A53A-1C04477F9964}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

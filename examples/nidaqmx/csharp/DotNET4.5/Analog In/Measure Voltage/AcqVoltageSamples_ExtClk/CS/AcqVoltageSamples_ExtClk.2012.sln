@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcqVoltageSamples_ExtClk", "AcqVoltageSamples_ExtClk.2012.csproj", "{36586B1C-1F15-431D-B2C2-A9DBFD5087FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36586B1C-1F15-431D-B2C2-A9DBFD5087FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36586B1C-1F15-431D-B2C2-A9DBFD5087FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36586B1C-1F15-431D-B2C2-A9DBFD5087FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36586B1C-1F15-431D-B2C2-A9DBFD5087FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

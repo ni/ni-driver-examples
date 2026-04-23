@@ -1,0 +1,18 @@
+
+file_format_version 1.0;
+timeset tset0;
+
+pattern new_pattern (PinGroup1)
+{
+		tset0		XXXXXXXX;
+		-			00XXXX00;
+		-			11XXXXHH;
+		-			11XXXXHH;
+		-			00XXXXLL;
+		-			00XXXXLL;
+		-			01XXXXLL;
+		-			10XXXXLH;
+		-			00XXXX00;
+		-			XXXXXXXX;
+halt	-			XXXXXXXX;
+}
