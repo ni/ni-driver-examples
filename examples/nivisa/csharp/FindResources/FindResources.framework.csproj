@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+    <PropertyGroup>
+        <ProjectType>Local</ProjectType>
+        <ProductVersion>11.0.50522.1 RCREL</ProductVersion>
+        <SchemaVersion>2.0</SchemaVersion>
+        <ProjectGuid>{63793699-6C64-4519-AD56-9178CACFEA8A}</ProjectGuid>
+        <Configuration>Debug</Configuration>
+        <ApplicationIcon>App.ico</ApplicationIcon>
+        <AssemblyName>FindResources</AssemblyName>
+        <DefaultClientScript>JScript</DefaultClientScript>
+        <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+        <DefaultTargetSchema>IE50</DefaultTargetSchema>
+        <DelaySign>false</DelaySign>
+        <OutputType>WinExe</OutputType>
+        <RootNamespace>NationalInstruments.Examples.FindResources</RootNamespace>
+        <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+        <Prefer32Bit>false</Prefer32Bit>
+        <FileAlignment>4096</FileAlignment>
+        <RegisterForComInterop>false</RegisterForComInterop>
+        <RemoveIntegerChecks>false</RemoveIntegerChecks>
+        <Platform>AnyCPU</Platform>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <OutputPath>bin\Debug</OutputPath>
+        <DebugSymbols>true</DebugSymbols>
+        <DefineConstants>DEBUG</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <OutputPath>bin\Release</OutputPath>
+        <DebugSymbols>false</DebugSymbols>
+        <Optimize>true</Optimize>
+        <DefineConstants>TRACE</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="IviFoundation.Visa" Version="8.0.1" />
+        <Reference Include="NationalInstruments.Visa, Culture=neutral, PublicKeyToken=2eaa5af0834e221d, processorArchitecture=MSIL" />
+        <Reference Include="System">
+            <Name>System</Name>
+            <HintPath>..\..\..\..\..\WINNT\Microsoft.NET\Framework\v1.0.3705\System.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Data">
+            <Name>System.Data</Name>
+            <HintPath>..\..\..\..\..\WINNT\Microsoft.NET\Framework\v1.0.3705\System.Data.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Drawing">
+            <Name>System.Drawing</Name>
+            <HintPath>..\..\..\..\..\WINNT\Microsoft.NET\Framework\v1.0.3705\System.Drawing.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Windows.Forms">
+            <Name>System.Windows.Forms</Name>
+            <HintPath>..\..\..\..\..\WINNT\Microsoft.NET\Framework\v1.0.3705\System.Windows.Forms.dll</HintPath>
+        </Reference>
+        <Reference Include="System.Xml">
+            <Name>System.XML</Name>
+            <HintPath>..\..\..\..\..\WINNT\Microsoft.NET\Framework\v1.0.3705\System.XML.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="app.config" />
+        <Content Include="App.ico" />
+        <Compile Include="CustomFilter.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <Compile Include="MainForm.cs">
+            <SubType>Form</SubType>
+        </Compile>
+        <EmbeddedResource Include="CustomFilter.resx">
+            <DependentUpon>CustomFilter.cs</DependentUpon>
+        </EmbeddedResource>
+        <EmbeddedResource Include="MainForm.resx">
+            <DependentUpon>MainForm.cs</DependentUpon>
+        </EmbeddedResource>
+        <AppDesigner Include="Properties\" />
+    </ItemGroup>
+
+    <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+</Project>

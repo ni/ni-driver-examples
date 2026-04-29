@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RFmxLteObwNonContiguousMultiCarrier.2010", "RFmxLteObwNonContiguousMultiCarrier.2010.vbproj", "{2E9A63DD-90A8-4FB9-A173-77CB53494A7A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E9A63DD-90A8-4FB9-A173-77CB53494A7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E9A63DD-90A8-4FB9-A173-77CB53494A7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E9A63DD-90A8-4FB9-A173-77CB53494A7A}.Debug|x64.ActiveCfg = Debug|x64
+		{2E9A63DD-90A8-4FB9-A173-77CB53494A7A}.Debug|x64.Build.0 = Debug|x64
+		{2E9A63DD-90A8-4FB9-A173-77CB53494A7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E9A63DD-90A8-4FB9-A173-77CB53494A7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E9A63DD-90A8-4FB9-A173-77CB53494A7A}.Release|x64.ActiveCfg = Release|x64
+		{2E9A63DD-90A8-4FB9-A173-77CB53494A7A}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

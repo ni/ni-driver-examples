@@ -1,0 +1,66 @@
+﻿<Window x:Class="NationalInstruments.Examples.GenerateMAXReport.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:NationalInstruments.Examples.GenerateMAXReport"
+        Title="Generate MAX Report" Height="450" Width="600" Icon="App.ico">
+    <Grid Name="mainGrid" Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="0*"/>
+            <RowDefinition Height="Auto" MinHeight="92.667" />
+        </Grid.RowDefinitions>
+
+        <Expander Grid.Row="0" Grid.Column="0" Header="Operating Instructions" IsExpanded="True" Margin="0,0,0.333,20">
+            <TextBlock xml:space="preserve" TextWrapping="Wrap" Padding="10,4,0,0"><Bold>Overview:</Bold> Generates a MAX Report in either .html, .xml, or .zip format.
+<Bold>Requirements:</Bold> NI System Configuration, NI MAX
+<Bold>Instructions:</Bold>
+1. Select the <Bold>Target</Bold>. Enter <Bold>User Name</Bold> and <Bold>Password</Bold> if necessary.
+2. Select <Bold>Report Type</Bold>.
+3. Enter <Bold>File Path</Bold> for report to be stored.
+    <Bold>Note:</Bold> File path MUST end with .html for HTML files, .xml for XML files, and .zip for Technical Report.
+4. Click on <Bold>Generate Report</Bold> to generate a MAX report.
+            </TextBlock>
+        </Expander>
+
+        <Grid Name="subgrid" Grid.Row="1" IsEnabled="{Binding CanGenerateReport}" Margin="0,0,0.333,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Target"/>
+            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding Target, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" TabIndex="0"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="User Name" Margin="6,0,2.333,0"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="6,0,8.333,0" TabIndex="1"/>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Password" Margin="8,0,0,0"/>
+            <PasswordBox Name="passwordBox" Grid.Row="1" Grid.Column="2" Margin="8,0,0,0" TabIndex="2"/>
+        </Grid>
+
+        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Text="File Path" Margin="0,9,0,191" Width="55"/>
+        <TextBox x:Name="filePathBox" Grid.Row="2" Width="514" Text="{Binding FilePath, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" IsEnabled ="{Binding CanGenerateReport}" HorizontalAlignment="Left" Margin="0,28,0,175"/>
+
+        <Button Margin="0,28,0.333,175" Grid.Row="2" Content="Browse" Click="OnBrowseClick" IsDefault="False" IsEnabled="{Binding CanGenerateReport}" TabIndex="3" HorizontalAlignment="Right" Width="50" />
+
+        <TextBlock Grid.Row="2" HorizontalAlignment="Left" Text="Report Type" Margin="0,62,0,152" Width="71"/>
+
+        <ComboBox x:Name="ReportTypeBox" IsEditable="True" Text="Report Type (HTML)" IsEnabled="{Binding CanGenerateReport}" Margin="0,82,0,118" Grid.Row="2" HorizontalAlignment="Left" Width="200" SelectionChanged="ReportTypeBox_SelectionChanged">
+            <ComboBoxItem >HTML</ComboBoxItem>
+            <ComboBoxItem >XML</ComboBoxItem>
+            <ComboBoxItem >Technical Support</ComboBoxItem>
+        </ComboBox>
+
+        <CheckBox Grid.Row="2" Margin="244,87,225.333,113" IsChecked="{Binding Overwrite}" IsEnabled="{Binding CanGenerateReport}" >Overwrite?</CheckBox>
+
+        <Button Margin="0,82,0.333,118" Grid.Row="2" Content="Generate Report" Click="OnGenerateReportClick" IsEnabled="{Binding CanGenerateReport}" TabIndex="3" HorizontalAlignment="Right" Width="200" />
+
+    </Grid>
+</Window>

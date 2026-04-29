@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardTemperatureMonitor.2010", "BoardTemperatureMonitor.2010.csproj", "{418D047C-89E8-44EB-8139-565C0B70C484}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{418D047C-89E8-44EB-8139-565C0B70C484}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{418D047C-89E8-44EB-8139-565C0B70C484}.Debug|x86.ActiveCfg = Debug|x86
+		{418D047C-89E8-44EB-8139-565C0B70C484}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{418D047C-89E8-44EB-8139-565C0B70C484}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

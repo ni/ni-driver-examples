@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RFmxWlanOfdmModAccWithEvmBasedAutoLevel.2010", "RFmxWlanOfdmModAccWithEvmBasedAutoLevel.2010.vbproj", "{DE6C7941-3F7A-4FF4-A737-140414658BBD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DE6C7941-3F7A-4FF4-A737-140414658BBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE6C7941-3F7A-4FF4-A737-140414658BBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE6C7941-3F7A-4FF4-A737-140414658BBD}.Debug|x64.ActiveCfg = Debug|x64
+		{DE6C7941-3F7A-4FF4-A737-140414658BBD}.Debug|x64.Build.0 = Debug|x64
+		{DE6C7941-3F7A-4FF4-A737-140414658BBD}.Debug|x86.ActiveCfg = Debug|x86
+		{DE6C7941-3F7A-4FF4-A737-140414658BBD}.Debug|x86.Build.0 = Debug|x86
+		{DE6C7941-3F7A-4FF4-A737-140414658BBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE6C7941-3F7A-4FF4-A737-140414658BBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE6C7941-3F7A-4FF4-A737-140414658BBD}.Release|x64.ActiveCfg = Release|x64
+		{DE6C7941-3F7A-4FF4-A737-140414658BBD}.Release|x64.Build.0 = Release|x64
+		{DE6C7941-3F7A-4FF4-A737-140414658BBD}.Release|x86.ActiveCfg = Release|x86
+		{DE6C7941-3F7A-4FF4-A737-140414658BBD}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3054DA7A-D4D1-4A80-80BF-622854C33558}
+	EndGlobalSection
+EndGlobal

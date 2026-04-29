@@ -1,0 +1,61 @@
+﻿<Window x:Class="NationalInstruments.Examples.RenameAliases.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:NationalInstruments.Examples.RenameAliases"
+        Title="Rename Aliases" Height="600" Width="600" Icon="App.ico">
+    <Grid Name="mainGrid" Margin="12">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Expander Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Header="Operating Instructions" IsExpanded="True" Margin="0,0,0,20">
+            <TextBlock xml:space="preserve" TextWrapping="Wrap" Padding="10,4,0,0"><Bold>Overview:</Bold> Changes one or more hardware device aliases in the system specified.
+<Bold>Requirements:</Bold> NI System Configuration, NI-DAQmx and/or NI-VISA
+<Bold>Instructions:</Bold>
+1. Select the <Bold>Target</Bold> that contains the devices. Enter <Bold>User Name</Bold> and <Bold>Password</Bold> if necessary.
+2. Press <Bold>Show Hardware</Bold>.
+3. Once the table is filled with devices, type in the new alias for a particular device in the <Bold>New Alias</Bold> column.
+4. Press <Bold>Save</Bold> to submit the new alias.
+
+Note: New Alias entries that are blank or the same as <Bold>Current Alias</Bold> for a particular device will not be renamed.</TextBlock>
+        </Expander>
+
+        <Grid Grid.Row="1" IsEnabled="{Binding CanBeginShowHardware}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Target"/>
+            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding Target, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,8,0" TabIndex="0"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="User Name" Margin="4,0"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="4,0" TabIndex="1"/>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Password" Margin="8,0,0,0"/>
+            <PasswordBox Name="passwordBox" Grid.Row="1" Grid.Column="2" Margin="8,0,0,0" TabIndex="2"/>
+        </Grid>
+
+        <Button Margin="12" Grid.Row="2" Content="Show Hardware" Height="30" Click="OnGetDevicesClick" IsDefault="True" TabIndex="3" HorizontalAlignment="Center" Width="120" IsEnabled="{Binding CanBeginShowHardware}"/>
+
+        <DataGrid Grid.Row="3" ItemsSource="{Binding DeviceList}" AutoGenerateColumns="False" IsReadOnly="False" IsEnabled="{Binding CanBeginShowHardware}" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Product" Width="*" Binding="{Binding ProductName}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Current Alias" Width="*" Binding="{Binding UserAlias}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="New Alias" Width="*" Binding="{Binding NewAlias}" IsReadOnly="False"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Margin="0,12,0,0" Grid.Row="4" Content="Save" Height="30" Click="OnSubmitChangesClick" TabIndex="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" IsEnabled="{Binding CanBeginShowHardware}"/>
+
+    </Grid>
+</Window>

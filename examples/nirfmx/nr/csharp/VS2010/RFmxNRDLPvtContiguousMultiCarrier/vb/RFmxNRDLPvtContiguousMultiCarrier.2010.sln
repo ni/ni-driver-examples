@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RFmxNRDLPvtContiguousMultiCarrier.2010", "RFmxNRDLPvtContiguousMultiCarrier.2010.vbproj", "{5D2E97E5-7870-4A4B-A85A-5F4937D35CD1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D2E97E5-7870-4A4B-A85A-5F4937D35CD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D2E97E5-7870-4A4B-A85A-5F4937D35CD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D2E97E5-7870-4A4B-A85A-5F4937D35CD1}.Debug|x64.ActiveCfg = Debug|x64
+		{5D2E97E5-7870-4A4B-A85A-5F4937D35CD1}.Debug|x64.Build.0 = Debug|x64
+		{5D2E97E5-7870-4A4B-A85A-5F4937D35CD1}.Debug|x86.ActiveCfg = Debug|x86
+		{5D2E97E5-7870-4A4B-A85A-5F4937D35CD1}.Debug|x86.Build.0 = Debug|x86
+		{5D2E97E5-7870-4A4B-A85A-5F4937D35CD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D2E97E5-7870-4A4B-A85A-5F4937D35CD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D2E97E5-7870-4A4B-A85A-5F4937D35CD1}.Release|x64.ActiveCfg = Release|x64
+		{5D2E97E5-7870-4A4B-A85A-5F4937D35CD1}.Release|x64.Build.0 = Release|x64
+		{5D2E97E5-7870-4A4B-A85A-5F4937D35CD1}.Release|x86.ActiveCfg = Release|x86
+		{5D2E97E5-7870-4A4B-A85A-5F4937D35CD1}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0B0910C3-27DF-4760-9463-954A32DD3955}
+	EndGlobalSection
+EndGlobal

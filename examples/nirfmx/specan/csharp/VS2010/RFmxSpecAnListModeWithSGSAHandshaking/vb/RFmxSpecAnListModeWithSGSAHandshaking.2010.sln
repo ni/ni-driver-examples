@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RFmxSpecAnListModeWithSGSAHandshaking.2010", "RFmxSpecAnListModeWithSGSAHandshaking.2010.vbproj", "{213F8180-1D27-46F9-870B-63C5CED7B0AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{213F8180-1D27-46F9-870B-63C5CED7B0AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{213F8180-1D27-46F9-870B-63C5CED7B0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{213F8180-1D27-46F9-870B-63C5CED7B0AB}.Debug|x64.ActiveCfg = Debug|x64
+		{213F8180-1D27-46F9-870B-63C5CED7B0AB}.Debug|x64.Build.0 = Debug|x64
+		{213F8180-1D27-46F9-870B-63C5CED7B0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{213F8180-1D27-46F9-870B-63C5CED7B0AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{213F8180-1D27-46F9-870B-63C5CED7B0AB}.Release|x64.ActiveCfg = Release|x64
+		{213F8180-1D27-46F9-870B-63C5CED7B0AB}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F45A9FA2-D13F-4F82-8578-50EA905458E5}
+	EndGlobalSection
+EndGlobal

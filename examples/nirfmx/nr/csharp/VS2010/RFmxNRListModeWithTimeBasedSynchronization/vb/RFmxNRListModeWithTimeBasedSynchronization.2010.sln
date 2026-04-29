@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RFmxNRListModeWithTimeBasedSynchronization.2010", "RFmxNRListModeWithTimeBasedSynchronization.2010.vbproj", "{D7DA9AA6-B5CB-41E1-8835-CCAF6A6E0875}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D7DA9AA6-B5CB-41E1-8835-CCAF6A6E0875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7DA9AA6-B5CB-41E1-8835-CCAF6A6E0875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7DA9AA6-B5CB-41E1-8835-CCAF6A6E0875}.Debug|x64.ActiveCfg = Debug|x64
+		{D7DA9AA6-B5CB-41E1-8835-CCAF6A6E0875}.Debug|x64.Build.0 = Debug|x64
+		{D7DA9AA6-B5CB-41E1-8835-CCAF6A6E0875}.Debug|x86.ActiveCfg = Debug|x86
+		{D7DA9AA6-B5CB-41E1-8835-CCAF6A6E0875}.Debug|x86.Build.0 = Debug|x86
+		{D7DA9AA6-B5CB-41E1-8835-CCAF6A6E0875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7DA9AA6-B5CB-41E1-8835-CCAF6A6E0875}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7DA9AA6-B5CB-41E1-8835-CCAF6A6E0875}.Release|x64.ActiveCfg = Release|x64
+		{D7DA9AA6-B5CB-41E1-8835-CCAF6A6E0875}.Release|x64.Build.0 = Release|x64
+		{D7DA9AA6-B5CB-41E1-8835-CCAF6A6E0875}.Release|x86.ActiveCfg = Release|x86
+		{D7DA9AA6-B5CB-41E1-8835-CCAF6A6E0875}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D6A2ABE-63A7-4318-96E8-60FF7A728012}
+	EndGlobalSection
+EndGlobal

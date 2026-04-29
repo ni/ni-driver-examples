@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RFmxWlanOfdmModAccMimoAnalysisOnly.2010", "RFmxWlanOfdmModAccMimoAnalysisOnly.2010.vbproj", "{173C1414-2239-4983-94D8-1018B5237D85}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{173C1414-2239-4983-94D8-1018B5237D85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{173C1414-2239-4983-94D8-1018B5237D85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{173C1414-2239-4983-94D8-1018B5237D85}.Debug|x64.ActiveCfg = Debug|x64
+		{173C1414-2239-4983-94D8-1018B5237D85}.Debug|x64.Build.0 = Debug|x64
+		{173C1414-2239-4983-94D8-1018B5237D85}.Debug|x86.ActiveCfg = Debug|x86
+		{173C1414-2239-4983-94D8-1018B5237D85}.Debug|x86.Build.0 = Debug|x86
+		{173C1414-2239-4983-94D8-1018B5237D85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{173C1414-2239-4983-94D8-1018B5237D85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{173C1414-2239-4983-94D8-1018B5237D85}.Release|x64.ActiveCfg = Release|x64
+		{173C1414-2239-4983-94D8-1018B5237D85}.Release|x64.Build.0 = Release|x64
+		{173C1414-2239-4983-94D8-1018B5237D85}.Release|x86.ActiveCfg = Release|x86
+		{173C1414-2239-4983-94D8-1018B5237D85}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {75220C46-DE90-4F13-9773-F55517FDF41C}
+	EndGlobalSection
+EndGlobal

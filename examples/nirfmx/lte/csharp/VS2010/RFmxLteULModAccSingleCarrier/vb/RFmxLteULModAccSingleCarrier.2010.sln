@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RFmxLteULModAccSingleCarrier.2010", "RFmxLteULModAccSingleCarrier.2010.vbproj", "{CCBEE9BA-C5CC-4EE7-ABD7-3D7EE0AC8A32}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCBEE9BA-C5CC-4EE7-ABD7-3D7EE0AC8A32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCBEE9BA-C5CC-4EE7-ABD7-3D7EE0AC8A32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCBEE9BA-C5CC-4EE7-ABD7-3D7EE0AC8A32}.Debug|x64.ActiveCfg = Debug|x64
+		{CCBEE9BA-C5CC-4EE7-ABD7-3D7EE0AC8A32}.Debug|x64.Build.0 = Debug|x64
+		{CCBEE9BA-C5CC-4EE7-ABD7-3D7EE0AC8A32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCBEE9BA-C5CC-4EE7-ABD7-3D7EE0AC8A32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCBEE9BA-C5CC-4EE7-ABD7-3D7EE0AC8A32}.Release|x64.ActiveCfg = Release|x64
+		{CCBEE9BA-C5CC-4EE7-ABD7-3D7EE0AC8A32}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

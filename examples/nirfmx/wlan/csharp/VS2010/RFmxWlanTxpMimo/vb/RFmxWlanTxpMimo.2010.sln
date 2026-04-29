@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RFmxWlanTxpMimo.2010", "RFmxWlanTxpMimo.2010.vbproj", "{344D6EE0-9280-42D6-B1E9-ACA09DD78198}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{344D6EE0-9280-42D6-B1E9-ACA09DD78198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{344D6EE0-9280-42D6-B1E9-ACA09DD78198}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{344D6EE0-9280-42D6-B1E9-ACA09DD78198}.Debug|x64.ActiveCfg = Debug|x64
+		{344D6EE0-9280-42D6-B1E9-ACA09DD78198}.Debug|x64.Build.0 = Debug|x64
+		{344D6EE0-9280-42D6-B1E9-ACA09DD78198}.Debug|x86.ActiveCfg = Debug|x86
+		{344D6EE0-9280-42D6-B1E9-ACA09DD78198}.Debug|x86.Build.0 = Debug|x86
+		{344D6EE0-9280-42D6-B1E9-ACA09DD78198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{344D6EE0-9280-42D6-B1E9-ACA09DD78198}.Release|Any CPU.Build.0 = Release|Any CPU
+		{344D6EE0-9280-42D6-B1E9-ACA09DD78198}.Release|x64.ActiveCfg = Release|x64
+		{344D6EE0-9280-42D6-B1E9-ACA09DD78198}.Release|x64.Build.0 = Release|x64
+		{344D6EE0-9280-42D6-B1E9-ACA09DD78198}.Release|x86.ActiveCfg = Release|x86
+		{344D6EE0-9280-42D6-B1E9-ACA09DD78198}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

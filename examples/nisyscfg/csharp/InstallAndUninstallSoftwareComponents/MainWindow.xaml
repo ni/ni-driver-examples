@@ -1,0 +1,84 @@
+﻿<Window x:Class="NationalInstruments.Examples.InstallAndUninstallSoftwareComponents.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:NationalInstruments.Examples.InstallAndUninstallSoftwareComponents"
+        Title="Install and Uninstall Software Components" Height="600" Width="1000" Icon="App.ico">
+
+    <Grid Margin="12" Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Expander Grid.Row="0" Header="Operating Instructions" IsExpanded="True" Margin="0,0,0,20">
+            <TextBlock xml:space="preserve" TextWrapping="Wrap" Padding="10,4,0,0"><Bold>Overview:</Bold> Installs and uninstalls software components on a remote target.
+<Bold>Requirements:</Bold> NI System Configuration
+<Bold>Instructions:</Bold>
+1. Select <Bold>Target</Bold>. Enter the <Bold>User Name</Bold> and <Bold>Password</Bold> if necessary.
+2. Press <Bold>Show Software</Bold>.
+3. Wait for tables to populate with Available/Installed software.
+4. To install software, select one or more items in the <Bold>Available Software Components</Bold> table and click <Bold>Install Selected</Bold>.
+5. To uninstall software, select one or more items in the <Bold>Installed Software Components</Bold> table and click <Bold>Uninstall Selected</Bold>.
+If there are other pieces of software that have dependencies on the one(s) you want to install, you must install those items as well.</TextBlock>
+        </Expander>
+        <Grid Grid.Row="1" IsEnabled="{Binding CanBeginShowSoftware}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Name="targetGrid" Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Target"/>
+                <TextBox Grid.Row="1" Text="{Binding Target, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,8,0"/>
+                <TextBlock Grid.Column="1" Text="User Name" Margin="4,0"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="4,0,0,0"/>
+                <TextBlock Grid.Column="2" Text="Password" Margin="8,0,0,0"/>
+                <PasswordBox Name="PasswordBox" Grid.Row="1" Grid.Column="2" Margin="8,0,0,0"/>
+                <Button Grid.Row="2" Grid.Column="1" Margin="10" Content="Show Software" Height="40" Width="150" IsDefault="True" Click="OnShowSoftwareClick"/>
+            </Grid>
+            <Grid Name="installationGrid" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Button Grid.Row="0" Margin="0,0,0,20" Content="&lt;Back" Height="30" Width="50" HorizontalAlignment="Left" Click="OnBackClick"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid Grid.Row="0" Grid.Column="0" Name="AvailableSoftwareGrid" ItemsSource="{Binding AvailableComponentInfo}" AutoGenerateColumns="False" IsReadOnly="True" VirtualizingStackPanel.VirtualizationMode="Standard" VirtualizingStackPanel.IsVirtualizing="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Available Software Components" Width="*" Binding="{Binding Title}"/>
+                            <DataGridTextColumn Header="Version" Width="Auto" Binding="{Binding Version}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <DataGrid Grid.Row="0" Grid.Column="1" Name="InstalledSoftwareGrid" ItemsSource="{Binding InstalledComponentInfo}" AutoGenerateColumns="False" IsReadOnly="True" VirtualizingStackPanel.VirtualizationMode="Standard" VirtualizingStackPanel.IsVirtualizing="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Installed Software Components" Width="*" Binding="{Binding Title}"/>
+                            <DataGridTextColumn Header="Version" Width="Auto" Binding="{Binding Version}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Margin="0,10" Content="Install Selected" Height="40" Width="150" Click="OnInstallClick"/>
+                    <Button Grid.Column="1" Margin="0,10" Content="Uninstall Selected" Height="40" Width="150" Click="OnUninstallClick"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

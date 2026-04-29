@@ -1,0 +1,302 @@
+/* Steps:
+1. Open RFSG session.
+2. Configure RFSG frequency reference.
+3. Configure marker0 to be generated from RFSG on the specified output terminal.
+4. Configure frequency and power level of RF output signal.
+5. Set RFSG External Gain. #4 and #5 ensure that the average power of the signal at the input of the DUT
+   matches the user configured DUT Average Input Power.
+6. Read waveform from file and download Waveform from file to RFSG.
+   Set Waveform Runtime Scaling to the desired Pre-filter Gain.
+   Read waveform sample rate, multiply by 0.8 and set the result to the signal bandwidth.
+   Write script to generate the waveform specified in the script. This script is programmed
+   to generate waveform continuously, with marker0 aligned to sample index 0.
+7. Initiate generation.
+8. Open RFmx session.
+9. Configure frequency reference of the analyser.
+10. Configure Selected Ports.
+11. Configure trigger to use as reference for signal acquisition.
+12. Configure center frequency and external attenuation.
+13. Select DPD measurement, configure the reference waveform
+    and power of this signal at the input of the DUT.
+14. Select and configure the Lookup Table (LUT) model to estimate the predistotor.
+15. Set the measurement sample rate and the measurement interval to use for analysis.
+16. Set Reference Level or perform Auto Level to compute an approximate reference level
+    to use by the analyser.
+17. Initiate DPD measurement.
+18. Configure LUT correction type and Apply Digital Predistortion based on LUT computed
+    by the DPD measurement.
+19. a. Abort RFSG generation and write a new waveform that is predistorted by applying LUT.
+       Set Waveform Runtime Scaling to the negative of the desired Pre-filter Gain.
+       Set the sample rate computed from Apply Digital Predistortion.
+       Set the final PAPR to the sum of the actual PAPR and the Power Offset as computed
+       by Apply Digital Predistortion.
+       Set the Signal Bandwidth.
+       Initiate RFSG generation using the script that was selected earlier.
+    b. Fetch DPD Lookup Table.
+20. Select and configure AMPM measurement in RFmx after DPD measurement is complete.
+    AMPM measurement is used to inspect the measure the AM-AM and AM-PM response of the DUT.
+21. Initiate and fetch AMPM results.
+22. Close RFmx session.
+23. Close RFSG session.
+It is recommended to clear the waveform before closing RFSG session.*/
+
+using System;
+using NationalInstruments.RFmx.InstrMX;
+using NationalInstruments.RFmx.SpecAnMX;
+using NationalInstruments.DataInfrastructure;
+using NationalInstruments.ModularInstruments.NIRfsg;
+using System.IO;
+using NationalInstruments.ModularInstruments.NIRfsgPlayback;
+
+namespace NationalInstruments.Examples.RFmxSpecAnLutDpd
+{
+   public class RFmxSpecAnLutDpd
+   {
+      RFmxInstrMX instrSession;
+      RFmxSpecAnMX specAn;
+      NIRfsg rfsgSession;
+      IntPtr instrumentHandle;
+
+      string rfsaResourceName = "RFSA";
+      string rfsgResourceName = "RFSG";
+      bool enableTrigger = true;
+      string frequencyReferenceSource = RFmxInstrMXConstants.OnboardClock;
+      double frequencyReferenceFrequency = 10e6;      /* Hz */
+      string digitalEdgeTriggerSource = RFmxSpecAnMXConstants.PxiTriggerLine0;
+      RFmxSpecAnMXTriggerType triggerType = RFmxSpecAnMXTriggerType.DigitalEdge;
+      double triggerDelay = 0;                        /* seconds */
+      string selectedPorts = "";
+      double centerFrequency = 1e+9;                  /* Hz */
+      double referenceLevel = -14.00;                 /* dBm */
+      double externalAttenuation = 0.00;              /* dB */
+      double rfsgExternalAttenuation = 0.00;          /* dB */
+      double referenceWaveformBandwidth = 20e6;       /* Hz */
+      double autoLevelMeasurementInterval = 100e-6;   /* seconds */
+      double autoLevelReferenceLevel;
+      double preFilterGain = -4.00;                   /* dB */
+      double runtimeScaling;
+      double papr = 0.0;
+      double dutAverageInputPower = -20;              /* dBm */
+      RFmxSpecAnMXDpdMeasurementSampleRateMode sampleRateMode = RFmxSpecAnMXDpdMeasurementSampleRateMode.ReferenceWaveform;
+      bool autoLevel = true;
+      double sampleRate = 120e6;                      /* S/s */
+      double measurementInterval = 100e-6;            /* seconds */
+      double thresholdLevel = -20;                    /* dB or dBm */
+      RFmxSpecAnMXAmpmReferencePowerType referencePowerType = RFmxSpecAnMXAmpmReferencePowerType.Input;
+      ComplexWaveform<ComplexSingle> referenceWaveformComplexSingle, waveformWithDpdComplexSingle;
+
+      string referenceWaveformFile = @"LTE20MHz Waveform (Two Subframes).tdms";
+      string scriptName = "LUTDPDScript";
+      string waveformScript;
+      RFmxSpecAnMXDpdReferenceWaveformIdleDurationPresent idleDurationPresent =
+                                                           RFmxSpecAnMXDpdReferenceWaveformIdleDurationPresent.False;
+      RFmxSpecAnMXDpdSignalType signalType = RFmxSpecAnMXDpdSignalType.Modulated;
+      double timeout = 10;                            /* seconds */
+      double meanLinearGain, onedBCompressionPoint, meanRmsEvm,
+                gainErrorRange, phaseErrorRange, meanPhaseError,
+                amToAMResidual, amToPMResidual, powerOffset;
+
+      float[] referencePowersAMToAM;
+      float[] measuredAMToAM;
+      float[] curveFitAMToAM;
+      float[] referencePowersAMToPM;
+      float[] measuredAMToPM;
+      float[] curveFitAMToPM;
+      float[] lookUpTableInputPowers;
+      ComplexSingle[] lookUpTableComplexGains;
+
+      RfsgFrequencyReferenceSource referenceClockSource = RfsgFrequencyReferenceSource.OnboardClock;
+      double referenceClockRate = 10e6;
+      string waveformName = "Wfm";
+      double lutStepSize = 0.1;
+      double rfsgIqRate;
+      int markerNumber = 0;
+
+      internal void Run()
+      {
+         try
+         {
+            ReadWaveformFromTdmsFile();
+            OpenSession();
+            ConfigureRfsg();
+            ConfigureRFmx();
+            RetrieveResults();
+            DisplayResults();
+         }
+         catch (Exception ex)
+         {
+            DisplayError(ex);
+         }
+         finally
+         {
+            /* Close session */
+            CloseSessions();
+            Console.WriteLine("Press any key to exit.....");
+            Console.ReadKey();
+         }
+      }
+
+
+      private void ReadWaveformFromTdmsFile()
+      {
+         NIRfsgPlayback.ReadWaveformFromFileComplex(referenceWaveformFile, ref referenceWaveformComplexSingle);
+         rfsgIqRate = 1 / referenceWaveformComplexSingle.PrecisionTiming.SampleInterval.TotalSeconds;
+      }
+
+      private void OpenSession()
+      {
+         /* Configure RFmx */
+         instrSession = new RFmxInstrMX(rfsaResourceName, "");
+         specAn = instrSession.GetSpecAnSignalConfiguration();
+      }
+
+      private void ConfigureRfsg()
+      {
+         rfsgSession = new NIRfsg(rfsgResourceName, true, true);
+         rfsgSession.FrequencyReference.Configure(referenceClockSource, referenceClockRate);
+         rfsgSession.DeviceEvents.MarkerEvents[markerNumber].ExportedOutputTerminal =
+                                  RfsgMarkerEventExportedOutputTerminal.PxiTriggerLine0;
+         rfsgSession.RF.Configure(centerFrequency, dutAverageInputPower);
+         waveformScript = String.Format("script {0} {1}  repeat forever {1}  generate {2} marker{3}(0)  {1} end repeat {1} end script",
+             scriptName, Environment.NewLine, waveformName, markerNumber);
+         rfsgSession.RF.ExternalGain = -rfsgExternalAttenuation;
+         instrumentHandle = rfsgSession.GetInstrumentHandle().DangerousGetHandle();
+         NIRfsgPlayback.ReadAndDownloadWaveformFromFile(instrumentHandle, referenceWaveformFile, waveformName);
+         runtimeScaling = preFilterGain;
+         NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling);
+         NIRfsgPlayback.RetrieveWaveformSampleRate(instrumentHandle, waveformName, out sampleRate);
+         NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * sampleRate);
+         NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript);
+         rfsgSession.Initiate();
+      }
+
+      private void ConfigureRFmx()
+      {
+         instrSession.ConfigureFrequencyReference("", frequencyReferenceSource, frequencyReferenceFrequency);
+         specAn.SetSelectedPorts("", selectedPorts);
+         if (triggerType == RFmxSpecAnMXTriggerType.DigitalEdge)
+         {
+            specAn.ConfigureDigitalEdgeTrigger("", digitalEdgeTriggerSource, RFmxSpecAnMXDigitalEdgeTriggerEdge.Rising,
+                triggerDelay, enableTrigger);
+         }
+         else if (triggerType == RFmxSpecAnMXTriggerType.IQPowerEdge)
+         {
+            specAn.ConfigureIQPowerEdgeTrigger("", "0", -20.0, RFmxSpecAnMXIQPowerEdgeTriggerSlope.Rising,
+                triggerDelay, RFmxSpecAnMXTriggerMinimumQuietTimeMode.Manual, 0.0, enableTrigger);
+         }
+         specAn.ConfigureRF("", centerFrequency, 0.0, externalAttenuation);
+         specAn.SelectMeasurements("", RFmxSpecAnMXMeasurementTypes.Dpd, true);
+         specAn.Dpd.Configuration.ConfigureReferenceWaveform("", referenceWaveformComplexSingle, idleDurationPresent,
+                                                             signalType);
+         specAn.Dpd.Configuration.ConfigureDutAverageInputPower("", dutAverageInputPower);
+         specAn.Dpd.Configuration.ConfigureDpdModel("", RFmxSpecAnMXDpdModel.LookupTable);
+         specAn.Dpd.Configuration.ConfigureLookupTableThreshold("", RFmxSpecAnMXDpdLookupTableThresholdEnabled.True,
+            thresholdLevel, RFmxSpecAnMXDpdLookupTableThresholdType.Relative);
+         specAn.Dpd.Configuration.ConfigureLookupTableStepSize("", lutStepSize);
+         specAn.Dpd.Configuration.ConfigureMeasurementSampleRate("", sampleRateMode, sampleRate);
+         specAn.Dpd.Configuration.ConfigureMeasurementInterval("", measurementInterval);
+
+         if (autoLevel)
+         {
+            specAn.AutoLevel("", referenceWaveformBandwidth, autoLevelMeasurementInterval, out autoLevelReferenceLevel);
+            specAn.ConfigureReferenceLevel("", autoLevelReferenceLevel);
+            Console.WriteLine("Reference Level(dBm): {0}\n", autoLevelReferenceLevel);
+         }
+         else
+         {
+            specAn.ConfigureReferenceLevel("", referenceLevel);
+         }
+         specAn.Initiate("", "");
+         specAn.Dpd.ApplyDpd.ConfigureLookupTableCorrectionType("",
+             RFmxSpecAnMXDpdApplyDpdLookupTableCorrectionType.MagnitudeAndPhase);
+         specAn.Dpd.ApplyDpd.ApplyDigitalPredistortion("", referenceWaveformComplexSingle,
+             RFmxSpecAnMXDpdApplyDpdIdleDurationPresent.False, timeout, ref waveformWithDpdComplexSingle,
+             out papr, out powerOffset);
+      }
+
+      private void RetrieveResults()
+      {
+         rfsgSession.Abort();
+         NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName);
+         rfsgIqRate = 1 / waveformWithDpdComplexSingle.PrecisionTiming.SampleInterval.TotalSeconds;
+         rfsgSession.Arb.WriteWaveform(waveformName, waveformWithDpdComplexSingle);
+         NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling);
+         NIRfsgPlayback.StoreWaveformSampleRate(instrumentHandle, waveformName, rfsgIqRate);
+         NIRfsgPlayback.StoreWaveformPapr(instrumentHandle, waveformName, (papr + powerOffset));
+         NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * rfsgIqRate);
+         NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript);
+         rfsgSession.Initiate();
+
+         specAn.Dpd.Results.FetchLookupTable("", timeout, ref lookUpTableInputPowers, ref lookUpTableComplexGains);
+
+         specAn.SelectMeasurements("", RFmxSpecAnMXMeasurementTypes.Ampm, true);
+         specAn.Ampm.Configuration.ConfigureMeasurementSampleRate("", RFmxSpecAnMXAmpmMeasurementSampleRateMode.ReferenceWaveform,
+                                                                  sampleRate);
+         specAn.Ampm.Configuration.ConfigureMeasurementInterval("", autoLevelMeasurementInterval);
+         specAn.Ampm.Configuration.ConfigureReferenceWaveform("", referenceWaveformComplexSingle,
+             RFmxSpecAnMXAmpmReferenceWaveformIdleDurationPresent.False, RFmxSpecAnMXAmpmSignalType.Modulated);
+         specAn.Ampm.Configuration.ConfigureThreshold("", RFmxSpecAnMXAmpmThresholdEnabled.True, thresholdLevel,
+                                                      RFmxSpecAnMXAmpmThresholdType.Relative);
+         specAn.Ampm.Configuration.ConfigureDutAverageInputPower("", dutAverageInputPower);
+         specAn.Ampm.Configuration.ConfigureReferencePowerType("", referencePowerType);
+
+         specAn.Initiate("", "");
+
+         specAn.Ampm.Results.FetchDutCharacteristics("", timeout, out meanLinearGain, out onedBCompressionPoint, out meanRmsEvm);
+         specAn.Ampm.Results.FetchError("", timeout, out gainErrorRange, out phaseErrorRange, out meanPhaseError);
+         specAn.Ampm.Results.FetchCurveFitResidual("", timeout, out amToAMResidual, out amToPMResidual);
+         specAn.Ampm.Results.FetchAMToAMTrace("", timeout, ref referencePowersAMToAM, ref measuredAMToAM, ref curveFitAMToAM);
+         specAn.Ampm.Results.FetchAMToPMTrace("", timeout, ref referencePowersAMToPM, ref measuredAMToPM, ref curveFitAMToPM);
+
+         rfsgSession.Abort();
+         NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName);
+      }
+
+      private void DisplayResults()
+      {
+         Console.WriteLine("-----------------Measurement-----------------\n");
+         Console.WriteLine("Mean Linear Gain (dB)            {0}", meanLinearGain);
+         Console.WriteLine("Mean Phase Error (deg)           {0}", meanPhaseError);
+         Console.WriteLine("Mean RMS EVM (%)                 {0}", meanRmsEvm);
+         Console.WriteLine("AM to AM Residual (dB)           {0}", amToAMResidual);
+         Console.WriteLine("AM to PM Residual (deg)          {0}", amToPMResidual);
+         Console.WriteLine("Gain Error Range (dB)            {0}", gainErrorRange);
+         Console.WriteLine("Phase Error Range (deg)          {0}", phaseErrorRange);
+         Console.WriteLine("1 dB Compression Point (dBm)     {0}", onedBCompressionPoint);
+      }
+
+      private void CloseSessions()
+      {
+         try
+         {
+            if (specAn != null)
+            {
+               specAn.Dispose();
+               specAn = null;
+            }
+
+            if (instrSession != null)
+            {
+               instrSession.Close();
+               instrSession = null;
+            }
+
+            if (rfsgSession != null)
+            {
+               rfsgSession.Close();
+               rfsgSession = null;
+            }
+
+         }
+         catch (Exception ex)
+         {
+            DisplayError(ex);
+         }
+      }
+
+      private static void DisplayError(Exception ex)
+      {
+         Console.WriteLine("ERROR:\n" + ex.GetType() + ": " + ex.Message);
+      }
+   }
+}

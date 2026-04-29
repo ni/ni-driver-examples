@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RFmxCdma2kSem.2010", "RFmxCdma2kSem.2010.vbproj", "{AF3A378B-A59F-4694-A34A-32F5E37FAA63}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF3A378B-A59F-4694-A34A-32F5E37FAA63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF3A378B-A59F-4694-A34A-32F5E37FAA63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF3A378B-A59F-4694-A34A-32F5E37FAA63}.Debug|x64.ActiveCfg = Debug|x64
+		{AF3A378B-A59F-4694-A34A-32F5E37FAA63}.Debug|x64.Build.0 = Debug|x64
+		{AF3A378B-A59F-4694-A34A-32F5E37FAA63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF3A378B-A59F-4694-A34A-32F5E37FAA63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF3A378B-A59F-4694-A34A-32F5E37FAA63}.Release|x64.ActiveCfg = Release|x64
+		{AF3A378B-A59F-4694-A34A-32F5E37FAA63}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

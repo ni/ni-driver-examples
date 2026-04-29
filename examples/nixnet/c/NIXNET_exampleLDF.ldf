@@ -1,0 +1,128 @@
+LIN_description_file;
+LIN_protocol_version = "2.1";
+LIN_language_version = "2.1";
+
+LIN_speed = 19.20 kbps;
+
+Nodes {
+	Master: Master1, 10 ms, 0.10 ms;
+	Slaves: Slave1;
+}
+
+Signals {
+	MasterSignal1_U16: 16, 0, Master1, Slave1;
+	MasterSignal2_U16: 16, 0, Master1, Slave1;
+	MasterSignal3_U8: 8, 0, Master1, Slave1;
+	MasterSignal4_U8: 8, 0, Master1, Slave1;
+	SlaveSignal1_U16: 16, 0, Slave1, Master1;
+	SlaveSignal2_U16: 16, 0, Slave1, Master1;
+	SlaveSignal3_U8: 8, 0, Slave1, Master1;
+	SlaveSignal4_U8: 8, 0, Slave1, Master1;
+}
+
+Diagnostic_signals {
+	MasterReqB0 : 8, 0;
+	MasterReqB1 : 8, 0;
+	MasterReqB2 : 8, 0;
+	MasterReqB3 : 8, 0;
+	MasterReqB4 : 8, 0;
+	MasterReqB5 : 8, 0;
+	MasterReqB6 : 8, 0;
+	MasterReqB7 : 8, 0;
+	SlaveRespB0 : 8, 0;
+	SlaveRespB1 : 8, 0;
+	SlaveRespB2 : 8, 0;
+	SlaveRespB3 : 8, 0;
+	SlaveRespB4 : 8, 0;
+	SlaveRespB5 : 8, 0;
+	SlaveRespB6 : 8, 0;
+	SlaveRespB7 : 8, 0;
+}
+
+Frames {
+	MasterFrame1: 2, Master1, 8 {
+		MasterSignal1_U16, 0;
+		MasterSignal2_U16, 16;
+	}
+	MasterFrame2: 3, Master1, 2 {
+		MasterSignal3_U8, 0;
+		MasterSignal4_U8, 8;
+	}
+	Slave1Frame1: 4, Slave1, 8 {
+		SlaveSignal1_U16, 0;
+		SlaveSignal2_U16, 16;
+	}
+	Slave1Frame2: 5, Slave1, 2 {
+		SlaveSignal3_U8, 0;
+		SlaveSignal4_U8, 8;
+	}
+}
+
+Diagnostic_frames {
+	MasterReq : 60 {
+		MasterReqB0, 0;
+		MasterReqB1, 8;
+		MasterReqB2, 16;
+		MasterReqB3, 24;
+		MasterReqB4, 32;
+		MasterReqB5, 40;
+		MasterReqB6, 48;
+		MasterReqB7, 56;
+	}
+	SlaveResp : 61 {
+		SlaveRespB0, 0;
+		SlaveRespB1, 8;
+		SlaveRespB2, 16;
+		SlaveRespB3, 24;
+		SlaveRespB4, 32;
+		SlaveRespB5, 40;
+		SlaveRespB6, 48;
+		SlaveRespB7, 56;
+	}
+}
+
+Node_attributes {
+	Slave1 {
+		LIN_protocol = "2.1";
+		configured_NAD = 126;
+		product_id = 32766, 65534, 0;
+		P2_min = 50 ms;
+		ST_min = 0 ms;
+
+	}
+}
+
+Schedule_tables {
+	FastSchedule {
+		MasterFrame1 delay 10 ms;
+		Slave1Frame1 delay 10 ms;
+		MasterFrame2 delay 10 ms;
+		Slave1Frame2 delay 10 ms;
+	}
+	SlowSchedule {
+		MasterFrame1 delay 200 ms;
+		Slave1Frame1 delay 200 ms;
+		MasterFrame2 delay 200 ms;
+		Slave1Frame2 delay 200 ms;
+	}
+    MasterRequest_Schedule {
+		MasterReq delay 10 ms;
+	}
+	SlaveResponse_Schedule {
+		SlaveResp delay 10 ms;
+	}
+}
+
+Signal_encoding_types {
+	PhysicalEncoding_U16 {
+		physical_value, 0, 65535, 1.00, 0.00, "";
+	}
+	PhysicalEncoding_U8 {
+		physical_value, 0, 255, 1.00, 0.00, "";
+	}
+}
+
+Signal_representations {
+	PhysicalEncoding_U16: MasterSignal1_U16, MasterSignal2_U16, SlaveSignal1_U16, SlaveSignal2_U16;
+	PhysicalEncoding_U8: MasterSignal3_U8, MasterSignal4_U8, SlaveSignal3_U8, SlaveSignal4_U8;
+}
