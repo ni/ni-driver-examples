@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RFmxGsmMultiSlotPferEvm.2010", "RFmxGsmMultiSlotPferEvm.2010.vbproj", "{28B9E83E-AE92-495C-80F7-64A8B6EB824C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{28B9E83E-AE92-495C-80F7-64A8B6EB824C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28B9E83E-AE92-495C-80F7-64A8B6EB824C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28B9E83E-AE92-495C-80F7-64A8B6EB824C}.Debug|x64.ActiveCfg = Debug|x64
+		{28B9E83E-AE92-495C-80F7-64A8B6EB824C}.Debug|x64.Build.0 = Debug|x64
+		{28B9E83E-AE92-495C-80F7-64A8B6EB824C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28B9E83E-AE92-495C-80F7-64A8B6EB824C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28B9E83E-AE92-495C-80F7-64A8B6EB824C}.Release|x64.ActiveCfg = Release|x64
+		{28B9E83E-AE92-495C-80F7-64A8B6EB824C}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {591E61AD-4C64-4FCA-AFFC-4F610C1E8DC8}
+	EndGlobalSection
+EndGlobal

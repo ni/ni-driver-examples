@@ -1,0 +1,243 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "AsyncIO"=.\GPIB\AsyncIO_MSVC.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "AsyncIntr"=".\VXI-VME\AsyncIntr_MSVC.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "AsyncSRQ"=.\GPIB\AsyncSRQ_MSVC.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "FindRsrc"=.\General\FindRsrc_MSVC.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "HighReg"=".\VXI-VME\HighReg_MSVC.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Locking"=.\General\Locking_MSVC.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "LowReg"=".\VXI-VME\LowReg_MSVC.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "RdWrt"=.\General\RdWrt_MSVC.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "RdWrtSrl"=.\Serial\RdWrtSrl_MSVC.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ReserveTrig"=.\PXI\ReserveTrig_MSVC.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "RouteTrig"=.\PXI\RouteTrig_MSVC.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "ShareSys"=".\VXI-VME\ShareSys_MSVC.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "TCPIP"=.\TCPIP\TCPIP_MSVC.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "WaitIntr"=".\VXI-VME\WaitIntr_MSVC.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "WaitSRQ"=.\GPIB\WaitSRQ_MSVC.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "WaitTrig"=".\VXI-VME\WaitTrig_MSVC.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+    begin source code control
+    end source code control
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

@@ -1,0 +1,274 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\Pattern Matching.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\Pattern Matching.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PATTERNMATCHING_DIALOG DIALOGEX 0, 0, 320, 200
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Pattern Matching Example"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Quit",IDQUIT,263,179,50,14
+    GROUPBOX        "",IDC_SUBDIALOG_AREA,15,14,290,140,NOT WS_VISIBLE
+END
+
+IDD_LOADREFERENCE DIALOG DISCARDABLE  0, 0, 290, 140
+STYLE WS_CHILD | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Load Reference Image",IDB_BROWSE,95,82,99,14
+    CTEXT           "Choose a Reference Image Containing the Pattern to Find",
+                    IDC_STATIC,7,10,276,12
+END
+
+IDD_CHOOSETEMPLATE DIALOG DISCARDABLE  0, 0, 290, 140
+STYLE WS_CHILD | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "Select An Area In The Reference Image To Be The Template",
+                    IDC_STATIC,7,10,276,12
+    GROUPBOX        "",IDC_IMAGE_AREA,7,33,276,83,NOT WS_VISIBLE
+    PUSHBUTTON      "OK",IDC_SEARCH,114,119,60,14,WS_DISABLED
+    CONTROL         "Learn For Rotation",IDC_ROTATION,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,119,92,13
+END
+
+IDD_LEARNING DIALOG DISCARDABLE  0, 0, 290, 140
+STYLE WS_CHILD | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "The Template Is Being Learned.  Please Wait.",
+                    IDC_STATIC,7,10,276,12
+    CONTROL         "Progress1",IDC_PROGRESS_BAR,"msctls_progress32",
+                    WS_BORDER,77,121,148,12
+    GROUPBOX        "",IDC_IMAGE_AREA,7,33,276,83,NOT WS_VISIBLE
+END
+
+IDD_MATCHING DIALOGEX 0, 0, 290, 140
+STYLE WS_CHILD | WS_BORDER
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "Set The Search Parameters And Perform The Search",
+                    IDC_STATIC,7,10,276,12
+    GROUPBOX        "Search Parameters",IDC_SEARCH_PARAMS_GROUP,7,24,132,92
+    EDITTEXT        IDC_SCORE_VALUE,81,34,29,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin2",IDC_SCORE_SPIN,"msctls_updown32",UDS_SETBUDDYINT | 
+                    UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,109,34,9,
+                    13
+    RTEXT           "Minimum Score",IDC_STATIC,14,36,63,12
+    EDITTEXT        IDC_CONTRAST_VALUE,81,52,29,12,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Spin2",IDC_CONTRAST_SPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,109,52,9,13
+    RTEXT           "Minimum Contrast",IDC_STATIC,14,54,63,12
+    EDITTEXT        IDC_MATCHES_VALUE,81,70,29,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "Spin2",IDC_MATCHES_SPIN,"msctls_updown32",
+                    UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | 
+                    UDS_ARROWKEYS,109,70,9,13
+    RTEXT           "Expected Matches",IDC_STATIC,14,72,63,12
+    CONTROL         "Subpixel Accuracy",IDC_SUBPIXEL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,88,76,8,WS_EX_RIGHT
+    PUSHBUTTON      "Search",IDC_SEARCH,8,118,60,14
+    PUSHBUTTON      "New Image",IDC_NEWIMAGE,79,118,60,14
+    GROUPBOX        "Results",IDC_RESULTS_GROUP,146,24,137,92
+    CONTROL         "List1",IDC_RESULTS,"SysListView32",LVS_REPORT,151,49,
+                    126,62
+    RTEXT           "Matches Found:",IDC_STATIC,151,35,62,12
+    LTEXT           "0",IDC_MATCHESFOUND,216,35,54,12
+    CONTROL         "Find Rotated",IDC_ROTATION,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,14,104,76,8,WS_EX_RIGHT
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "Pattern Matching MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "Pattern Matching\0"
+            VALUE "LegalCopyright", "\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "Pattern Matching.EXE\0"
+            VALUE "ProductName", "Pattern Matching Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_PATTERNMATCHING_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 313
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 193
+    END
+
+    IDD_LOADREFERENCE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 283
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    IDD_CHOOSETEMPLATE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 283
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    IDD_LEARNING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 283
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    IDD_MATCHING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 283
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 132
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\Pattern Matching.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,231 @@
+/************************************************************************
+*
+*  Example Program:
+*    MultiDeviceDynamicGenerationTClkOptimizedforReconfiguration.c
+*
+*  Description:
+*    This example shows how to synchronize the internal sample clocks
+*    of two devices using NI-TClk, then generate a simple pattern on
+*    specified channels. This program will run repeatedly. Between
+*    iterations one can set HSDIO attributes (waveforms, voltage levels, etc.).
+*    The example is optimized and will only call niTCKSynchronize when
+*    necessary.
+*
+*    This example implicitly uses the 10 MHz reference clock and the
+*    start trigger. If used in a PXI chassis, that chassis must be
+*    properly configured in MAX.  If this example is used with PCI
+*    devices, a RTSI cable must be properly configured in MAX.
+*
+*  Pin Connection Information:
+*    None.
+*
+************************************************************************/
+
+
+/* Includes */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "niHSDIO.h"
+#include "niTClk.h"
+
+/* Defines */
+#define WAVEFORM_SIZE 1024
+#define DEVICE_COUNT 2
+#define LOOP_COUNT 5
+
+typedef struct
+{
+   char RefClkSource[1024];
+   ViReal64 RefClkRate;
+   ViReal64 RefClkImped;
+   char SampleClkSource[1024];
+   ViReal64 SampleClkRate;
+   ViReal64 SampleClkImped;
+} DeviceParams;
+
+ViStatus CurrentParametersChanged(ViSession devSessions[], DeviceParams
+                                  currentParams[], ViBoolean *changed);
+
+int main(void)
+{
+   ViRsrc deviceID[DEVICE_COUNT] = {"PXI1Slot2","PXI1Slot3"};
+   ViConstString channelList = "0-15";
+   ViReal64 sampleClockRate = 50.0e6;
+   ViReal64 newSampleClockRate = 25.0e6;
+   ViUInt32 waveformData[WAVEFORM_SIZE];
+   /* Note: You may need to change the data type of waveformData
+      if the default data width of your device is not 4 bytes */
+   ViConstString waveformName = "myWfm";
+   ViInt32 msTimeout = 10000;
+   DeviceParams currentParams[DEVICE_COUNT];
+
+   ViSession vi[DEVICE_COUNT];
+   ViStatus error = VI_SUCCESS;
+   ViChar errDesc[1024];
+   ViInt32 i,j;
+   ViBoolean changed = VI_FALSE;
+
+   /* Populate waveform with ramp data */
+   for (i = 0; i < WAVEFORM_SIZE; i++)
+      waveformData[i] = i;
+
+   /* Initial Configuration */
+   /* Configure non changing parameters and inital configuration here */
+   for (i = 0; i < DEVICE_COUNT; i++)
+   {
+      /* Initialize generation session */
+      checkErr(niHSDIO_InitGenerationSession(
+               deviceID[i], VI_FALSE, VI_FALSE, VI_NULL, &vi[i]));
+
+      /* Assign channels for dynamic generation */
+      checkErr(niHSDIO_AssignDynamicChannels (vi[i], channelList));
+
+      /* Configure sample clock parameters */
+      checkErr(niHSDIO_ConfigureSampleClock(
+               vi[i], NIHSDIO_VAL_ON_BOARD_CLOCK_STR, sampleClockRate));
+
+      /* Write waveform to device */
+      /* Note: You may need to use a different Write function if
+         your device's default data width is not 4 bytes. */
+      checkErr(niHSDIO_WriteNamedWaveformU32(
+               vi[i], waveformName, WAVEFORM_SIZE, waveformData));
+   }
+
+   /* Runs Synchronized Generation Repeatedly */
+   /* Before each generation, change any parameters required *
+    * frequency, voltage levels, etc.                        */
+   for (i = 0; i < LOOP_COUNT; i++)
+   {
+      if (i / 2)
+      {
+         for (j = 0; j < DEVICE_COUNT; j++)
+         {
+            checkErr(niHSDIO_SetAttributeViReal64 (vi[j], "",
+                     NIHSDIO_ATTR_SAMPLE_CLOCK_RATE, newSampleClockRate));
+         }
+      }
+      /* Configure all devices for Homogeneous Triggers */
+      checkErr(niTClk_ConfigureForHomogeneousTriggers (DEVICE_COUNT, vi));
+
+      /* Check to see if TClk Synchronize is required*/
+      checkErr(CurrentParametersChanged(vi, currentParams, &changed));
+
+      /* Synchronize all devices if required*/
+      /* Note: No HSDIO perameters should change, until niTCLK_Initiate is called */
+      if (changed == VI_TRUE)
+      {
+         printf("Calling niTClk Synchronize\n");
+         checkErr(niTClk_Synchronize (DEVICE_COUNT, vi, 0));
+      }
+
+      /* Initiate generation on all devices simultaneously */
+      checkErr(niTClk_Initiate (DEVICE_COUNT, vi));
+
+      /* Wait for generation to complete. The timeout parameter uses units of seconds */
+      checkErr(niTClk_WaitUntilDone (DEVICE_COUNT, vi, msTimeout/1000));
+
+      /* print result */
+      printf("Iterration %i done without error.\n", i);
+   }
+
+Error:
+
+   if (error == VI_SUCCESS)
+   {
+      /* print result */
+      printf("All iterations finished without error.\n");
+   }
+   else
+   {
+      printf("\nError encountered\n===================\n");
+
+      /*  Get errors from NI-HSDIO sessions first.  Calling niHSDIO_GetError returns
+      the error and clears the error for that session.  Calling
+      niTClk_GetExtendedErrorInfo only returns an error generated by NI-TClk. */
+
+      for (i = 0; i < DEVICE_COUNT; i++)
+      {
+         niHSDIO_GetError(vi[i], &error, sizeof(errDesc)/sizeof(ViChar), errDesc);
+         if (error != VI_SUCCESS)
+            printf("Device ID: %s\n%s\n",deviceID[i],errDesc);
+
+         /* Clear error description buffer to prevent the error from being printed
+         multiple times */
+         errDesc[0] = '\0';
+      }
+
+      niTClk_GetExtendedErrorInfo(errDesc, sizeof(errDesc)/sizeof(ViChar));
+      printf("%s\n",errDesc);
+
+   }
+
+   /* close the sessions */
+   for (i = 0; i < DEVICE_COUNT; i++)
+      niHSDIO_close(vi[i]);
+
+   /* prompt to exit (for pop-up console windows) */
+   printf("\nHit <Enter> to continue...\n");
+   getchar();
+
+   return error;
+}
+
+ViStatus CurrentParametersChanged(ViSession devSessions[], DeviceParams currentParams[],
+                                  ViBoolean *changed)
+{
+   ViStatus error = VI_SUCCESS;
+   DeviceParams newParams;
+   ViInt32 i;
+
+   *changed = VI_FALSE;
+
+   /* During the first run and every time one or more of the prameters below change,*
+    * you must call niTClk_Synchronize. If no of the parameters below change, you   *
+    * can increase the speed of your program by omitting niTClk_Synchronize.        */
+   for (i = 0; i < DEVICE_COUNT; i++)
+   {
+      /* Get Current Value of the Reference Clock Source */
+      checkErr(niHSDIO_GetAttributeViString (devSessions[i], "", NIHSDIO_ATTR_REF_CLOCK_SOURCE,
+                                             1024, newParams.RefClkSource));
+       /* Get Current Value of the Reference Clock Rate */
+      checkErr(niHSDIO_GetAttributeViReal64 (devSessions[i], "", NIHSDIO_ATTR_REF_CLOCK_RATE,
+                                             &newParams.RefClkRate));
+       /* Get Current Value of the Reference Clock Impedance */
+      checkErr(niHSDIO_GetAttributeViReal64 (devSessions[i], "", NIHSDIO_ATTR_REF_CLOCK_IMPEDANCE,
+                                             &newParams.RefClkImped));
+       /* Get Current Value of the Sample Clock Source */
+      checkErr(niHSDIO_GetAttributeViString (devSessions[i], "", NIHSDIO_ATTR_SAMPLE_CLOCK_SOURCE,
+                                             1024, newParams.SampleClkSource));
+       /* Get Current Value of the Sample Clock Rate */
+      checkErr(niHSDIO_GetAttributeViReal64 (devSessions[i], "", NIHSDIO_ATTR_SAMPLE_CLOCK_RATE,
+                                             &newParams.SampleClkRate));
+       /* Get Current Value of the Sample Clock Impedance */
+      checkErr(niHSDIO_GetAttributeViReal64 (devSessions[i], "", NIHSDIO_ATTR_SAMPLE_CLOCK_RATE,
+                                             &newParams.SampleClkImped));
+
+      /* Compare current values to prior values */
+      if ((strncmp(currentParams[i].RefClkSource, newParams.RefClkSource, 1024) != 0) ||
+         (currentParams[i].RefClkRate != newParams.RefClkRate) ||
+         (currentParams[i].RefClkImped != newParams.RefClkImped) ||
+         (strncmp(currentParams[i].SampleClkSource, newParams.SampleClkSource, 1024) != 0) ||
+         (currentParams[i].SampleClkRate != newParams.SampleClkRate) ||
+         (currentParams[i].SampleClkImped != newParams.SampleClkImped))
+      {
+         /* If values are different we must call niTclk_Synchronize */
+         *changed = VI_TRUE;
+
+         /* Save the current calues */
+         strncpy(currentParams[i].RefClkSource, newParams.RefClkSource, 1024);
+         currentParams[i].RefClkRate = newParams.RefClkRate;
+         currentParams[i].RefClkImped = newParams.RefClkImped;
+         strncpy(currentParams[i].SampleClkSource, newParams.SampleClkSource, 1024);
+         currentParams[i].SampleClkRate = newParams.SampleClkRate;
+         currentParams[i].SampleClkImped = newParams.SampleClkImped;
+      }
+   }
+
+Error:
+
+   return error;
+}

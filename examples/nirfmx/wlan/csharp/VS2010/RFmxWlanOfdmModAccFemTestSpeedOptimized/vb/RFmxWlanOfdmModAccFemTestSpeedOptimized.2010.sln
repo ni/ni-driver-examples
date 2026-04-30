@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RFmxWlanOfdmModAccFemTestSpeedOptimized.2010", "RFmxWlanOfdmModAccFemTestSpeedOptimized.2010.vbproj", "{C97ED215-F464-497A-8558-317B37EFBFEE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C97ED215-F464-497A-8558-317B37EFBFEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C97ED215-F464-497A-8558-317B37EFBFEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C97ED215-F464-497A-8558-317B37EFBFEE}.Debug|x64.ActiveCfg = Debug|x64
+		{C97ED215-F464-497A-8558-317B37EFBFEE}.Debug|x64.Build.0 = Debug|x64
+		{C97ED215-F464-497A-8558-317B37EFBFEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C97ED215-F464-497A-8558-317B37EFBFEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C97ED215-F464-497A-8558-317B37EFBFEE}.Release|x64.ActiveCfg = Release|x64
+		{C97ED215-F464-497A-8558-317B37EFBFEE}.Release|x64.Build.0 = Release|x64
+
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,149 @@
+//Steps:
+//1. Open a new RFmx session.
+//2. Configure Frequency Reference.
+//3. Configure the basic signal properties (Center Frequency, Reference Level and External Attenuation).
+//4. Configure Trigger Type and Trigger Parameters.
+//5. Configure Contiguous Carriers.
+//6. Select CHP measurement and enable traces.
+//7. Configure Sweep Time Parameters.
+//8. Configure Averaging Parameters.
+//9. Initiate the Measurement.
+//10. Fetch CHP Measurements and Traces.
+//11. Close the RFmx Session.
+
+using System;
+using NationalInstruments.RFmx.InstrMX;
+using NationalInstruments.RFmx.EvdoMX;
+
+namespace NationalInstruments.Examples.RFmxEvdoChpMultiCarrier
+{
+    public class RFmxEvdoChpMultiCarrier
+    {
+        RFmxInstrMX instrSession;
+        RFmxEvdoMX evdo;
+
+        string resourceName = "RFSA";
+        RFmxEvdoMXMeasurementTypes measurement = RFmxEvdoMXMeasurementTypes.Chp;
+
+        string frequencyReferenceSource = RFmxInstrMXConstants.OnboardClock;
+        double frequency = 10.0e+6;                     /* Hz */
+
+        double centerFrequency = 833.49e+6;               /* Hz */
+        double externalAttenuation = 0.00;          /* dB */
+
+        string digitalEdgeSource = RFmxEvdoMXConstants.Pfi0;
+        RFmxEvdoMXDigitalEdgeTriggerEdge digitalEdge = RFmxEvdoMXDigitalEdgeTriggerEdge.Rising;
+
+        double triggerDelay = 0.00;                 /* seconds */
+        double referenceLevel = 0.00;               /* dBm */
+
+        RFmxEvdoMXChpAveragingEnabled averagingEnabled = RFmxEvdoMXChpAveragingEnabled.False;
+
+        int bandClass = 0;
+        int frequencyReferenceCarrier = -1;
+        int numberOfCarriers = 3;
+
+        int averagingCount = 10;
+        RFmxEvdoMXChpAveragingType averagingType = RFmxEvdoMXChpAveragingType.Rms;
+
+        RFmxEvdoMXChpSweepTimeAuto sweepTimeAuto = RFmxEvdoMXChpSweepTimeAuto.True;
+        double sweepTimeInterval = 1.67e-3;             /* seconds */
+
+        double timeout = 10.00;                     /* seconds */
+        double[] carrierAbsolutePower;
+        double[] carrierRelativePower;
+        double totalCarrierPower;
+        Spectrum<float> spectrum;
+
+        bool enableAllTraces = true;
+        bool enableTrigger = false;
+
+        public void Run()
+        {
+            try
+            {
+                InitializeInstr();
+                ConfigureEvdo();
+                RetrieveResults();
+                PrintResults();
+            }
+            catch (Exception ex)
+            {
+                DisplayError(ex);
+            }
+            finally
+            {
+                CloseSession();
+                Console.WriteLine("Press any key to exit");
+                Console.ReadKey();
+            }
+        }
+
+        void InitializeInstr()
+        {
+            /* Create a new RFmx Session */
+            instrSession = new RFmxInstrMX(resourceName, "");
+        }
+
+        void ConfigureEvdo()
+        {
+            /* Get Evdo signal */
+
+            evdo = instrSession.GetEvdoSignalConfiguration();
+
+            /* Configure measurement */
+
+            instrSession.ConfigureFrequencyReference("", frequencyReferenceSource, frequency);
+            evdo.ConfigureRF("", centerFrequency, referenceLevel, externalAttenuation);
+            evdo.ConfigureDigitalEdgeTrigger("", digitalEdgeSource, digitalEdge, triggerDelay, enableTrigger);
+            evdo.ConfigureContiguousCarriers("", numberOfCarriers, frequencyReferenceCarrier, bandClass);
+            evdo.SelectMeasurements("", measurement, enableAllTraces);
+            evdo.Chp.Configuration.ConfigureSweepTime("", sweepTimeAuto, sweepTimeInterval);
+            evdo.Chp.Configuration.ConfigureAveraging("", averagingEnabled, averagingCount, averagingType);
+            evdo.Initiate("", "");
+        }
+
+        void RetrieveResults()
+        {
+            /* Retrieve results */
+
+            evdo.Chp.Results.FetchCarrierMeasurementArray("", timeout, ref carrierAbsolutePower, ref carrierRelativePower);
+            evdo.Chp.Results.FetchTotalCarrierPower("", timeout, out totalCarrierPower);
+            evdo.Chp.Results.FetchSpectrum("", timeout, ref spectrum);
+        }
+
+        void PrintResults()
+        {
+            Console.WriteLine("Total Carrier Power (dBm)    :{0}", totalCarrierPower);
+
+            Console.WriteLine("\nCarrier Measurements :");
+
+            for (int i = 0; i < numberOfCarriers; i++)
+            {
+                Console.WriteLine("\nCarrier  : {0}", i);
+                Console.WriteLine("Absolute Power  (dBm)        : {0}", carrierAbsolutePower[i]);
+                Console.WriteLine("Relative Power  (dB)         : {0}", carrierRelativePower[i]);
+            }
+        }
+
+        void CloseSession()
+        {
+            if (evdo != null)
+            {
+                evdo.Dispose();
+                evdo = null;
+            }
+            if (instrSession != null)
+            {
+                instrSession.Close();
+                instrSession = null;
+            }
+        }
+
+        static void DisplayError(Exception ex)
+        {
+            Console.WriteLine("ERROR:\n" + ex.GetType() + ": " + ex.Message);
+        }
+
+    }
+}

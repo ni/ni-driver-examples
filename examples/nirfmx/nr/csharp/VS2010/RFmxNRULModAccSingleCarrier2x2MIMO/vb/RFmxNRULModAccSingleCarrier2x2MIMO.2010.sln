@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "RFmxNRULModAccSingleCarrier2x2MIMO.2010", "RFmxNRULModAccSingleCarrier2x2MIMO.2010.vbproj", "{F5EC81BC-2027-4180-8454-669035DC8113}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F5EC81BC-2027-4180-8454-669035DC8113}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5EC81BC-2027-4180-8454-669035DC8113}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5EC81BC-2027-4180-8454-669035DC8113}.Debug|x64.ActiveCfg = Debug|x64
+		{F5EC81BC-2027-4180-8454-669035DC8113}.Debug|x64.Build.0 = Debug|x64
+		{F5EC81BC-2027-4180-8454-669035DC8113}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5EC81BC-2027-4180-8454-669035DC8113}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5EC81BC-2027-4180-8454-669035DC8113}.Release|x64.ActiveCfg = Release|x64
+		{F5EC81BC-2027-4180-8454-669035DC8113}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D247F05E-D5C8-40D1-A519-5BF5F9ED0414}
+	EndGlobalSection
+EndGlobal

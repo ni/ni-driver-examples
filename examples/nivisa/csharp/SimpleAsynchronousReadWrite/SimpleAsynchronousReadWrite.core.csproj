@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0" Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyName>SimpleAsynchronousReadWrite</AssemblyName>
+        <TargetFrameworks>net6.0-windows</TargetFrameworks>
+        <OutputType>WinExe</OutputType>
+        <DelaySign>False</DelaySign>
+        <RootNamespace>NationalInstruments.Examples.SimpleAsynchronousReadWrite</RootNamespace>
+        <FileAlignment>4096</FileAlignment>
+        <RegisterForComInterop>False</RegisterForComInterop>
+        <RemoveIntegerChecks>False</RemoveIntegerChecks>
+        <RuntimeIdentifiers>win</RuntimeIdentifiers>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <GenerateResourceUsePreserializedResources>True</GenerateResourceUsePreserializedResources>
+        <UseWindowsForms>True</UseWindowsForms>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+        <PackageReference Include="NationalInstruments.Visa" Version="25.3.0.11" />
+    </ItemGroup>
+</Project>

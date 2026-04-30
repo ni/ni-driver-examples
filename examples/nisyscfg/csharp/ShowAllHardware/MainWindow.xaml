@@ -1,0 +1,64 @@
+﻿<Window x:Class="NationalInstruments.Examples.ShowAllHardware.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:NationalInstruments.Examples.ShowAllHardware"
+        Title="Show All Hardware" Height="600" Width="500" Icon="App.ico">
+    <Window.Resources>
+        <local:AliasConverter x:Key="AliasConverter"/>
+    </Window.Resources>
+
+    <Grid Margin="12" Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Expander Grid.Row="0" Header="Operating Instructions" IsExpanded="True" Margin="0,0,0,20">
+            <TextBlock xml:space="preserve" TextWrapping="Wrap" Padding="10,4,0,0"><Bold>Overview:</Bold> Displays all hardware and certain properties of that hardware on the specified target. The target can be left empty for localhost.
+<Bold>Requirements:</Bold> NI System Configuration, applicable device drivers
+<Bold>Instructions:</Bold>
+1. Enter the <Bold>Target</Bold>. Enter the <Bold>User Name</Bold> and <Bold>Password</Bold> if necessary.
+2. Press <Bold>Show Hardware</Bold>.</TextBlock>
+        </Expander>
+
+        <Grid Grid.Row="1" IsEnabled="{Binding CanBeginShowHardware}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Target"/>
+            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding Target, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,8,0"/>
+            <TextBlock Grid.Row="0" Grid.Column="1" Text="User Name" Margin="4,0"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Username, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" Margin="4,0"/>
+            <TextBlock Grid.Row="0" Grid.Column="2" Text="Password" Margin="8,0,0,0"/>
+            <PasswordBox Name="passwordBox" Grid.Row="1" Grid.Column="2" Margin="8,0,0,0"/>
+        </Grid>
+
+        <Button Grid.Row="2" HorizontalAlignment="Center" Margin="0,20" Content="Show Hardware" Height="40" Width="150" IsDefault="True" Click="OnShowHardwareClick" IsEnabled="{Binding CanBeginShowHardware}"/>
+
+        <DataGrid Grid.Row="3" ItemsSource="{Binding FilteredHardwareResources}" AutoGenerateColumns="False" IsReadOnly="True" IsEnabled="{Binding CanBeginShowHardware}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Alias\Resource Name" Width="*">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding Converter="{StaticResource AliasConverter}">
+                            <Binding Path="UserAlias"/>
+                            <Binding Path="Expert0ResourceName"/>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Product Name" Width="*" Binding="{Binding ProductName}"/>
+                <DataGridTextColumn Header="Serial Number" Width="*" Binding="{Binding SerialNumber}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <CheckBox Grid.Row="4" Content="Show all network devices" IsChecked="{Binding ShouldShowNetworkDevices}" Margin="0,10,0,0" IsEnabled="{Binding CanBeginShowHardware}"/>
+    </Grid>
+</Window>
