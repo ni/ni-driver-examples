@@ -1,12 +1,12 @@
 //Steps:
 //1. Open NI-RFSG session.
-//2. Configure RFSG Selected Ports.
+//2. Configure RFSG Selected Ports and GenerationMode to Script.
 //3. Configure RFSG frequency reference.
 //4. Configure RFSG configuration settled event to the device scriptTrigger0, to make sure generation starts only after
 //   RFSG configuration settled.
-//5. Configure RFSG to advance upon receipt of RFSA Ready for Advance event through PXI trigger line.
-//6. Configure frequency and external gain of RF output signal.
-//7. Get terminal name for marker0 and assign to the RFSA Reference Trigger Digital Edge source.
+//5. Configure RFSG to advance upon receipt of RFSA Ready for Advance event through PXI trigger line
+//6. Configure frequency, external gain, Power Level Type and Pre-filter Gain of RF output signal.
+//7. Get terminal name for marker0 and assign to the RFSA Reference Trigger Digital Edge source
 //8. Create a Configuration List. Pass Power Level in the Configuration List Properties parameter to be able to configure
 //   Power Level in each step that we create. The Set As Active List parameter in this VI defaults to true, this will set the
 //   Active Configuration List property to the name of the created configuration list.Once the Active Configuration List
@@ -16,12 +16,13 @@
 //   Step is set, using a property node to access Power Level will modify the property for this configuration list step in
 //   the configuration list indicated by the Active Configuration List property.
 //10. Configure the Power Level for the Active Configuration List Step in the Active Configuration List.
-//11. Read waveform from file and download Waveform from file to RFSG.
-//12. Retrieve waveform PAPR and add the same to the RFSA reference level while configuring to every list step.
-//13. Set Automatic SG SA Shared LO to Enabled.
-//14. Set LO Offset Mode to Auto while performing an in-band ModAcc measurement. This causes the RFSG LO to be
-//    placed outside the signal, if signal bandwidth is less than half of the device instantaneous bandwidth; otherwise,
-//    the LO is placed at the center of the signal.
+//11. Configure RFSG LO Source to Automatic SG SA Shared.
+//12. Read waveform from file and download Waveform from file to RFSG.
+//13. Retrieve the waveform PAPR, Signal Bandwidth and IQ rate. Add the waveform PAPR to the RFSA reference level while configuring to
+//    every list step.
+//14. Configure RFSG Signal Bandwidth, IQ rate, and PAPR. With the signal bandwidth configured and the Upconverter Frequency Offset
+//       Mode set to Automatic by default, the RFSG LO is placed outside the signal if the signal bandwidth is less than half of the device
+//       instantaneous bandwidth; otherwise, the LO is placed at the center of the signal.
 //15. Write script to generate the waveform specified in the script. This script is programmed to generate waveform
 //    continuously and generate a marker at the start of the waveform (sample 0).
 //16. Open a new RFmx Session.
@@ -40,13 +41,13 @@
 //27. Initiate ModAcc measurement for List.
 //28. Initiate signal generation.
 //29. Wait for Acquisition to complete.
-//30. Fetch ModAcc measurement Results for all Configuration List Steps one by one.
-//31. Stop signal generation.
-//32. Delete the Configuration List to avoid committing the Configuration List to the hardware with subsequent
+//30. Stop signal generation.
+//31. Delete the Configuration List to avoid committing the Configuration List to the hardware with subsequent
 //    calls to Commit. Deleting the list will reset the Active Configuration List.
+//32. Fetch ModAcc measurement Results for all Configuration List Steps one by one.
 //33. Delete RFmx NR List.
 //34. Close the RFmx Session.
-//35. Close the RFSG session. 
+//35. Close the RFSG session.
 //    It is recommended to clear the waveform before closing RFSG session.
 
 
@@ -56,7 +57,6 @@
 
 #include "niRFmxNR.h"
 #include "niRFSG.h"
-#include "niRFSGPlayback.h"
 
 /* Maximum size of an error message */
 #define MAX_ERROR_DESCRIPTION                   4096
@@ -64,18 +64,13 @@
 /* Maximum size of a selector string */
 #define MAX_SELECTOR_STRING                     256
 
-/* CheckWarn macro for RFSG and Playback API calls*/
+/* CheckWarn macro for RFSG API calls*/
 #define RfsgCheckWarn(fCall)     if (1) {ViStatus _code_; if (_code_ = (fCall), _code_ < 0)    \
                                     {RFSGError = _code_;goto Error;}        \
                                     else RFSGError = (RFSGError==0)?_code_:RFSGError;}    \
                                     else RFSGError = RFSGError
 
-#define playbackCheckWarn(fCall) if (1) {ViStatus _code_; if (_code_ = (fCall), _code_ < 0)    \
-                                 {playbackError = _code_;goto Error;}        \
-                                 else playbackError = (playbackError==0)?_code_:playbackError;} \
-                                 else playbackError = playbackError
-
-int32 error = 0, errorOccured = 0, playbackError = 0, lastErrorCode = 0;
+int32 error = 0, errorOccured = 0, lastErrorCode = 0;
 char errorMessage[MAX_ERROR_DESCRIPTION];
 
 void linearRampPattern(float64 start, float64 end, int samples, int32 includeEnd, float64 *rampPattern)
@@ -97,7 +92,7 @@ int main(int argc, char *argv[])
 
    char errorMessage[MAX_ERROR_DESCRIPTION] = { 0 };
    int32 error = 0, lastErrorCode = 0, errorOccured = 0;
-   int32 RFSGError = 0, playbackError = 0;
+   int32 RFSGError = 0;
    int i = 0;
 
    float64 centerFrequency = 3.5e9;                                              /* (Hz) */
@@ -106,6 +101,7 @@ int main(int argc, char *argv[])
    ViConstString RFSGSelectedPorts = "";
    ViConstString waveformFilePath = "..\\Support\\NR_FR2_UL_SISO_CC-1_BW-50MHz_SCS-120kHz.tdms";
    ViConstString waveformName = "Wfm";
+   ViConstString waveformChannelName = "waveform::Wfm";
 
    ViReal64 RFSGExternalAttenuation = 0.0;                                      /* (dB) */
    ViConstString RFSGFrequencyReferenceSource = NIRFSG_VAL_ONBOARD_CLOCK_STR;
@@ -145,6 +141,8 @@ int main(int argc, char *argv[])
    ViChar configurationSettledEvenTerminalName[MAX_SELECTOR_STRING];
    ViChar markerEventTerminalName[MAX_SELECTOR_STRING];
    ViReal64 externalGain;
+   ViReal64 waveformIqRate;
+   ViReal64 waveformSignalBandwidth;
 
    ViConstString RFSGListName = "PowerLevelList";
    ViInt32 numberOfAttributes = 1;
@@ -156,12 +154,15 @@ int main(int argc, char *argv[])
    RfsgCheckWarn(niRFSG_init(RFSGResourceName, VI_TRUE, VI_FALSE, &RFSGSession));
    RfsgCheckWarn(niRFSG_SetAttributeViString(RFSGSession, "", NIRFSG_ATTR_SELECTED_PORTS, RFSGSelectedPorts));
    RfsgCheckWarn(niRFSG_ConfigureRefClock(RFSGSession, RFSGFrequencyReferenceSource, RFSGFrequency));
+   RfsgCheckWarn(niRFSG_ConfigureGenerationMode(RFSGSession, NIRFSG_VAL_SCRIPT));
    RfsgCheckWarn(niRFSG_GetAttributeViString(RFSGSession, "", NIRFSG_ATTR_CONFIGURATION_SETTLED_EVENT_TERMINAL_NAME,
       MAX_SELECTOR_STRING, configurationSettledEvenTerminalName));
    RfsgCheckWarn(niRFSG_ConfigureDigitalEdgeScriptTrigger(RFSGSession, NIRFSG_VAL_SCRIPT_TRIGGER0, configurationSettledEvenTerminalName, NIRFSG_VAL_RISING_EDGE));
    RfsgCheckWarn(niRFSG_ConfigureDigitalEdgeConfigurationListStepTrigger(RFSGSession, NIRFSG_VAL_PXI_TRIG0_STR, NIRFSG_VAL_RISING_EDGE));
    externalGain = -1 * RFSGExternalAttenuation;
    RfsgCheckWarn(niRFSG_SetAttributeViReal64(RFSGSession, "", NIRFSG_ATTR_EXTERNAL_GAIN, externalGain));
+   RfsgCheckWarn(niRFSG_SetAttributeViInt32(RFSGSession, "", NIRFSG_ATTR_POWER_LEVEL_TYPE, NIRFSG_VAL_PEAK_POWER));
+   RfsgCheckWarn(niRFSG_SetAttributeViReal64(RFSGSession, "", NIRFSG_ATTR_ARB_PRE_FILTER_GAIN, -1.5));
    RfsgCheckWarn(niRFSG_SetAttributeViReal64(RFSGSession, "", NIRFSG_ATTR_FREQUENCY, centerFrequency));
    RfsgCheckWarn(niRFSG_GetTerminalName(RFSGSession, NIRFSG_VAL_MARKER_EVENT, NIRFSG_VAL_MARKER_EVENT0, MAX_SELECTOR_STRING, markerEventTerminalName));
    RfsgCheckWarn(niRFSG_CreateConfigurationList(RFSGSession, RFSGListName, numberOfAttributes, configurationListAttributes, VI_TRUE));
@@ -174,13 +175,17 @@ int main(int argc, char *argv[])
       RfsgCheckWarn(niRFSG_SetAttributeViReal64(RFSGSession, "", NIRFSG_ATTR_POWER_LEVEL, rampPattern[i]));
    }
 
-   playbackCheckWarn(niRFSGPlayback_ReadAndDownloadWaveformFromFile(RFSGSession, waveformFilePath, waveformName));
-   playbackCheckWarn(niRFSGPlayback_RetrieveWaveformPAPR(RFSGSession, waveformName, &papr));
-   playbackCheckWarn(niRFSGPlayback_StoreAutomaticSGSASharedLO(RFSGSession, "", NIRFSGPLAYBACK_VAL_AUTOMATIC_SG_SA_SHARED_LO_ENABLED));
-   playbackCheckWarn(niRFSGPlayback_StoreWaveformLOOffsetMode(RFSGSession, waveformName, NIRFSGPLAYBACK_VAL_LO_OFFSET_MODE_AUTO));
+   RfsgCheckWarn(niRFSG_ReadAndDownloadWaveformFromFileTDMS(RFSGSession, waveformName, waveformFilePath, 0));
+   RfsgCheckWarn(niRFSG_GetAttributeViReal64(RFSGSession, waveformChannelName, NIRFSG_ATTR_WAVEFORM_PAPR, &papr));
+   RfsgCheckWarn(niRFSG_GetAttributeViReal64(RFSGSession, waveformChannelName, NIRFSG_ATTR_WAVEFORM_IQ_RATE, &waveformIqRate));
+   RfsgCheckWarn(niRFSG_GetAttributeViReal64(RFSGSession, waveformChannelName, NIRFSG_ATTR_WAVEFORM_SIGNAL_BANDWIDTH, &waveformSignalBandwidth));
+   RfsgCheckWarn(niRFSG_SetAttributeViReal64(RFSGSession, "", NIRFSG_ATTR_IQ_RATE, waveformIqRate));
+   RfsgCheckWarn(niRFSG_SetAttributeViReal64(RFSGSession, "", NIRFSG_ATTR_SIGNAL_BANDWIDTH, waveformSignalBandwidth));
+   RfsgCheckWarn(niRFSG_SetAttributeViReal64(RFSGSession, "", NIRFSG_ATTR_PEAK_POWER_ADJUSTMENT, papr));
+   RfsgCheckWarn(niRFSG_SetAttributeViString(RFSGSession, "", NIRFSG_ATTR_LO_SOURCE, NIRFSG_VAL_LO_SOURCE_AUTOMATIC_SG_SA_SHARED_STR));
    sprintf(script, "script GenerateWaveform\n  repeat forever\n    generate %s marker0(0)\n \
       wait until scripttrigger0\n   end repeat\n  end script", waveformName);
-   playbackCheckWarn(niRFSGPlayback_SetScriptToGenerateSingleRFSG(RFSGSession, script));
+   RfsgCheckWarn(niRFSG_WriteScript(RFSGSession, script));
 
    /* Initialize a session */
    RFmxCheckWarn(RFmxNR_Initialize(RFSAResourceName, "", &instrumentHandle, NULL));
@@ -251,7 +256,7 @@ int main(int argc, char *argv[])
    RFmxCheckWarn(RFmxNR_DeleteList(instrumentHandle, listSelectorString));
    RFmxCheckWarn(RFmxNR_Close(instrumentHandle, RFMXNR_VAL_FALSE));
 
-   playbackCheckWarn(niRFSGPlayback_ClearWaveform(RFSGSession, waveformName));
+   RfsgCheckWarn(niRFSG_ClearArbWaveform(RFSGSession, waveformName));
 
    RfsgCheckWarn(niRFSG_close(RFSGSession));
 
@@ -276,16 +281,6 @@ Error:
          printf("WARNING: %s\n", errorMessage);
    }
 
-   if (playbackError)
-   {
-      errorOccured = playbackError;
-      niRFSGPlayback_GetError(&lastErrorCode, MAX_ERROR_DESCRIPTION, errorMessage);
-      if (playbackError < 0)
-         printf("ERROR: %s\n", errorMessage);
-      else
-         printf("WARNING: %s\n", errorMessage);
-   }
-
    if (instrumentHandle)
    {
       RFmxNR_Close(instrumentHandle, RFMXNR_VAL_FALSE);
@@ -293,7 +288,7 @@ Error:
    if (RFSGSession)
    {
       niRFSG_Abort(RFSGSession);
-      niRFSGPlayback_ClearWaveform(RFSGSession, waveformName);
+      niRFSG_ClearArbWaveform(RFSGSession, waveformName);
       niRFSG_close(RFSGSession);
    }
 

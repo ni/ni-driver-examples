@@ -1,17 +1,15 @@
 ﻿/* Steps:
 1. Open RFSG session.
-2. Configure RFSG frequency reference.
+2. Configure RFSG frequency reference, generation mode to Script.
 3. Configure marker0 to be generated from RFSG on the specified output terminal.
 4. Configure frequency and power level of RF output signal.
-5. Configure power level type.
+5. Configure RFSG power level type.
 6. Set RFSG External Gain. #4 and #5 ensure that the average power of the signal at the input of the DUT
    matches the user configured DUT Average Input Power.
 7. a. Read waveform from.
    b. Write input waveform on RFSG device.
-      Set the waveform sample rate.
-      Store waveform PAPR.
-      Set Waveform Runtime Scaling to the desired Pre-filter Gain.
-      Read waveform sample rate, multiply by 0.8 and set the result to the signal bandwidth.
+      Configure RFSG IQ rate, Pre-filter Gain and PAPR.
+      Read waveform sample rate, multiply by 0.8 and set the result to the RFSG signal bandwidth.
       Write script to generate the waveform specified in the script. This script is programmed
       to generate waveform continuously, with marker0 aligned to sample index 0.
 8. Initiate generation.
@@ -24,7 +22,7 @@
 15. Configure pre-DPD CFR.
 16. Configure waveform settings for pre-DPD CFR with filtering.
 17. Apply pre-DPD CFR.
-18. Read PAPR from file.
+18. Retrieve the waveform PAPR.
 19. configure the reference waveform.
 20. Configure power of the signal at the input of the DUT. Select and configure the Memory
     polynomial or Generalized memory polynomial model and its parameters to estimate the predistotor.
@@ -41,11 +39,9 @@
 29. a. Fetch DPD Polynomial.
     b. Fetch NMSE (dB).
 30. Abort RFSG generation and write a new waveform that is predistorted by applying momory polynomial coefficients.
-    Set Waveform Runtime Scaling to desired Pre-filter Gain.
-    Set the sample rate computed from Apply Digital Predistortion.
-    Set the final PAPR to the sum of the actual PAPR and the Power Offset as computed
-    by Apply Digital Predistortion.
-    Set the Signal Bandwidth.
+    Set RFSG Pre-filter Gain and sample rate computed from Apply Digital Predistortion.
+    Set the final PAPR to the sum of the actual PAPR and the Power Offset as computed by Apply Digital Predistortion.
+    Set the RFSG signal bandwidth by reading the waveform sample rate and multiplying it by 0.8.
     Initiate RFSG generation using the script that was selected earlier.
 31. Perform Auto Level to compute an approximate reference level while generating the predistorted waveform.
 32. Select and configure AMPM measurement in RFmx after DPD measurement is complete.
@@ -70,7 +66,6 @@ namespace NationalInstruments.Examples.RFmxSpecAnMemoryDpdAdvanced
       RFmxInstrMX instrSession;
       RFmxSpecAnMX specAn;
       NIRfsg rfsgSession;
-      IntPtr instrumentHandle;
 
       string rfsaResourceName = "RFSA";
       string rfsgResourceName = "RFSG";
@@ -208,6 +203,7 @@ namespace NationalInstruments.Examples.RFmxSpecAnMemoryDpdAdvanced
       private void ConfigureRfsgAndRFmx()
       {
          rfsgSession = new NIRfsg(rfsgResourceName, false, true);
+         rfsgSession.Arb.GenerationMode = RfsgWaveformGenerationMode.Script;
          rfsgSession.FrequencyReference.Configure(referenceClockSource, referenceClockRate);
          rfsgSession.DeviceEvents.MarkerEvents[markerNumber].ExportedOutputTerminal =
                                   RfsgMarkerEventExportedOutputTerminal.PxiTriggerLine0;
@@ -216,8 +212,6 @@ namespace NationalInstruments.Examples.RFmxSpecAnMemoryDpdAdvanced
          waveformScript = String.Format("script {0}{1}repeat forever{1}generate {2} marker{3}(0){1}end repeat{1}end script",
             scriptName, Environment.NewLine, waveformName, markerNumber);
          rfsgSession.RF.ExternalGain = -rfsgExternalAttenuation;
-         instrumentHandle = rfsgSession.GetInstrumentHandle().DangerousGetHandle();
-         NIRfsgPlayback.ReadWaveformFromFileComplex(referenceWaveformFile, ref referenceWaveformComplexSingle);
 
          instrSession.ConfigureFrequencyReference("", frequencyReferenceSource, frequencyReferenceFrequency);
          specAn.SetSelectedPorts("", selectedPorts);
@@ -253,26 +247,23 @@ namespace NationalInstruments.Examples.RFmxSpecAnMemoryDpdAdvanced
             specAn.Dpd.PreDpd.ApplyPreDpdSignalConditioning("", referenceWaveformComplexSingle,
                dpdApplyDpdIdleDurationPresent, ref preDpdWaveformWithComplexSingle, out papr);
          }
-         else
-            NIRfsgPlayback.ReadPaprFromFile(referenceWaveformFile, 0, out papr);
-
          if (preDpdCfrEnabled == RFmxSpecAnMXDpdPreDpdCfrEnabled.True)
          {
             rfsgSession.Arb.WriteWaveform(waveformName, preDpdWaveformWithComplexSingle);
             sampleRate = 1 / preDpdWaveformWithComplexSingle.PrecisionTiming.SampleInterval.TotalSeconds;
-
+            rfsgSession.Arb.IQRate = sampleRate;
+            rfsgSession.Arb.Waveforms[waveformName].Papr = papr;
          }
          else
          {
-            rfsgSession.Arb.WriteWaveform(waveformName, referenceWaveformComplexSingle);
-            sampleRate = 1 / referenceWaveformComplexSingle.PrecisionTiming.SampleInterval.TotalSeconds;
+            rfsgSession.Arb.ReadAndDownloadWaveformFromFileTdms(waveformName, referenceWaveformFile, 0);
+            sampleRate = rfsgSession.Arb.Waveforms[waveformName].IQRate;
+            papr = rfsgSession.Arb.Waveforms[waveformName].Papr;
          }
-         NIRfsgPlayback.StoreWaveformSampleRate(instrumentHandle, waveformName, sampleRate);
-         NIRfsgPlayback.StoreWaveformPapr(instrumentHandle, waveformName, papr);
          runtimeScaling = preFilterGain;
-         NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling);
-         NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * sampleRate);
-         NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript);
+         rfsgSession.Arb.PreFilterGain = runtimeScaling;
+         rfsgSession.Arb.SignalBandwidth = 0.8 * sampleRate;
+         rfsgSession.Arb.Scripting.WriteScript(waveformScript);
          rfsgSession.Initiate();
 
          if (preDpdCfrEnabled == RFmxSpecAnMXDpdPreDpdCfrEnabled.True)
@@ -330,14 +321,14 @@ namespace NationalInstruments.Examples.RFmxSpecAnMemoryDpdAdvanced
             Console.WriteLine("NMSE            {0}", nmse);
 
             rfsgSession.Abort();
-            NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName);
+            rfsgSession.Arb.ClearWaveform(waveformName);
             rfsgIqRate = 1 / waveformWithDpdComplexSingle.PrecisionTiming.SampleInterval.TotalSeconds;
             rfsgSession.Arb.WriteWaveform(waveformName, waveformWithDpdComplexSingle);
-            NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling);
-            NIRfsgPlayback.StoreWaveformSampleRate(instrumentHandle, waveformName, rfsgIqRate);
-            NIRfsgPlayback.StoreWaveformPapr(instrumentHandle, waveformName, (papr + powerOffset));
-            NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * rfsgIqRate);
-            NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript);
+            rfsgSession.Arb.PreFilterGain = runtimeScaling;
+            rfsgSession.Arb.IQRate = rfsgIqRate;
+            rfsgSession.Arb.Waveforms[waveformName].Papr = (papr + powerOffset);
+            rfsgSession.Arb.SignalBandwidth = 0.8 * rfsgIqRate;
+            rfsgSession.Arb.Scripting.WriteScript(waveformScript);
             rfsgSession.Initiate();
          }
 
@@ -370,7 +361,7 @@ namespace NationalInstruments.Examples.RFmxSpecAnMemoryDpdAdvanced
             ref curveFitAMToPM);
 
          rfsgSession.Abort();
-         NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName);
+         rfsgSession.Arb.ClearWaveform(waveformName);
       }
 
       private void DisplayResults()

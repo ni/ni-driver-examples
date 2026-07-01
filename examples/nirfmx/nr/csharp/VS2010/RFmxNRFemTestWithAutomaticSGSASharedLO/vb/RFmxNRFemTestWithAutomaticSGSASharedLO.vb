@@ -1,17 +1,20 @@
-'[1] Steps
+'[1] Steps:
 '1. Open an NI - RFSG session.
-'2. Configure RFSG Selected Ports.
+'2. Configure RFSG Selected Ports and waveform generation to Script mode.
 '3. Configure RFSG frequency reference.
 '4. Configure frequency and power level of RF output signal.
-'5. Set RFSG External Gain. #4 and #5 ensure that the average power of the signal at the input of the DUT
+'5. Cofigure RFSG External Gain, Power Level Type and Pre-filter Gain.
+'   #4 and #5 ensure that the average power of the signal at the input of the DUT
 '   matches the user configured DUT Average Input Power.
-'6. Read waveform from file and download Waveform from file to RFSG.
-'7. Set Automatic SG SA Shared LO to Enabled.
+'6. Configure RFSG LO Source to Automatic SG SA Shared.
+'7. Read waveform from file and download it to RFSG.
 '
-'[2] Steps to perform ModAcc measurement
-'8. Set LO Offset Mode to Auto while performing an in - band ModAcc measurement.
-'   This causes the RFSG LO to be placed outside the signal, if signal bandwidth is less than
-'   half of the device instantaneous bandwidth; otherwise, the LO is placed at the center of the signal.
+'[2] Steps to perform ModAcc measurement:
+'8. Retrieve the waveform PAPR, Signal Bandwidth and IQ rate.
+'   Configure RFSG Signal Bandwidth, IQ rate, and PAPR.
+'   With the signal bandwidth configured and the Upconverter Frequency Offset Mode set to Automatic by default,
+'   the RFSG LO is placed outside the signal, if signal bandwidth is less than half of the device instantaneous bandwidth;
+'   otherwise, the LO is placed at the center of the signal.
 '9. Write script to generate the waveform specified in the script. This script is programmed to generate waveform continuously.
 '10. Initiate signal generation.
 '-------------------------------------------------------------------------------------------------------------------------------
@@ -29,30 +32,24 @@
 '20. Initiate ModAcc measurement.
 '21. Fetch ModAcc measurements.
 '
-'[3] Steps to perform SEM measurement
+'[3] Steps to perform SEM measurement:
 '22. Stop signal generation.
-'23. Configure LO Offset Mode for SEM measurement.
-'    Set LO Offset Mode to Auto. This causes the RFSG LO to be placed outside the signal, if signal bandwidth is less than
-'    half of the device instantaneous bandwidth; otherwise, the LO is placed at the center of the signal.
-'    Set LO Offset Mode to No Offset when you see significant difference in the SEM upper and lower offset margin results.
-'    This causes the RFSG LO to be placed at the center of the signal and avoids RFSG LO impacting the SEM offset results.
-'24. Write script to generate the waveform specified in the script. This script is programmed to generate waveform continuously.
-'25. Initiate signal generation.
+'23. Write script to generate the waveform specified in the script. This script is programmed to generate waveform continuously.
+'24. Initiate signal generation.
 '-------------------------------------------------------------------------------------------------------------------------------
-'26. Select SEM measurement and disable the traces.
-'27. Initiate SEM measurement.
-'28. Fetch SEM measurements.
+'25. Select SEM measurement and disable the traces.
+'26. Initiate SEM measurement.
+'27. Fetch SEM measurements.
 '
-'[4] Steps
-'29. Close the RFmx Session.
-'30. Close the RFSG session.
+'[4] Steps:
+'28. Close the RFmx Session.
+'29. Close the RFSG session.
 'It is recommended to clear the waveform before closing RFSG session.
 
 
 Imports NationalInstruments.RFmx.InstrMX
 Imports NationalInstruments.RFmx.NRMX
 Imports NationalInstruments.ModularInstruments.NIRfsg
-Imports NationalInstruments.ModularInstruments.NIRfsgPlayback
 
 Namespace NationalInstruments.Examples.RFmxNRFemTestWithAutomaticSGSASharedLO
 
@@ -60,7 +57,6 @@ Namespace NationalInstruments.Examples.RFmxNRFemTestWithAutomaticSGSASharedLO
       Private instrSession As RFmxInstrMX
       Private NR As RFmxNRMX
       Private rfsgSession As NIRfsg
-      Private instrumentHandle As IntPtr
 
       Private centerFrequency As Double
 
@@ -93,8 +89,6 @@ Namespace NationalInstruments.Examples.RFmxNRFemTestWithAutomaticSGSASharedLO
       Private subcarrierSpacing As Double
       Private band As Integer
       Private cellID As Integer
-
-      Private rfsgLOOffsetMode As NIRfsgPlaybackLOOffsetMode
 
       Private timeout As Double
       Private script As String
@@ -188,8 +182,6 @@ Namespace NationalInstruments.Examples.RFmxNRFemTestWithAutomaticSGSASharedLO
          band = 257
          cellID = 0
 
-         rfsgLOOffsetMode = NIRfsgPlaybackLOOffsetMode.Auto
-
          timeout = 10.0
          ' (s)
 
@@ -198,15 +190,22 @@ Namespace NationalInstruments.Examples.RFmxNRFemTestWithAutomaticSGSASharedLO
 
       Private Sub ConfigureRfsg()
          rfsgSession = New NIRfsg(rfsgResourceName, True, False)
+         rfsgSession.Arb.GenerationMode = RfsgWaveformGenerationMode.Script
          rfsgSession.SignalPath.SelectedPorts = rfsgSelectedPorts
          rfsgSession.FrequencyReference.Configure(rfsgFrequencyReferenceSource, rfsgFrequency)
          rfsgSession.RF.Configure(centerFrequency, powerLevel)
          rfsgSession.RF.ExternalGain = -1 * rfsgExternalAttenuation
-         instrumentHandle = rfsgSession.GetInstrumentHandle().DangerousGetHandle()
-         NIRfsgPlayback.ReadAndDownloadWaveformFromFile(instrumentHandle, waveformFilePath, waveformName)
-         NIRfsgPlayback.StoreAutomaticSGSASharedLO(instrumentHandle, "", RfsgPlaybackAutomaticSGSASharedLO.Enabled)
-         NIRfsgPlayback.StoreWaveformLOOffsetMode(instrumentHandle, waveformName, NIRfsgPlaybackLOOffsetMode.Auto)
-         NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, script)
+         rfsgSession.RF.PowerLevelType = RfsgRFPowerLevelType.PeakPower
+         rfsgSession.Arb.PreFilterGain = -1.5
+         rfsgSession.Arb.ReadAndDownloadWaveformFromFileTdms(waveformName, waveformFilePath, 0)
+         rfsgSession.RF.LocalOscillator.Source = RfsgLocalOscillatorSource.AutomaticSGSAShared
+         Dim waveformIqRate As Double = rfsgSession.Arb.Waveforms(waveformName).IQRate
+         Dim waveformSignalBandwidth As Double = rfsgSession.Arb.Waveforms(waveformName).SignalBandwidth
+         Dim waveformPapr As Double = rfsgSession.Arb.Waveforms(waveformName).Papr
+         rfsgSession.Arb.IQRate = waveformIqRate
+         rfsgSession.Arb.SignalBandwidth = waveformSignalBandwidth
+         rfsgSession.RF.PeakPowerAdjustment = waveformPapr
+         rfsgSession.Arb.Scripting.WriteScript(script)
          rfsgSession.Initiate()
       End Sub
 
@@ -231,8 +230,7 @@ Namespace NationalInstruments.Examples.RFmxNRFemTestWithAutomaticSGSASharedLO
          RetrieveModAccResults()
 
          rfsgSession.Abort()
-         NIRfsgPlayback.StoreWaveformLOOffsetMode(instrumentHandle, waveformName, rfsgLOOffsetMode)
-         NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, script)
+         rfsgSession.Arb.Scripting.WriteScript(script)
          rfsgSession.Initiate()
 
          NR.SelectMeasurements("", RFmxNRMXMeasurementTypes.Sem, False)
@@ -294,7 +292,7 @@ Namespace NationalInstruments.Examples.RFmxNRFemTestWithAutomaticSGSASharedLO
          End If
          If rfsgSession IsNot Nothing Then
             rfsgSession.Abort()
-            NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName)
+            rfsgSession.Arb.ClearWaveform(waveformName)
             rfsgSession.Close()
             rfsgSession = Nothing
          End If

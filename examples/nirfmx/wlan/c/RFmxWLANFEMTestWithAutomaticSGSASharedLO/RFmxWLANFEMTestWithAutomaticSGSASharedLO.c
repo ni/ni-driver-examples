@@ -1,15 +1,18 @@
 //[1] Steps:
 //1. Open an NI - RFSG session.
-//2. Configure RFSG frequency reference.
+//2. Configure RFSG frequency reference  & waveform to script mode.
 //3. Configure frequency and power level of RF output signal.
-//4. Set RFSG External Gain.
+//4. Set RFSG External Gain, Power Level Type and Pre-filter Gain.
 //5. Export the Marker Event marker0 to the to the terminal specified by the user, which is also used as the source for the digital edge trigger on RFSA.
-//6. Read waveform from file and download it to RFSG.
-//7. Set Automatic SG SA Shared LO to Enabled.
+//6. Configure RFSG LO Source to Automatic SG SA Shared.
+//7. Read waveform from file and download it to RFSG.
 
 //[2] Steps to perform ModAcc measurement :
-//8. Set LO Offset Mode to Auto while performing an in - band ModAcc measurement.This causes the RFSG LO to be placed outside the signal, if signal bandwidth is less than half of the device instantaneous bandwidth; otherwise, the LO is placed at the center of the signal.
-//9. Write script to generate the waveform specified in the script.This script is programmed to generate waveform continuously.The marker0 is configured at sample0.
+//8. Retrieve the waveform PAPR, Signal Bandwidth and IQ rate. Add the waveform PAPR to the RFSA reference level while configuring to every list step.
+//   Configure RFSG Signal Bandwidth, IQ rate, and PAPR. With the signal bandwidth configured and the Upconverter Frequency Offset Mode set to
+//   Automatic by default, the RFSG LO is placed outside the signal if the signal bandwidth is less than half of the device instantaneous bandwidth;
+//   otherwise, the LO is placed at the center of the signal.
+//9. Write script to generate the waveform specified in the script.This script is programmed to generate waveform continuously. The marker0 is configured at sample0.
 //10. Initiate signal generation.
 //-------------------------------------------------------------------------------------------------------------------------------------------------- -
 //11. Open a new RFmx session.
@@ -26,18 +29,16 @@
 
 //[3] Steps to perform SEM measurement :
 //22. Stop signal generation.
-//23. Configure LO Offset Mode for SEM measurement.
-//Set LO Offset Mode to Auto if the SEM measurement span does not include the frequency of the RFSG LO.This causes the RFSG LO to be placed outside the signal, if signal bandwidth is less than half of the device instantaneous bandwidth; otherwise, the LO is placed at the center of the signal.
-//Set LO Offset Mode to No Offset if the SEM measurement span includes the frequency of the RFSG LO.This causes the RFSG LO to be placed at the center of the signaland avoids RFSG LO leakage impacting the SEM offset results.
-//24. Initiate signal generation.
+//23.  Initiate signal generation.
 //-------------------------------------------------------------------------------------------------------------------------------------------------- -
-//25. Select SEM measurement and disable traces.
-//26. Configure SEM Averaging properties(Averaging Enabled, Averaging Count, Averaging Type)
-//27. Initiate SEM measurement.
-//28. Fetch SEM measurements.
+//24. Select SEM measurement and disable traces.
+//25. Configure SEM Averaging properties (Averaging Enabled, Averaging Count, Averaging Type)
+//26. Initiate SEM measurement.
+//27. Fetch SEM measurements.
+
 // [4] Steps:
-//29. Close the RFmx Session.
-//30. Close the RFSG session.
+//28. Close the RFmx Session.
+//29. Close the RFSG session.
 //It is recommended to clear the waveform before closing RFSG session.
 
 #include <stdio.h>
@@ -45,7 +46,6 @@
 #include <stdlib.h>
 
 #include "niRFmxWLAN.h"
-#include "niRFSGPlayback.h"
 #include "niRFSG.h"
 
 /* Maximum size of an error message */
@@ -60,11 +60,6 @@
                                     else RFSGError = (RFSGError==0)?_code_:RFSGError;}    \
                                     else RFSGError = RFSGError
 
-#define playbackCheckWarn(fCall)     if (1) {ViStatus _code_; if (_code_ = (fCall), _code_ < 0)    \
-                                    {playbackError = _code_;goto Error;}        \
-                                    else playbackError = (playbackError==0)?_code_:playbackError;}    \
-                                    else playbackError = playbackError
-
 
 int main(int argc, char *argv[])
 {
@@ -73,7 +68,7 @@ int main(int argc, char *argv[])
 
    char errorMessage[MAX_ERROR_DESCRIPTION] = { 0 };
    int32 error = 0, lastErrorCode = 0, errorOccured = 0;
-   int32 RFSGError = 0, playbackError = 0;
+   int32 RFSGError = 0;
    int i = 0;
 
    float64 centerFrequency = 2.412e9;                                            /* (Hz) */
@@ -108,8 +103,6 @@ int main(int argc, char *argv[])
    int32 OFDMModAccAveragingType = RFMXWLAN_VAL_OFDMMODACC_AVERAGING_TYPE_RMS;
    int32 vectorAveragingTimeAlignmentEnabled = RFMXWLAN_VAL_OFDMMODACC_VECTOR_AVERAGING_TIME_ALIGNMENT_ENABLED_TRUE;
    int32 vectorAveragingPhaseAlignmentEnabled = RFMXWLAN_VAL_OFDMMODACC_VECTOR_AVERAGING_PHASE_ALIGNMENT_ENABLED_TRUE;
-
-   int32 RFSGLOOffsetMode = NIRFSGPLAYBACK_VAL_LO_OFFSET_MODE_AUTO;
 
    int32 SEMAveragingEnabled = RFMXWLAN_VAL_SEM_AVERAGING_ENABLED_FALSE;
    int32 SEMAveragingCount = 10;
@@ -146,15 +139,17 @@ int main(int argc, char *argv[])
    /* Initialize a RFSG session */
    RfsgCheckWarn(niRFSG_init(RFSGResourceName, VI_TRUE, VI_FALSE, &RFSGSession));
    RfsgCheckWarn(niRFSG_ConfigureRefClock(RFSGSession, referenceFrequencySource, RFSGFrequency));
+   RfsgCheckWarn(niRFSG_ConfigureGenerationMode(RFSGSession, NIRFSG_VAL_SCRIPT));
+   RfsgCheckWarn(niRFSG_SetAttributeViInt32(RFSGSession, "", NIRFSG_ATTR_POWER_LEVEL_TYPE, NIRFSG_VAL_PEAK_POWER));
    RfsgCheckWarn(niRFSG_ConfigureRF(RFSGSession, centerFrequency, powerLevel));
+   RfsgCheckWarn(niRFSG_SetAttributeViReal64(RFSGSession, "", NIRFSG_ATTR_ARB_PRE_FILTER_GAIN, -1.5));
    externalGain = -1 * RFSGExternalAttenuation;
    RfsgCheckWarn(niRFSG_SetAttributeViReal64(RFSGSession, "", NIRFSG_ATTR_EXTERNAL_GAIN, externalGain));
    RfsgCheckWarn(niRFSG_ExportSignal(RFSGSession, NIRFSG_VAL_MARKER_EVENT, NIRFSG_VAL_MARKER0,
        digitalEdgeSource));
-   playbackCheckWarn(niRFSGPlayback_ReadAndDownloadWaveformFromFile(RFSGSession, waveformFileName, waveformName));
-   playbackCheckWarn(niRFSGPlayback_StoreAutomaticSGSASharedLO(RFSGSession, "", NIRFSGPLAYBACK_VAL_AUTOMATIC_SG_SA_SHARED_LO_ENABLED));
-   playbackCheckWarn(niRFSGPlayback_StoreWaveformLOOffsetMode(RFSGSession, waveformName, NIRFSGPLAYBACK_VAL_LO_OFFSET_MODE_AUTO));
-   playbackCheckWarn(niRFSGPlayback_SetScriptToGenerateSingleRFSG(RFSGSession, script));
+   RfsgCheckWarn(niRFSG_SetAttributeViString(RFSGSession, "", NIRFSG_ATTR_LO_SOURCE, NIRFSG_VAL_LO_SOURCE_AUTOMATIC_SG_SA_SHARED_STR));
+   RfsgCheckWarn(niRFSG_ReadAndDownloadWaveformFromFileTDMS(RFSGSession, waveformName, waveformFileName, 0));
+   RfsgCheckWarn(niRFSG_WriteScript(RFSGSession, script));
    RfsgCheckWarn(niRFSG_Initiate(RFSGSession));
 
    /* Initialize a RFSA session */
@@ -182,7 +177,6 @@ int main(int argc, char *argv[])
       &compositeDataRMSEVMMean, &compositePilotRMSEVMMean));
 
    RfsgCheckWarn(niRFSG_Abort(RFSGSession));
-   playbackCheckWarn(niRFSGPlayback_StoreWaveformLOOffsetMode(RFSGSession, waveformName, RFSGLOOffsetMode));
    RfsgCheckWarn(niRFSG_Initiate(RFSGSession));
 
    RFmxCheckWarn(RFmxWLAN_SelectMeasurements(instrumentHandle, "", RFMXWLAN_VAL_SEM, RFMXWLAN_VAL_FALSE));
@@ -275,16 +269,6 @@ Error:
          printf("WARNING: %s\n", errorMessage);
    }
 
-   if (playbackError)
-   {
-      errorOccured = playbackError;
-      niRFSGPlayback_GetError(&lastErrorCode, MAX_ERROR_DESCRIPTION, errorMessage);
-      if (playbackError < 0)
-         printf("ERROR: %s\n", errorMessage);
-      else
-         printf("WARNING: %s\n", errorMessage);
-   }
-
    if (instrumentHandle)
    {
       RFmxWLAN_Close(instrumentHandle, RFMXWLAN_VAL_FALSE);
@@ -292,7 +276,7 @@ Error:
    if (RFSGSession)
    {
       niRFSG_Abort(RFSGSession);
-      niRFSGPlayback_ClearWaveform(RFSGSession, waveformName);
+      niRFSG_ClearArbWaveform(RFSGSession, waveformName);
       niRFSG_close(RFSGSession);
    }
 

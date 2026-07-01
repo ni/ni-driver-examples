@@ -1,17 +1,15 @@
 /* Steps:
 1. Open RFSG session.
-2. Configure RFSG frequency reference.
+2. Configure RFSG frequency reference, generation mode to Script.
 3. Configure marker0 to be generated from RFSG on the specified output terminal.
 4. Configure frequency and power level of RF output signal.
-5. Configure power level type.
+5. Configure RFSG power level type.
 6. Set RFSG External Gain. #4 and #5 ensure that the average power of the signal at the input of the DUT
    matches the user configured DUT Average Input Power.
 7. a. Read waveform from.
    b. Write input waveform on RFSG device.
-      Set the waveform sample rate.
-      Store waveform PAPR.
-      Set Waveform Runtime Scaling to the desired Pre-filter Gain.
-      Read waveform sample rate, multiply by 0.8 and set the result to the signal bandwidth.
+      Configure RFSG IQ rate, Pre-filter Gain and PAPR.
+      Read waveform sample rate, multiply by 0.8 and set the result to the RFSG signal bandwidth.
       Write script to generate the waveform specified in the script. This script is programmed
       to generate waveform continuously, with marker0 aligned to sample index 0.
 8. Initiate generation.
@@ -24,7 +22,7 @@
 15. Configure pre-DPD CFR.
 16. Configure waveform settings for pre-DPD CFR with filtering.
 17. Apply pre-DPD CFR.
-18. Read PAPR from file.
+18. Retrieve the waveform PAPR.
 19. configure the reference waveform.
 20. Configure power of the signal at the input of the DUT. Select and configure the Memory
     polynomial or Generalized memory polynomial model and its parameters to estimate the predistotor.
@@ -41,11 +39,9 @@
 29. a. Fetch DPD Polynomial.
     b. Fetch NMSE (dB).
 30. Abort RFSG generation and write a new waveform that is predistorted by applying momory polynomial coefficients.
-    Set Waveform Runtime Scaling to desired Pre-filter Gain.
-    Set the sample rate computed from Apply Digital Predistortion.
-    Set the final PAPR to the sum of the actual PAPR and the Power Offset as computed
-    by Apply Digital Predistortion.
-    Set the Signal Bandwidth.
+    Set RFSG Pre-filter Gain and sample rate computed from Apply Digital Predistortion.
+    Set the final PAPR to the sum of the actual PAPR and the Power Offset as computed by Apply Digital Predistortion.
+    Set the RFSG signal bandwidth by reading the waveform sample rate and multiplying it by 0.8.
     Initiate RFSG generation using the script that was selected earlier.
 31. Perform Auto Level to compute an approximate reference level while generating the predistorted waveform.
 32. Select and configure AMPM measurement in RFmx after DPD measurement is complete.
@@ -73,11 +69,6 @@ It is recommended to clear the waveform before closing RFSG session.*/
                                     {rfsgError = _code_;goto Error;}        \
                                     else rfsgError = (rfsgError==0)?_code_:rfsgError;} else rfsgError = rfsgError
 
-#define playbackCheckWarn(fCall)     if (1) {ViStatus _code_; if (_code_ = (fCall), _code_ < 0)    \
-                                    {playbackError = _code_;goto Error;}        \
-                                    else playbackError = (playbackError==0)?_code_:playbackError;}    \
-                                    else playbackError = playbackError
-
 /* Trigger */
 #define IQ_POWER_EDGE               0
 #define DIGITAL_EDGE                1
@@ -88,40 +79,39 @@ float64 x0 = 0.0, dx = 0.0;
 int32 numberOfSamples = 0;
 float64 PAPR = 0.0;
 NIComplexSingle *referenceWaveformF32 = NULL;
-int32 error = 0, errorOccured = 0, playbackError = 0, lastErrorCode = 0;
+int32 error = 0, errorOccured = 0, lastErrorCode = 0;
 char errorMessage[MAX_ERROR_DESCRIPTION];
 
+/* Read waveform data from TDMS file into host memory for RFmx DPD reference waveform configuration. */
 int32 ReadFromTDMSFile(char *fileName)
 {
    int32 i = 0;
    ViReal64 x0v = 0, dxv = 0;
-   playbackCheckWarn(niRFSGPlayback_ReadWaveformFromFileComplexF32(fileName, 0, NULL, NULL, NULL, &numberOfSamples));
+   int32 fileError = 0;
+   niRFSGPlayback_ReadWaveformFromFileComplexF32(fileName, 0, NULL, NULL, NULL, &numberOfSamples);
    if (numberOfSamples > 0)
    {
       referenceWaveformF32 = (NIComplexSingle*)malloc(sizeof(NIComplexSingle)*numberOfSamples);
       if (referenceWaveformF32)
-         playbackCheckWarn(niRFSGPlayback_ReadWaveformFromFileComplexF32(fileName, numberOfSamples, &x0v, &dxv,
-         (NIComplexNumberF32*)referenceWaveformF32, &numberOfSamples));
+      {
+         fileError = niRFSGPlayback_ReadWaveformFromFileComplexF32(fileName, numberOfSamples, &x0v, &dxv,
+            (NIComplexNumberF32*)referenceWaveformF32, &numberOfSamples);
+         if (fileError < 0)
+         {
+            errorOccured = fileError;
+            return errorOccured;
+         }
+      }
       else
       {
          printf("malloc failed\n");
-         return -1;;
+         return -1;
       }
       x0 = (float64)x0v;
       dx = (float64)dxv;
    }
-
-Error:
-   if (playbackError)
-   {
-      errorOccured = playbackError;
-      niRFSGPlayback_GetError(&lastErrorCode, MAX_ERROR_DESCRIPTION, errorMessage);
-      if (playbackError < 0)
-         printf("ERROR: %s\n", errorMessage);
-      else
-         printf("WARNING: %s\n", errorMessage);
-   }
-   return errorOccured;
+   niRFSGPlayback_ReadPAPRFromFile(fileName, 0, &PAPR);
+   return 0;
 }
 
 int main(int argc, char *argv[])
@@ -244,14 +234,8 @@ int main(int argc, char *argv[])
 
    float64 NMSE = 0.0;
 
-   errorOccured = ReadFromTDMSFile(waveFormFileName);
-   if (errorOccured)
-   {
-      printf("Cannot open the specified waveform file\n");
-      goto Exit;
-   }
-
    RfsgCheckWarn(niRFSG_init(rfsgResourceName, VI_TRUE, VI_FALSE, &rfsgSession));
+   RfsgCheckWarn(niRFSG_ConfigureGenerationMode(rfsgSession, NIRFSG_VAL_SCRIPT));
    RfsgCheckWarn(niRFSG_ConfigureRefClock(rfsgSession, refClockSource, rfsgFrequency));
    RfsgCheckWarn(niRFSG_ExportSignal(rfsgSession, NIRFSG_VAL_MARKER_EVENT, NIRFSG_VAL_MARKER0,
       markerEventOutputTerminal));
@@ -259,22 +243,16 @@ int main(int argc, char *argv[])
    RfsgCheckWarn(niRFSG_ConfigurePowerLevelType(rfsgSession, powerLevelType));
    externalGain = -1 * rfsgExternalAttenuation;
    RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_EXTERNAL_GAIN, externalGain));
-   numberOfSamples = 0;
-   playbackCheckWarn(niRFSGPlayback_ReadWaveformFromFileComplexF32(waveFormFileName, 0,
-      NULL, NULL, NULL, &numberOfSamples));
-   waveformOutSize = numberOfSamples;
-   if (numberOfSamples > 0)
+
+   errorOccured = ReadFromTDMSFile(waveFormFileName);
+   if (errorOccured)
    {
-      referenceWaveformF32 = (NIComplexSingle*)malloc(sizeof(NIComplexSingle)*numberOfSamples);
-      if (referenceWaveformF32)
-         playbackCheckWarn(niRFSGPlayback_ReadWaveformFromFileComplexF32(waveFormFileName, numberOfSamples, &t0, &dt,
-         (NIComplexNumberF32*)referenceWaveformF32, &numberOfSamples));
-      else
-      {
-         printf("malloc failed\n");
-         return -1;;
-      }
+      printf("Cannot open the specified waveform file\n");
+      goto Exit;
    }
+   t0 = x0;
+   dt = dx;
+   waveformOutSize = numberOfSamples;
 
    /* Initialize a session */
    RFmxCheckWarn(RFmxSpecAn_Initialize(rfsaResourceName, "", &instrumentHandle, NULL));
@@ -328,10 +306,6 @@ int main(int argc, char *argv[])
          }
       }
    }
-   else
-   {
-      playbackCheckWarn(niRFSGPlayback_ReadPAPRFromFile(waveFormFileName, 0, &PAPR));
-   }
 
    if (preDPDCFREnabled == RFMXSPECAN_VAL_DPD_PRE_DPD_CFR_ENABLED_TRUE)
    {
@@ -339,15 +313,16 @@ int main(int argc, char *argv[])
          (NIComplexNumberF32*)preDPDWaveformWithF32, VI_FALSE));
    }
    else
+   {
       RfsgCheckWarn(niRFSG_WriteArbWaveformComplexF32(rfsgSession, "Wfm", waveformOutSize,
-      (NIComplexNumberF32*)referenceWaveformF32, VI_FALSE));
+         (NIComplexNumberF32*)referenceWaveformF32, VI_FALSE));
+   }
 
-
-   playbackCheckWarn(niRFSGPlayback_StoreWaveformSampleRate(rfsgSession, waveformName, 1 / dt));
-   playbackCheckWarn(niRFSGPlayback_StoreWaveformPAPR(rfsgSession, waveformName, PAPR));
-   playbackCheckWarn(niRFSGPlayback_StoreWaveformRuntimeScaling(rfsgSession, waveformName, runtimeScaling));
-   playbackCheckWarn(niRFSGPlayback_StoreWaveformSignalBandwidth(rfsgSession, waveformName, 1 / dt*(0.8)));
-   playbackCheckWarn(niRFSGPlayback_SetScriptToGenerateSingleRFSG(rfsgSession, script));
+   RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_IQ_RATE, 1.0 / dx));
+   RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_ARB_PRE_FILTER_GAIN, runtimeScaling));
+   RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_PEAK_POWER_ADJUSTMENT, PAPR));
+   RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_SIGNAL_BANDWIDTH, 0.8 * (1.0 / dx)));
+   RfsgCheckWarn(niRFSG_WriteScript(rfsgSession, script));
    RfsgCheckWarn(niRFSG_Initiate(rfsgSession));
 
    if (preDPDCFREnabled == RFMXSPECAN_VAL_DPD_PRE_DPD_CFR_ENABLED_TRUE)
@@ -446,14 +421,14 @@ int main(int argc, char *argv[])
       printf("NMSE       :%lf\n", NMSE);
 
       RfsgCheckWarn(niRFSG_Abort(rfsgSession));
-      playbackCheckWarn(niRFSGPlayback_ClearWaveform(rfsgSession, waveformName));
+      RfsgCheckWarn(niRFSG_ClearArbWaveform(rfsgSession, waveformName));
       RfsgCheckWarn(niRFSG_WriteArbWaveformComplexF32(rfsgSession, "Wfm", waveformOutSize,
          (NIComplexNumberF32*)waveformWithDPDF32, VI_FALSE));
-      playbackCheckWarn(niRFSGPlayback_StoreWaveformRuntimeScaling(rfsgSession, waveformName, runtimeScaling));
-      playbackCheckWarn(niRFSGPlayback_StoreWaveformSampleRate(rfsgSession, waveformName, 1 / dxOut));
-      playbackCheckWarn(niRFSGPlayback_StoreWaveformPAPR(rfsgSession, waveformName, (ViReal64)(PAPR + powerOffset)));
-      playbackCheckWarn(niRFSGPlayback_StoreWaveformSignalBandwidth(rfsgSession, waveformName, 0.8*(1 / dxOut)));
-      playbackCheckWarn(niRFSGPlayback_SetScriptToGenerateSingleRFSG(rfsgSession, script));
+      RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_ARB_PRE_FILTER_GAIN, runtimeScaling));
+      RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_IQ_RATE, 1.0 / dxOut));
+      RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_PEAK_POWER_ADJUSTMENT, (ViReal64)(PAPR + powerOffset)));
+      RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_SIGNAL_BANDWIDTH, 0.8 * (1.0 / dxOut)));
+      RfsgCheckWarn(niRFSG_WriteScript(rfsgSession, script));
       RfsgCheckWarn(niRFSG_Initiate(rfsgSession));
 
       if (waveformWithDPDF32)
@@ -555,16 +530,6 @@ Error:
          printf("WARNING: %s\n", errorMessage);
    }
 
-   if (playbackError)
-   {
-      errorOccured = playbackError;
-      niRFSGPlayback_GetError(&lastErrorCode, MAX_ERROR_DESCRIPTION, errorMessage);
-      if (playbackError < 0)
-         printf("ERROR: %s\n", errorMessage);
-      else
-         printf("WARNING: %s\n", errorMessage);
-   }
-
    if (instrumentHandle)
    {
       RFmxSpecAn_Close(instrumentHandle, RFMXSPECAN_VAL_FALSE);
@@ -572,7 +537,7 @@ Error:
    if (rfsgSession)
    {
       niRFSG_Abort(rfsgSession);
-      niRFSGPlayback_ClearWaveform(rfsgSession, waveformName);
+      niRFSG_ClearArbWaveform(rfsgSession, waveformName);
       niRFSG_close(rfsgSession);
    }
    if (referencePowersAMToAM)

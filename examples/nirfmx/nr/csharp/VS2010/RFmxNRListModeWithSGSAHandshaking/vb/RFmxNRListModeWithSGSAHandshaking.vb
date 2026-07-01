@@ -1,11 +1,11 @@
 'Steps:
 '1. Open NI-RFSG session.
-'2. Configure RFSG Selected Ports.
+'2. Configure RFSG Selected Ports and GenerationMode to Script.
 '3. Configure RFSG frequency reference.
 '4. Configure RFSG configuration settled event to the device scriptTrigger0, to make sure generation starts only after
 '   RFSG configuration settled.
 '5. Configure RFSG to advance upon receipt of RFSA Ready for Advance event through PXI trigger line.
-'6. Configure frequency and external gain of RF output signal.
+'6. Configure frequency, external gain, Power Level Type and Pre-filter Gain of RF output signal.
 '7. Get terminal name for marker0 and assign to the RFSA Reference Trigger Digital Edge source.
 '8. Create a Configuration List. Pass Power Level in the Configuration List Properties parameter to be able to configure
 '   Power Level in each step that we create. The Set As Active List parameter in this VI defaults to true, this will set the
@@ -16,12 +16,13 @@
 '   Step is set, using a property node to access Power Level will modify the property for this configuration list step in
 '   the configuration list indicated by the Active Configuration List property.
 '10. Configure the Power Level for the Active Configuration List Step in the Active Configuration List.
-'11. Read waveform from file and download Waveform from file to RFSG.
-'12. Retrieve waveform PAPR and add the same to the RFSA reference level while configuring to every list step.
-'13. Set Automatic SG SA Shared LO to Enabled.
-'14. Set LO Offset Mode to Auto while performing an in-band ModAcc measurement. This causes the RFSG LO to be
-'    placed outside the signal, if signal bandwidth is less than half of the device instantaneous bandwidth; otherwise,
-'    the LO is placed at the center of the signal.
+'11. Configure RFSG LO Source to Automatic SG SA Shared.
+'12. Read waveform from file and download Waveform from file to RFSG.
+'13. Retrieve the waveform PAPR, Signal Bandwidth and IQ rate. Add the waveform PAPR to the RFSA reference level while configuring to
+'    every list step.
+'14. Configure RFSG Signal Bandwidth, IQ rate, and PAPR. With the signal bandwidth configured and the Upconverter Frequency Offset
+'       Mode set to Automatic by default, the RFSG LO is placed outside the signal if the signal bandwidth is less than half of the device
+'       instantaneous bandwidth; otherwise, the LO is placed at the center of the signal.
 '15. Write script to generate the waveform specified in the script. This script is programmed to generate waveform
 '    continuously and generate a marker at the start of the waveform (sample 0).
 '16. Open a new RFmx Session.
@@ -52,14 +53,12 @@
 Imports NationalInstruments.RFmx.InstrMX
 Imports NationalInstruments.RFmx.NRMX
 Imports NationalInstruments.ModularInstruments.NIRfsg
-Imports NationalInstruments.ModularInstruments.NIRfsgPlayback
 
 Namespace NationalInstruments.Examples.RFmxNRListModeWithSGSAHandshaking
 	Public Class RFmxNRListModeWithSGSAHandshaking
 		Private instrSession As RFmxInstrMX
 		Private NRList As RFmxNRMXList
 		Private rfsgSession As NIRfsg
-		Private instrumentHandle As IntPtr
 
 		Private centerFrequency As Double
 
@@ -187,6 +186,8 @@ Namespace NationalInstruments.Examples.RFmxNRListModeWithSGSAHandshaking
 			rfsgSession.Triggers.ScriptTriggers(0).DigitalEdge.Configure(configurationSettledEvenTerminalName, RfsgTriggerEdge.RisingEdge)
 			rfsgSession.Triggers.ConfigurationListStepTrigger.DigitalEdge.Configure(RfsgDigitalEdgeConfigurationListStepTriggerSource.PxiTriggerLine0, RfsgTriggerEdge.RisingEdge)
 			rfsgSession.RF.ExternalGain = -1 * rfsgExternalAttenuation
+			rfsgSession.RF.PowerLevelType = RfsgRFPowerLevelType.PeakPower
+			rfsgSession.Arb.PreFilterGain = -1.5
 			rfsgSession.RF.Frequency = centerFrequency
 			markerEventTerminalName = rfsgSession.DeviceEvents.MarkerEvents(0).TerminalName
 			Dim properties As RfsgConfigurationListProperties() = New RfsgConfigurationListProperties(0) {RfsgConfigurationListProperties.PowerLevel}
@@ -195,12 +196,16 @@ Namespace NationalInstruments.Examples.RFmxNRListModeWithSGSAHandshaking
 				rfsgSession.BasicConfigurationList.CreateStep(True)
 				rfsgSession.RF.PowerLevel = rampPattern(i)
 			Next
-			instrumentHandle = rfsgSession.GetInstrumentHandle().DangerousGetHandle()
-			NIRfsgPlayback.ReadAndDownloadWaveformFromFile(instrumentHandle, waveformFilePath, waveformName)
-			NIRfsgPlayback.RetrieveWaveformPapr(instrumentHandle, waveformName, papr)
-			NIRfsgPlayback.StoreAutomaticSGSASharedLO(instrumentHandle, "", RfsgPlaybackAutomaticSGSASharedLO.Enabled)
-			NIRfsgPlayback.StoreWaveformLOOffsetMode(instrumentHandle, waveformName, NIRfsgPlaybackLOOffsetMode.Auto)
-			NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, script)
+			rfsgSession.Arb.GenerationMode = RfsgWaveformGenerationMode.Script
+			rfsgSession.Arb.ReadAndDownloadWaveformFromFileTdms(waveformName, waveformFilePath, 0)
+			papr = rfsgSession.Arb.Waveforms(waveformName).Papr
+			Dim waveformIqRate As Double = rfsgSession.Arb.Waveforms(waveformName).IQRate
+			Dim waveformSignalBandwidth As Double = rfsgSession.Arb.Waveforms(waveformName).SignalBandwidth
+			rfsgSession.Arb.IQRate = waveformIqRate
+			rfsgSession.Arb.SignalBandwidth = waveformSignalBandwidth
+			rfsgSession.RF.PeakPowerAdjustment = papr
+			rfsgSession.RF.LocalOscillator.Source = RfsgLocalOscillatorSource.AutomaticSGSAShared
+			rfsgSession.Arb.Scripting.WriteScript(script)
 		End Sub
 
 		Private Sub ConfigureRFmx()
@@ -265,7 +270,7 @@ Namespace NationalInstruments.Examples.RFmxNRListModeWithSGSAHandshaking
 			If rfsgSession IsNot Nothing Then
 				rfsgSession.Abort()
 				rfsgSession.BasicConfigurationList.DeleteConfigurationList("PowerLevelList")
-				NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName)
+				rfsgSession.Arb.ClearWaveform(waveformName)
 				rfsgSession.Close()
 				rfsgSession = Nothing
 			End If

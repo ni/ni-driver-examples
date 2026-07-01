@@ -46,7 +46,6 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpdEqualizerTrain
         Private instrSession As RFmxInstrMX
         Private specAn As RFmxSpecAnMX
         Private rfsgSession As NIRfsg
-        Private instrumentHandle As IntPtr
 
         Private rfsaResourceName As String = "RFSA"
         Private rfsgResourceName As String = "RFSG"
@@ -98,7 +97,6 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpdEqualizerTrain
 
         Private scriptName As String = "IDPDScript"
         Private waveformName As String = "Wfm"
-        Private waveformSize As Integer
         Private rfsgIqRate As Double
         Private markerNumber As Integer = 0
         Private waveformScript As String
@@ -110,7 +108,6 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpdEqualizerTrain
         Friend Sub Run()
             Try
                 ReadWaveformFromTdmsFile()
-                ReadWaveFormSizeFromTdmsFile()
                 OpenSession()
                 ConfigureRfsg()
                 ConfigureRFmx()
@@ -129,10 +126,6 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpdEqualizerTrain
             NIRfsgPlayback.ReadWaveformFromFileComplex(referenceWaveformFile, referenceWaveformComplexSingle)
         End Sub
 
-        Private Sub ReadWaveFormSizeFromTdmsFile()
-            NIRfsgPlayback.ReadWaveformSizeFromFile(referenceWaveformFile, 0, waveformSize)
-        End Sub
-
         Private Sub OpenSession()
             instrSession = New RFmxInstrMX(rfsaResourceName, "")
             specAn = instrSession.GetSpecAnSignalConfiguration()
@@ -140,14 +133,13 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpdEqualizerTrain
 
         Private Sub ConfigureRfsg()
             rfsgSession = New NIRfsg(rfsgResourceName, False, True)
+            rfsgSession.Arb.GenerationMode = RfsgWaveformGenerationMode.Script
             rfsgSession.FrequencyReference.Configure(referenceClockSource, referenceClockRate)
             rfsgSession.DeviceEvents.MarkerEvents(markerNumber).ExportedOutputTerminal = RfsgMarkerEventExportedOutputTerminal.PxiTriggerLine0
             rfsgSession.RF.Configure(centerFrequency, dutAverageInputPower)
             rfsgSession.RF.PowerLevelType = RfsgRFPowerLevelType.PeakPower
             rfsgSession.RF.ExternalGain = -rfsgExternalAttenuation
             rfsgSession.RF.Upconverter.FrequencyOffsetMode = UpconverterFrequencyOffsetMode.Auto
-
-            instrumentHandle = rfsgSession.GetInstrumentHandle().DangerousGetHandle()
         End Sub
 
         Private Sub ConfigureRFmx()
@@ -202,12 +194,12 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpdEqualizerTrain
 
             rfsgIqRate = 1 / normalizedEqualizerWaveform.PrecisionTiming.SampleInterval.TotalSeconds
             rfsgSession.Arb.WriteWaveform(waveformName, normalizedEqualizerWaveform)
-            NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling)
-            NIRfsgPlayback.StoreWaveformSampleRate(instrumentHandle, waveformName, rfsgIqRate)
-            NIRfsgPlayback.StoreWaveformPapr(instrumentHandle, waveformName, papr)
-            NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * rfsgIqRate)
+            rfsgSession.Arb.PreFilterGain = runtimeScaling
+            rfsgSession.Arb.IQRate = rfsgIqRate
+            rfsgSession.Arb.Waveforms(waveformName).Papr = papr
+            rfsgSession.Arb.SignalBandwidth = 0.8 * rfsgIqRate
             waveformScript = [String].Format("script {0}{1}repeat forever{1}generate {2} marker{3}(0){1}end repeat{1}end script", scriptName, Environment.NewLine, waveformName, markerNumber)
-            NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript)
+            rfsgSession.Arb.Scripting.WriteScript(waveformScript)
             rfsgSession.Initiate()
 
             specAn.AutoLevel("", signalBandwidth, autoLevelMeasurementInterval, autoLevelReferenceLevel)
@@ -239,7 +231,7 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpdEqualizerTrain
 
                 If rfsgSession IsNot Nothing Then
                     rfsgSession.Abort()
-                    NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName)
+                    rfsgSession.Arb.ClearWaveform(waveformName)
                     rfsgSession.Close()
                     rfsgSession = Nothing
 

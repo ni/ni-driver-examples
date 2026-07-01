@@ -1,51 +1,49 @@
 //[1] Steps:
 //1. Open an NI - RFSG session.
-//2. Configure RFSG Selected Ports.
+//2. Configure RFSG Selected Ports and waveform generation to Script mode.
 //3. Configure RFSG frequency reference.
 //4. Configure frequency and power level of RF output signal.
-//5. Set RFSG External Gain. #4 and #5 ensure that the average power of the signal at the input of the DUT
-//   matches the user configured DUT Average Input Power.
-//6. Read waveform from file and download Waveform from file to RFSG.
-//7. Set Automatic SG SA Shared LO to Enabled.
-
+//5. Cofigure RFSG External Gain, Power Level Type and Pre-filter Gain.
+//  #4 and #5 ensure that the average power of the signal at the input of the DUT
+//  matches the user configured DUT Average Input Power.
+//6. Configure RFSG LO Source to Automatic SG SA Shared.
+//7. Read waveform from file and download it to RFSG.
+//
 //[2] Steps to perform ModAcc measurement:
-//8. Set LO Offset Mode to Auto while performing an in - band ModAcc measurement.
-//   This causes the RFSG LO to be placed outside the signal, if signal bandwidth is less than
-//   half of the device instantaneous bandwidth; otherwise, the LO is placed at the center of the signal.
+//8. Retrieve the waveform PAPR, Signal Bandwidth and IQ rate. 
+//  Configure RFSG Signal Bandwidth, IQ rate, and PAPR.
+//  With the signal bandwidth configured and the Upconverter Frequency Offset Mode set to Automatic by default,
+//  the RFSG LO is placed outside the signal, if signal bandwidth is less than half of the device instantaneous bandwidth;
+//  otherwise, the LO is placed at the center of the signal.
 //9. Write script to generate the waveform specified in the script. This script is programmed to generate waveform continuously.
 //10. Initiate signal generation.
 //-------------------------------------------------------------------------------------------------------------------------------
-//11. Open a new RFmx Session.
+//11.Open a new RFmx Session.
 //12. Configure the Frequency Reference properties (Clock Source and Clock Frequency).
-//13. Configure Selected Ports.
-//14. Configure Automatic SG SA Shared LO to Enabled.
+//13.Configure Selected Ports.
+//14.Configure Automatic SG SA Shared LO to Enabled.
 //15. Configure basic signal properties (Center Frequency, Reference Level and External Attenuation).
 //16. Configure Trigger Type and Trigger Parameters.
 //17. Configure Link Direction, Frequency Range, CC bandwidth, Cell ID, Band and BWP Subcarrier Spacing.
 //18. Set LO Leakage Avoidance Enabled to True. This causes RFmx to place the SA LO outside the measurement bandwidth,
-//    if the measurement bandwidth is less than half of the device instantaneous bandwidth;
-//    otherwise, the LO is placed at the center of the signal.
+//   if the measurement bandwidth is less than half of the device instantaneous bandwidth;
+//otherwise, the LO is placed at the center of the signal.
 //19. Select ModAcc measurement and disable Traces.
 //20. Initiate ModAcc measurement.
 //21. Fetch ModAcc measurements.
-
+//
 //[3] Steps to perform SEM measurement:
 //22. Stop signal generation.
-//23. Configure LO Offset Mode for SEM measurement.
-//    Set LO Offset Mode to Auto. This causes the RFSG LO to be placed outside the signal, if signal bandwidth is less than
-//    half of the device instantaneous bandwidth; otherwise, the LO is placed at the center of the signal.
-//    Set LO Offset Mode to No Offset when you see significant difference in the SEM upper and lower offset margin results.
-//    This causes the RFSG LO to be placed at the center of the signal and avoids RFSG LO impacting the SEM offset results.
-//24. Write script to generate the waveform specified in the script. This script is programmed to generate waveform continuously.
-//25. Initiate signal generation.
+//23. Write script to generate the waveform specified in the script. This script is programmed to generate waveform continuously.
+//24. Initiate signal generation.
 //-------------------------------------------------------------------------------------------------------------------------------
-//26. Select SEM measurement and disable the traces.
-//27. Initiate SEM measurement.
-//28. Fetch SEM measurements.
-
+//25. Select SEM measurement and disable the traces.
+//26. Initiate SEM measurement.
+//27. Fetch SEM measurements.
+//
 //[4] Steps:
-//29. Close the RFmx Session.
-//30. Close the RFSG session.
+//28. Close the RFmx Session.
+//29. Close the RFSG session.
 //It is recommended to clear the waveform before closing RFSG session.
 
 #include <stdio.h>
@@ -53,7 +51,6 @@
 #include <stdlib.h>
 
 #include "niRFmxNR.h"
-#include "niRFSGPlayback.h"
 #include "niRFSG.h"
 
 /* Maximum size of an error message */
@@ -62,16 +59,11 @@
 /* Maximum size of a selector string */
 #define MAX_SELECTOR_STRING                  256
 
-/* CheckWarn macro for RFSG and Playback API calls*/
+/* CheckWarn macro for RFSG API calls*/
 #define RfsgCheckWarn(fCall)     if (1) {ViStatus _code_; if (_code_ = (fCall), _code_ < 0)    \
                                     {RFSGError = _code_;goto Error;}        \
                                     else RFSGError = (RFSGError==0)?_code_:RFSGError;}    \
                                     else RFSGError = RFSGError
-
-#define playbackCheckWarn(fCall)     if (1) {ViStatus _code_; if (_code_ = (fCall), _code_ < 0)    \
-                                    {playbackError = _code_;goto Error;}        \
-                                    else playbackError = (playbackError==0)?_code_:playbackError;}    \
-                                    else playbackError = playbackError
 
 
 int main(int argc, char *argv[])
@@ -81,7 +73,7 @@ int main(int argc, char *argv[])
 
    char errorMessage[MAX_ERROR_DESCRIPTION] = { 0 };
    int32 error = 0, lastErrorCode = 0, errorOccured = 0;
-   int32 RFSGError = 0, playbackError = 0;
+   int32 RFSGError = 0;
    int i = 0;
 
    float64 centerFrequency = 3.5e9;                                              /* (Hz) */
@@ -116,8 +108,6 @@ int main(int argc, char *argv[])
    int32 band = 257;
    int32 cellID = 0;
 
-   int32 RFSGLOOffsetMode = NIRFSGPLAYBACK_VAL_LO_OFFSET_MODE_AUTO;
-
    float64 timeout = 10.0;                                                       /* (s) */
 
    ViReal64 externalGain;
@@ -150,15 +140,15 @@ int main(int argc, char *argv[])
 
    /* Initialize a RFSG session */
    RfsgCheckWarn(niRFSG_init(RFSGResourceName, VI_TRUE, VI_FALSE, &RFSGSession));
+   RfsgCheckWarn(niRFSG_ConfigureGenerationMode(RFSGSession, NIRFSG_VAL_SCRIPT));
    RfsgCheckWarn(niRFSG_SetAttributeViString(RFSGSession, "", NIRFSG_ATTR_SELECTED_PORTS, RFSGSelectedPorts));
    RfsgCheckWarn(niRFSG_ConfigureRefClock(RFSGSession, RFSGFrequencyReferenceSource, RFSGFrequency));
    RfsgCheckWarn(niRFSG_ConfigureRF(RFSGSession, centerFrequency, powerLevel));
    externalGain = -1 * RFSGExternalAttenuation;
    RfsgCheckWarn(niRFSG_SetAttributeViReal64(RFSGSession, "", NIRFSG_ATTR_EXTERNAL_GAIN, externalGain));
-   playbackCheckWarn(niRFSGPlayback_ReadAndDownloadWaveformFromFile(RFSGSession, waveformFileName, waveformName));
-   playbackCheckWarn(niRFSGPlayback_StoreAutomaticSGSASharedLO(RFSGSession, "", NIRFSGPLAYBACK_VAL_AUTOMATIC_SG_SA_SHARED_LO_ENABLED));
-   playbackCheckWarn(niRFSGPlayback_StoreWaveformLOOffsetMode(RFSGSession, waveformName, NIRFSGPLAYBACK_VAL_LO_OFFSET_MODE_AUTO));
-   playbackCheckWarn(niRFSGPlayback_SetScriptToGenerateSingleRFSG(RFSGSession, script));
+   RfsgCheckWarn(niRFSG_ReadAndDownloadWaveformFromFileTDMS(RFSGSession, waveformName, waveformFileName, 0));
+   RfsgCheckWarn(niRFSG_SetAttributeViString(RFSGSession, "", NIRFSG_ATTR_LO_SOURCE, NIRFSG_VAL_LO_SOURCE_AUTOMATIC_SG_SA_SHARED_STR));
+   RfsgCheckWarn(niRFSG_WriteScript(RFSGSession, script));
    RfsgCheckWarn(niRFSG_Initiate(RFSGSession));
 
    /* Initialize a RFSA session */
@@ -183,8 +173,7 @@ int main(int argc, char *argv[])
    RFmxCheckWarn(RFmxNR_ModAccGetResultsCompositePeakEVMMaximum(instrumentHandle, "", &compositePeakEVMMaximum));
 
    RfsgCheckWarn(niRFSG_Abort(RFSGSession));
-   playbackCheckWarn(niRFSGPlayback_StoreWaveformLOOffsetMode(RFSGSession, waveformName, RFSGLOOffsetMode));
-   playbackCheckWarn(niRFSGPlayback_SetScriptToGenerateSingleRFSG(RFSGSession, script));
+   RfsgCheckWarn(niRFSG_WriteScript(RFSGSession, script));
    RfsgCheckWarn(niRFSG_Initiate(RFSGSession));
 
    RFmxCheckWarn(RFmxNR_SelectMeasurements(instrumentHandle, "", RFMXNR_VAL_SEM, RFMXNR_VAL_FALSE));
@@ -276,16 +265,6 @@ Error:
          printf("WARNING: %s\n", errorMessage);
    }
 
-   if (playbackError)
-   {
-      errorOccured = playbackError;
-      niRFSGPlayback_GetError(&lastErrorCode, MAX_ERROR_DESCRIPTION, errorMessage);
-      if (playbackError < 0)
-         printf("ERROR: %s\n", errorMessage);
-      else
-         printf("WARNING: %s\n", errorMessage);
-   }
-
    if (instrumentHandle)
    {
       RFmxNR_Close(instrumentHandle, RFMXNR_VAL_FALSE);
@@ -293,7 +272,7 @@ Error:
    if (RFSGSession)
    {
       niRFSG_Abort(RFSGSession);
-      niRFSGPlayback_ClearWaveform(RFSGSession, waveformName);
+      niRFSG_ClearArbWaveform(RFSGSession, waveformName);
       niRFSG_close(RFSGSession);
    }
 

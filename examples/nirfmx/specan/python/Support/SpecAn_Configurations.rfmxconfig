@@ -1,0 +1,1257 @@
+{
+   "formatVersion": 1.0,
+   "oldestCompatibleFormatVersion": 1.0,
+   "timeStamp": "2023-06-19T09:03:50",
+   "generatedBy": {
+      "name": "niRFmxAttribEngImpl.dll",
+      "version": "23.5.0d117"
+   },
+   "RFmxInstr": {
+      "Attributes": [
+         {
+            "ID": 2,
+            "Name": "RFInstr:Frequency Reference:Source",
+            "SelectorString": "",
+            "Value": "OnboardClock"
+         },
+         {
+            "ID": 3,
+            "Name": "RFInstr:Frequency Reference:Frequency (Hz)",
+            "SelectorString": "",
+            "Value": 10000000.0
+         },
+         {
+            "ID": 4,
+            "Name": "RFInstr:RF Attenuation:Auto",
+            "SelectorString": "",
+            "Value": 1
+         },
+         {
+            "ID": 6,
+            "Name": "RFInstr:Mechanical Attenuation:Auto",
+            "SelectorString": "",
+            "Value": 1
+         },
+         {
+            "ID": 34,
+            "Name": "RFInstr:Frequency Reference:Exported Terminal",
+            "SelectorString": "",
+            "Value": ""
+         },
+         {
+            "ID": 35,
+            "Name": "RFInstr:Trigger:Export Output Terminal",
+            "SelectorString": "",
+            "Value": ""
+         }
+      ],
+      "PersonalityVersion": "23.5.0",
+      "LowestCompatiblePersonalityVersion": "2.0.0"
+   },
+   "Signals": [
+      {
+         "SignalName": "default@SpecAn",
+         "DefaultSignal": true,
+         "Personality": "SpecAn",
+         "PersonalityID": 1,
+         "Attributes": [
+            {
+               "ID": 1048577,
+               "Name": "SpecAn:Center Frequency (Hz)",
+               "SelectorString": "",
+               "Value": 1000000000.0
+            },
+            {
+               "ID": 1048578,
+               "Name": "SpecAn:Reference Level",
+               "SelectorString": "",
+               "Value": 0.0
+            },
+            {
+               "ID": 1048579,
+               "Name": "SpecAn:External Attenuation (dB)",
+               "SelectorString": "",
+               "Value": 0.0
+            },
+            {
+               "ID": 1048580,
+               "Name": "SpecAn:Trigger:Type",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1052672,
+               "Name": "SpecAn:ACP:Measurement Enabled",
+               "SelectorString": "",
+               "Value": true
+            },
+            {
+               "ID": 1052674,
+               "Name": "SpecAn:ACP:Carrier:Number of Carriers",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1052675,
+               "Name": "SpecAn:ACP:Carrier:Mode",
+               "SelectorString": "carrier0",
+               "Value": 1
+            },
+            {
+               "ID": 1052676,
+               "Name": "SpecAn:ACP:Carrier:Frequency (Hz)",
+               "SelectorString": "carrier0",
+               "Value": 0.0
+            },
+            {
+               "ID": 1052677,
+               "Name": "SpecAn:ACP:Carrier:Integration Bandwidth (Hz)",
+               "SelectorString": "carrier0",
+               "Value": 1000000.0
+            },
+            {
+               "ID": 1052678,
+               "Name": "SpecAn:ACP:Carrier:RRC Filter:Enabled",
+               "SelectorString": "carrier0",
+               "Value": 1
+            },
+            {
+               "ID": 1052679,
+               "Name": "SpecAn:ACP:Carrier:RRC Filter:Alpha",
+               "SelectorString": "carrier0",
+               "Value": 0.1
+            },
+            {
+               "ID": 1052680,
+               "Name": "SpecAn:ACP:Offset:Number of Offsets",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1052681,
+               "Name": "SpecAn:ACP:Offset:Enabled",
+               "SelectorString": "offset0",
+               "Value": 1
+            },
+            {
+               "ID": 1052682,
+               "Name": "SpecAn:ACP:Offset:Frequency (Hz)",
+               "SelectorString": "offset0",
+               "Value": 1000000.0
+            },
+            {
+               "ID": 1052683,
+               "Name": "SpecAn:ACP:Offset:Sideband",
+               "SelectorString": "offset0",
+               "Value": 2
+            },
+            {
+               "ID": 1052684,
+               "Name": "SpecAn:ACP:Offset:Power Reference:Carrier",
+               "SelectorString": "offset0",
+               "Value": 0
+            },
+            {
+               "ID": 1052685,
+               "Name": "SpecAn:ACP:Offset:Power Reference:Specific",
+               "SelectorString": "offset0",
+               "Value": 0
+            },
+            {
+               "ID": 1052686,
+               "Name": "SpecAn:ACP:Offset:Integration Bandwidth (Hz)",
+               "SelectorString": "offset0",
+               "Value": 1000000.0
+            },
+            {
+               "ID": 1052687,
+               "Name": "SpecAn:ACP:Offset:Relative Attenuation (dB)",
+               "SelectorString": "offset0",
+               "Value": 0.0
+            },
+            {
+               "ID": 1052688,
+               "Name": "SpecAn:ACP:Offset:RRC Filter:Enabled",
+               "SelectorString": "offset0",
+               "Value": 0
+            },
+            {
+               "ID": 1052689,
+               "Name": "SpecAn:ACP:Offset:RRC Filter:Alpha",
+               "SelectorString": "offset0",
+               "Value": 0.1
+            },
+            {
+               "ID": 1052690,
+               "Name": "SpecAn:ACP:Measurement Method",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1052691,
+               "Name": "SpecAn:ACP:Power Units",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1052693,
+               "Name": "SpecAn:ACP:Averaging:Count",
+               "SelectorString": "",
+               "Value": 10
+            },
+            {
+               "ID": 1052694,
+               "Name": "SpecAn:ACP:Averaging:Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1052696,
+               "Name": "SpecAn:ACP:Averaging:Type",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1052697,
+               "Name": "SpecAn:ACP:FFT:Window",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1052698,
+               "Name": "SpecAn:ACP:FFT:Padding",
+               "SelectorString": "",
+               "Value": -1.0
+            },
+            {
+               "ID": 1052699,
+               "Name": "SpecAn:ACP:RBW Filter:Auto Bandwidth",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1052700,
+               "Name": "SpecAn:ACP:RBW Filter:Bandwidth (Hz)",
+               "SelectorString": "",
+               "Value": 10000.0
+            },
+            {
+               "ID": 1052701,
+               "Name": "SpecAn:ACP:RBW Filter:Type",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1052702,
+               "Name": "SpecAn:ACP:Sweep Time:Auto",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1052703,
+               "Name": "SpecAn:ACP:Sweep Time:Interval (s)",
+               "SelectorString": "",
+               "Value": 0.001
+            },
+            {
+               "ID": 1052704,
+               "Name": "SpecAn:ACP:Noise Compensation:Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1052705,
+               "Name": "SpecAn:ACP:All Traces Enabled",
+               "SelectorString": "",
+               "Value": true
+            },
+            {
+               "ID": 1052727,
+               "Name": "SpecAn:ACP:Offset:Frequency Definition",
+               "SelectorString": "offset0",
+               "Value": 0
+            },
+            {
+               "ID": 1056770,
+               "Name": "SpecAn:CCDF:Measurement Interval (s)",
+               "SelectorString": "",
+               "Value": 0.001
+            },
+            {
+               "ID": 1056772,
+               "Name": "SpecAn:CCDF:Number of Records",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1056774,
+               "Name": "SpecAn:CCDF:RBW Filter:RRC Alpha",
+               "SelectorString": "",
+               "Value": 0.1
+            },
+            {
+               "ID": 1056775,
+               "Name": "SpecAn:CCDF:RBW Filter:Bandwidth (Hz)",
+               "SelectorString": "",
+               "Value": 100000.0
+            },
+            {
+               "ID": 1056776,
+               "Name": "SpecAn:CCDF:RBW Filter:Type",
+               "SelectorString": "",
+               "Value": 5
+            },
+            {
+               "ID": 1056777,
+               "Name": "SpecAn:CCDF:Threshold:Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1056778,
+               "Name": "SpecAn:CCDF:Threshold:Level (dB or dBm)",
+               "SelectorString": "",
+               "Value": -20.0
+            },
+            {
+               "ID": 1056779,
+               "Name": "SpecAn:CCDF:Threshold:Type",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1056781,
+               "Name": "SpecAn:CCDF:All Traces Enabled",
+               "SelectorString": "",
+               "Value": true
+            },
+            {
+               "ID": 1060866,
+               "Name": "SpecAn:CHP:Carrier:Integration Bandwidth (Hz)",
+               "SelectorString": "carrier0",
+               "Value": 1000000.0
+            },
+            {
+               "ID": 1060868,
+               "Name": "SpecAn:CHP:Span (Hz)",
+               "SelectorString": "",
+               "Value": 1000000.0
+            },
+            {
+               "ID": 1060870,
+               "Name": "SpecAn:CHP:Averaging:Count",
+               "SelectorString": "",
+               "Value": 10
+            },
+            {
+               "ID": 1060871,
+               "Name": "SpecAn:CHP:Averaging:Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1060873,
+               "Name": "SpecAn:CHP:Averaging:Type",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1060874,
+               "Name": "SpecAn:CHP:FFT:Window",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1060875,
+               "Name": "SpecAn:CHP:FFT:Padding",
+               "SelectorString": "",
+               "Value": -1.0
+            },
+            {
+               "ID": 1060876,
+               "Name": "SpecAn:CHP:RBW Filter:Auto Bandwidth",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1060877,
+               "Name": "SpecAn:CHP:RBW Filter:Bandwidth (Hz)",
+               "SelectorString": "",
+               "Value": 10000.0
+            },
+            {
+               "ID": 1060878,
+               "Name": "SpecAn:CHP:RBW Filter:Type",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1060879,
+               "Name": "SpecAn:CHP:Carrier:RRC Filter:Enabled",
+               "SelectorString": "carrier0",
+               "Value": 0
+            },
+            {
+               "ID": 1060880,
+               "Name": "SpecAn:CHP:Carrier:RRC Filter:Alpha",
+               "SelectorString": "carrier0",
+               "Value": 0.1
+            },
+            {
+               "ID": 1060881,
+               "Name": "SpecAn:CHP:Sweep Time:Auto",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1060882,
+               "Name": "SpecAn:CHP:Sweep Time:Interval (s)",
+               "SelectorString": "",
+               "Value": 0.001
+            },
+            {
+               "ID": 1060884,
+               "Name": "SpecAn:CHP:All Traces Enabled",
+               "SelectorString": "",
+               "Value": true
+            },
+            {
+               "ID": 1060888,
+               "Name": "SpecAn:CHP:Carrier:Number of Carriers",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1060889,
+               "Name": "SpecAn:CHP:Carrier:Frequency (Hz)",
+               "SelectorString": "carrier0",
+               "Value": 0.0
+            },
+            {
+               "ID": 1064962,
+               "Name": "SpecAn:FCnt:Measurement Interval (s)",
+               "SelectorString": "",
+               "Value": 0.001
+            },
+            {
+               "ID": 1064965,
+               "Name": "SpecAn:FCnt:Averaging:Count",
+               "SelectorString": "",
+               "Value": 10
+            },
+            {
+               "ID": 1064966,
+               "Name": "SpecAn:FCnt:Averaging:Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1064968,
+               "Name": "SpecAn:FCnt:Averaging:Type",
+               "SelectorString": "",
+               "Value": 6
+            },
+            {
+               "ID": 1064969,
+               "Name": "SpecAn:FCnt:RBW Filter:RRC Alpha",
+               "SelectorString": "",
+               "Value": 0.1
+            },
+            {
+               "ID": 1064970,
+               "Name": "SpecAn:FCnt:RBW Filter:Bandwidth (Hz)",
+               "SelectorString": "",
+               "Value": 100000.0
+            },
+            {
+               "ID": 1064971,
+               "Name": "SpecAn:FCnt:RBW Filter:Type",
+               "SelectorString": "",
+               "Value": 5
+            },
+            {
+               "ID": 1064972,
+               "Name": "SpecAn:FCnt:Threshold:Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1064973,
+               "Name": "SpecAn:FCnt:Threshold:Level (dB or dBm)",
+               "SelectorString": "",
+               "Value": -20.0
+            },
+            {
+               "ID": 1064974,
+               "Name": "SpecAn:FCnt:Threshold:Type",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1064976,
+               "Name": "SpecAn:FCnt:All Traces Enabled",
+               "SelectorString": "",
+               "Value": true
+            },
+            {
+               "ID": 1069059,
+               "Name": "SpecAn:Harm:Fundamental:RBW Filter:Alpha",
+               "SelectorString": "",
+               "Value": 0.1
+            },
+            {
+               "ID": 1069060,
+               "Name": "SpecAn:Harm:Fundamental:RBW Filter:Bandwidth (Hz)",
+               "SelectorString": "",
+               "Value": 100000.0
+            },
+            {
+               "ID": 1069061,
+               "Name": "SpecAn:Harm:Fundamental:RBW Filter:Type",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1069062,
+               "Name": "SpecAn:Harm:Fundamental:Measurement Interval (s)",
+               "SelectorString": "",
+               "Value": 0.001
+            },
+            {
+               "ID": 1069063,
+               "Name": "SpecAn:Harm:Number of Harmonics",
+               "SelectorString": "",
+               "Value": 3
+            },
+            {
+               "ID": 1069064,
+               "Name": "SpecAn:Harm:Auto Setup Enabled",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1069065,
+               "Name": "SpecAn:Harm:Harmonic:Enabled",
+               "SelectorString": "harmonic0",
+               "Value": 1
+            },
+            {
+               "ID": 1069065,
+               "Name": "SpecAn:Harm:Harmonic:Enabled",
+               "SelectorString": "harmonic1",
+               "Value": 1
+            },
+            {
+               "ID": 1069065,
+               "Name": "SpecAn:Harm:Harmonic:Enabled",
+               "SelectorString": "harmonic2",
+               "Value": 1
+            },
+            {
+               "ID": 1069066,
+               "Name": "SpecAn:Harm:Harmonic:Order",
+               "SelectorString": "harmonic0",
+               "Value": 1
+            },
+            {
+               "ID": 1069066,
+               "Name": "SpecAn:Harm:Harmonic:Order",
+               "SelectorString": "harmonic1",
+               "Value": 2
+            },
+            {
+               "ID": 1069066,
+               "Name": "SpecAn:Harm:Harmonic:Order",
+               "SelectorString": "harmonic2",
+               "Value": 3
+            },
+            {
+               "ID": 1069067,
+               "Name": "SpecAn:Harm:Harmonic:Measurement Interval (s)",
+               "SelectorString": "harmonic0",
+               "Value": 0.001
+            },
+            {
+               "ID": 1069067,
+               "Name": "SpecAn:Harm:Harmonic:Measurement Interval (s)",
+               "SelectorString": "harmonic1",
+               "Value": 0.0005
+            },
+            {
+               "ID": 1069067,
+               "Name": "SpecAn:Harm:Harmonic:Measurement Interval (s)",
+               "SelectorString": "harmonic2",
+               "Value": 0.00033
+            },
+            {
+               "ID": 1069068,
+               "Name": "SpecAn:Harm:Averaging:Count",
+               "SelectorString": "",
+               "Value": 10
+            },
+            {
+               "ID": 1069069,
+               "Name": "SpecAn:Harm:Averaging:Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1069071,
+               "Name": "SpecAn:Harm:Averaging:Type",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1069072,
+               "Name": "SpecAn:Harm:All Traces Enabled",
+               "SelectorString": "",
+               "Value": true
+            },
+            {
+               "ID": 1069080,
+               "Name": "SpecAn:Harm:Harmonic:Bandwidth (Hz)",
+               "SelectorString": "harmonic0",
+               "Value": 100000.0
+            },
+            {
+               "ID": 1069080,
+               "Name": "SpecAn:Harm:Harmonic:Bandwidth (Hz)",
+               "SelectorString": "harmonic1",
+               "Value": 200000.0
+            },
+            {
+               "ID": 1069080,
+               "Name": "SpecAn:Harm:Harmonic:Bandwidth (Hz)",
+               "SelectorString": "harmonic2",
+               "Value": 300000.0
+            },
+            {
+               "ID": 1073154,
+               "Name": "SpecAn:OBW:Bandwidth Percentage (%)",
+               "SelectorString": "",
+               "Value": 99.0
+            },
+            {
+               "ID": 1073156,
+               "Name": "SpecAn:OBW:Span (Hz)",
+               "SelectorString": "",
+               "Value": 1000000.0
+            },
+            {
+               "ID": 1073158,
+               "Name": "SpecAn:OBW:Averaging:Count",
+               "SelectorString": "",
+               "Value": 10
+            },
+            {
+               "ID": 1073159,
+               "Name": "SpecAn:OBW:Averaging:Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1073161,
+               "Name": "SpecAn:OBW:Averaging:Type",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1073162,
+               "Name": "SpecAn:OBW:FFT:Window",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1073163,
+               "Name": "SpecAn:OBW:FFT:Padding",
+               "SelectorString": "",
+               "Value": -1.0
+            },
+            {
+               "ID": 1073164,
+               "Name": "SpecAn:OBW:RBW Filter:Auto Bandwidth",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1073165,
+               "Name": "SpecAn:OBW:RBW Filter:Bandwidth (Hz)",
+               "SelectorString": "",
+               "Value": 10000.0
+            },
+            {
+               "ID": 1073166,
+               "Name": "SpecAn:OBW:RBW Filter:Type",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1073167,
+               "Name": "SpecAn:OBW:Sweep Time:Auto",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1073168,
+               "Name": "SpecAn:OBW:Sweep Time:Interval (s)",
+               "SelectorString": "",
+               "Value": 0.001
+            },
+            {
+               "ID": 1073170,
+               "Name": "SpecAn:OBW:All Traces Enabled",
+               "SelectorString": "",
+               "Value": true
+            },
+            {
+               "ID": 1073176,
+               "Name": "SpecAn:OBW:Power Units",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1081346,
+               "Name": "SpecAn:SEM:Carrier:Number of Carriers",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1081347,
+               "Name": "SpecAn:SEM:Carrier:Enabled",
+               "SelectorString": "carrier0",
+               "Value": 1
+            },
+            {
+               "ID": 1081348,
+               "Name": "SpecAn:SEM:Carrier:Frequency (Hz)",
+               "SelectorString": "carrier0",
+               "Value": 0.0
+            },
+            {
+               "ID": 1081349,
+               "Name": "SpecAn:SEM:Carrier:Integration Bandwidth (Hz)",
+               "SelectorString": "carrier0",
+               "Value": 2000000.0
+            },
+            {
+               "ID": 1081350,
+               "Name": "SpecAn:SEM:Carrier:RBW Filter:Auto Bandwidth",
+               "SelectorString": "carrier0",
+               "Value": 1
+            },
+            {
+               "ID": 1081351,
+               "Name": "SpecAn:SEM:Carrier:RBW Filter:Bandwidth (Hz)",
+               "SelectorString": "carrier0",
+               "Value": 10000.0
+            },
+            {
+               "ID": 1081352,
+               "Name": "SpecAn:SEM:Carrier:RBW Filter:Type",
+               "SelectorString": "carrier0",
+               "Value": 1
+            },
+            {
+               "ID": 1081353,
+               "Name": "SpecAn:SEM:Carrier:RRC Filter:Enabled",
+               "SelectorString": "carrier0",
+               "Value": 0
+            },
+            {
+               "ID": 1081354,
+               "Name": "SpecAn:SEM:Carrier:RRC Filter:Alpha",
+               "SelectorString": "carrier0",
+               "Value": 0.1
+            },
+            {
+               "ID": 1081355,
+               "Name": "SpecAn:SEM:Offset:Number of Offsets",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1081356,
+               "Name": "SpecAn:SEM:Offset:Bandwidth Integral",
+               "SelectorString": "offset0",
+               "Value": 1
+            },
+            {
+               "ID": 1081357,
+               "Name": "SpecAn:SEM:Offset:Limit Fail Mask",
+               "SelectorString": "offset0",
+               "Value": 2
+            },
+            {
+               "ID": 1081358,
+               "Name": "SpecAn:SEM:Offset:Relative Attenuation (dB)",
+               "SelectorString": "offset0",
+               "Value": 0.0
+            },
+            {
+               "ID": 1081359,
+               "Name": "SpecAn:SEM:Offset:Absolute Limit:Mode",
+               "SelectorString": "offset0",
+               "Value": 1
+            },
+            {
+               "ID": 1081360,
+               "Name": "SpecAn:SEM:Offset:Absolute Limit:Start (dBm)",
+               "SelectorString": "offset0",
+               "Value": -10.0
+            },
+            {
+               "ID": 1081361,
+               "Name": "SpecAn:SEM:Offset:Absolute Limit:Stop (dBm)",
+               "SelectorString": "offset0",
+               "Value": -10.0
+            },
+            {
+               "ID": 1081362,
+               "Name": "SpecAn:SEM:Offset:Enabled",
+               "SelectorString": "offset0",
+               "Value": 1
+            },
+            {
+               "ID": 1081363,
+               "Name": "SpecAn:SEM:Offset:Sideband",
+               "SelectorString": "offset0",
+               "Value": 2
+            },
+            {
+               "ID": 1081364,
+               "Name": "SpecAn:SEM:Offset:Start Frequency (Hz)",
+               "SelectorString": "offset0",
+               "Value": 1000000.0
+            },
+            {
+               "ID": 1081365,
+               "Name": "SpecAn:SEM:Offset:Stop Frequency (Hz)",
+               "SelectorString": "offset0",
+               "Value": 2000000.0
+            },
+            {
+               "ID": 1081366,
+               "Name": "SpecAn:SEM:Offset:RBW Filter:Auto Bandwidth",
+               "SelectorString": "offset0",
+               "Value": 1
+            },
+            {
+               "ID": 1081367,
+               "Name": "SpecAn:SEM:Offset:RBW Filter:Bandwidth (Hz)",
+               "SelectorString": "offset0",
+               "Value": 10000.0
+            },
+            {
+               "ID": 1081368,
+               "Name": "SpecAn:SEM:Offset:RBW Filter:Type",
+               "SelectorString": "offset0",
+               "Value": 1
+            },
+            {
+               "ID": 1081369,
+               "Name": "SpecAn:SEM:Offset:Relative Limit:Mode",
+               "SelectorString": "offset0",
+               "Value": 0
+            },
+            {
+               "ID": 1081370,
+               "Name": "SpecAn:SEM:Offset:Relative Limit:Start (dB)",
+               "SelectorString": "offset0",
+               "Value": -20.0
+            },
+            {
+               "ID": 1081371,
+               "Name": "SpecAn:SEM:Offset:Relative Limit:Stop (dB)",
+               "SelectorString": "offset0",
+               "Value": -30.0
+            },
+            {
+               "ID": 1081372,
+               "Name": "SpecAn:SEM:Power Units",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1081374,
+               "Name": "SpecAn:SEM:Averaging:Count",
+               "SelectorString": "",
+               "Value": 10
+            },
+            {
+               "ID": 1081375,
+               "Name": "SpecAn:SEM:Averaging:Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1081377,
+               "Name": "SpecAn:SEM:Averaging:Type",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1081378,
+               "Name": "SpecAn:SEM:FFT:Window",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1081379,
+               "Name": "SpecAn:SEM:FFT:Padding",
+               "SelectorString": "",
+               "Value": -1.0
+            },
+            {
+               "ID": 1081380,
+               "Name": "SpecAn:SEM:Reference Type",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1081381,
+               "Name": "SpecAn:SEM:Sweep Time:Auto",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1081382,
+               "Name": "SpecAn:SEM:Sweep Time:Interval (s)",
+               "SelectorString": "",
+               "Value": 0.001
+            },
+            {
+               "ID": 1081383,
+               "Name": "SpecAn:SEM:All Traces Enabled",
+               "SelectorString": "",
+               "Value": true
+            },
+            {
+               "ID": 1081419,
+               "Name": "SpecAn:SEM:Carrier:Channel Bandwidth (Hz)",
+               "SelectorString": "carrier0",
+               "Value": 2000000.0
+            },
+            {
+               "ID": 1081420,
+               "Name": "SpecAn:SEM:Offset:Frequency Definition",
+               "SelectorString": "offset0",
+               "Value": 0
+            },
+            {
+               "ID": 1085443,
+               "Name": "SpecAn:Spectrum:Span (Hz)",
+               "SelectorString": "",
+               "Value": 1000000.0
+            },
+            {
+               "ID": 1085445,
+               "Name": "SpecAn:Spectrum:Averaging:Count",
+               "SelectorString": "",
+               "Value": 10
+            },
+            {
+               "ID": 1085446,
+               "Name": "SpecAn:Spectrum:Averaging:Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1085448,
+               "Name": "SpecAn:Spectrum:Averaging:Type",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1085449,
+               "Name": "SpecAn:Spectrum:FFT:Window",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1085450,
+               "Name": "SpecAn:Spectrum:FFT:Padding",
+               "SelectorString": "",
+               "Value": -1.0
+            },
+            {
+               "ID": 1085451,
+               "Name": "SpecAn:Spectrum:RBW Filter:Auto Bandwidth",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1085452,
+               "Name": "SpecAn:Spectrum:RBW Filter:Bandwidth (Hz)",
+               "SelectorString": "",
+               "Value": 10000.0
+            },
+            {
+               "ID": 1085453,
+               "Name": "SpecAn:Spectrum:RBW Filter:Type",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1085454,
+               "Name": "SpecAn:Spectrum:Sweep Time:Auto",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1085455,
+               "Name": "SpecAn:Spectrum:Sweep Time:Interval (s)",
+               "SelectorString": "",
+               "Value": 0.001
+            },
+            {
+               "ID": 1085457,
+               "Name": "SpecAn:Spectrum:All Traces Enabled",
+               "SelectorString": "",
+               "Value": true
+            },
+            {
+               "ID": 1085461,
+               "Name": "SpecAn:Spectrum:Power Units",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1085462,
+               "Name": "SpecAn:Spectrum:RBW Filter:Bandwidth Definition",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1089540,
+               "Name": "SpecAn:Spur:Range:Number of Ranges",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1089541,
+               "Name": "SpecAn:Spur:Range:Enabled",
+               "SelectorString": "range0",
+               "Value": 1
+            },
+            {
+               "ID": 1089542,
+               "Name": "SpecAn:Spur:Range:Relative Attenuation (dB)",
+               "SelectorString": "range0",
+               "Value": 0.0
+            },
+            {
+               "ID": 1089543,
+               "Name": "SpecAn:Spur:Range:Number of Spurs to Report",
+               "SelectorString": "range0",
+               "Value": 10
+            },
+            {
+               "ID": 1089544,
+               "Name": "SpecAn:Spur:Range:Start Frequency (Hz)",
+               "SelectorString": "range0",
+               "Value": 500000000.0
+            },
+            {
+               "ID": 1089545,
+               "Name": "SpecAn:Spur:Range:Stop Frequency (Hz)",
+               "SelectorString": "range0",
+               "Value": 1500000000.0
+            },
+            {
+               "ID": 1089546,
+               "Name": "SpecAn:Spur:Averaging:Count",
+               "SelectorString": "",
+               "Value": 10
+            },
+            {
+               "ID": 1089547,
+               "Name": "SpecAn:Spur:Averaging:Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1089549,
+               "Name": "SpecAn:Spur:Averaging:Type",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1089551,
+               "Name": "SpecAn:Spur:FFT:Window",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1089552,
+               "Name": "SpecAn:Spur:Range:Absolute Limit:Mode",
+               "SelectorString": "range0",
+               "Value": 1
+            },
+            {
+               "ID": 1089553,
+               "Name": "SpecAn:Spur:Range:Absolute Limit:Start (dBm)",
+               "SelectorString": "range0",
+               "Value": -10.0
+            },
+            {
+               "ID": 1089554,
+               "Name": "SpecAn:Spur:Range:Absolute Limit:Stop (dBm)",
+               "SelectorString": "range0",
+               "Value": -10.0
+            },
+            {
+               "ID": 1089555,
+               "Name": "SpecAn:Spur:Range:RBW Filter:Auto Bandwidth",
+               "SelectorString": "range0",
+               "Value": 1
+            },
+            {
+               "ID": 1089556,
+               "Name": "SpecAn:Spur:Range:RBW Filter:Bandwidth (Hz)",
+               "SelectorString": "range0",
+               "Value": 10000.0
+            },
+            {
+               "ID": 1089557,
+               "Name": "SpecAn:Spur:Range:RBW Filter:Type",
+               "SelectorString": "range0",
+               "Value": 1
+            },
+            {
+               "ID": 1089558,
+               "Name": "SpecAn:Spur:Range:Sweep Time:Auto",
+               "SelectorString": "range0",
+               "Value": 1
+            },
+            {
+               "ID": 1089559,
+               "Name": "SpecAn:Spur:Range:Sweep Time:Interval (s)",
+               "SelectorString": "range0",
+               "Value": 0.001
+            },
+            {
+               "ID": 1089560,
+               "Name": "SpecAn:Spur:All Traces Enabled",
+               "SelectorString": "",
+               "Value": true
+            },
+            {
+               "ID": 1089568,
+               "Name": "SpecAn:Spur:Trace Range Index",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1089569,
+               "Name": "SpecAn:Spur:Range:Peak Threshold (dBm)",
+               "SelectorString": "range0",
+               "Value": -200.0
+            },
+            {
+               "ID": 1089570,
+               "Name": "SpecAn:Spur:Range:Peak Excursion (dB)",
+               "SelectorString": "range0",
+               "Value": 0.0
+            },
+            {
+               "ID": 1093634,
+               "Name": "SpecAn:TXP:Measurement Interval (s)",
+               "SelectorString": "",
+               "Value": 0.001
+            },
+            {
+               "ID": 1093637,
+               "Name": "SpecAn:TXP:Averaging:Count",
+               "SelectorString": "",
+               "Value": 10
+            },
+            {
+               "ID": 1093638,
+               "Name": "SpecAn:TXP:Averaging:Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1093640,
+               "Name": "SpecAn:TXP:Averaging:Type",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1093641,
+               "Name": "SpecAn:TXP:RBW Filter:Alpha",
+               "SelectorString": "",
+               "Value": 0.1
+            },
+            {
+               "ID": 1093642,
+               "Name": "SpecAn:TXP:RBW Filter:Bandwidth (Hz)",
+               "SelectorString": "",
+               "Value": 100000.0
+            },
+            {
+               "ID": 1093643,
+               "Name": "SpecAn:TXP:RBW Filter:Type",
+               "SelectorString": "",
+               "Value": 1
+            },
+            {
+               "ID": 1093644,
+               "Name": "SpecAn:TXP:Threshold:Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1093645,
+               "Name": "SpecAn:TXP:Threshold:Level (dB or dBm)",
+               "SelectorString": "",
+               "Value": -20.0
+            },
+            {
+               "ID": 1093646,
+               "Name": "SpecAn:TXP:Threshold:Type",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1093648,
+               "Name": "SpecAn:TXP:All Traces Enabled",
+               "SelectorString": "",
+               "Value": true
+            },
+            {
+               "ID": 1101825,
+               "Name": "SpecAn:Marker:Marker Type",
+               "SelectorString": "marker0",
+               "Value": 0
+            },
+            {
+               "ID": 1101833,
+               "Name": "SpecAn:Marker:Peak Threshold Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1101834,
+               "Name": "SpecAn:Marker:Peak Threshold",
+               "SelectorString": "",
+               "Value": -90.0
+            },
+            {
+               "ID": 1101835,
+               "Name": "SpecAn:Marker:Peak Excursion Enabled",
+               "SelectorString": "",
+               "Value": 0
+            },
+            {
+               "ID": 1101836,
+               "Name": "SpecAn:Marker:Peak Excursion",
+               "SelectorString": "",
+               "Value": 6.0
+            }
+         ],
+         "PersonalityVersion": "23.5.0",
+         "LowestCompatiblePersonalityVersion": "2.2.0"
+      }
+   ]
+}

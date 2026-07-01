@@ -1,6 +1,6 @@
 ' Steps:
 '1. Open RFSG session.
-'2. Configure RFSG frequency reference.
+'2. Configure RFSG frequency reference, generation Mode to Script, Power Level Type and Upconverter Frequency Offset Mode
 '3. Configure marker0 to be generated from RFSG on the specified output terminal.
 '4. Configure frequency and power level of RF output signal.
 '5. Set RFSG External Gain. #4 and #5 ensure that the average power of the signal at the input of the DUT
@@ -58,7 +58,6 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpd
         Private instrSession As RFmxInstrMX
         Private specAn As RFmxSpecAnMX
         Private rfsgSession As NIRfsg
-        Private instrumentHandle As IntPtr
 
         Private rfsaResourceName As String = "RFSA"
         Private rfsgResourceName As String = "RFSG"
@@ -129,7 +128,6 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpd
 
         Private scriptName As String = "IDPDScript"
         Private waveformName As String = "Wfm"
-        Private waveformSize As Integer
         Private rfsgIqRate As Double
         Private markerNumber As Integer = 0
         Private waveformScript As String
@@ -151,7 +149,6 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpd
         Friend Sub Run()
             Try
                 ReadWaveformFromTdmsFile()
-                ReadWaveFormSizeFromTdmsFile()
                 OpenSession()
                 ConfigureRfsg()
                 ConfigureRFmx()
@@ -170,10 +167,6 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpd
             NIRfsgPlayback.ReadWaveformFromFileComplex(referenceWaveformFile, referenceWaveformComplexSingle)
         End Sub
 
-        Private Sub ReadWaveFormSizeFromTdmsFile()
-            NIRfsgPlayback.ReadWaveformSizeFromFile(referenceWaveformFile, 0, waveformSize)
-        End Sub
-
         Private Sub OpenSession()
             instrSession = New RFmxInstrMX(rfsaResourceName, "")
             specAn = instrSession.GetSpecAnSignalConfiguration()
@@ -181,19 +174,20 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpd
 
         Private Sub ConfigureRfsg()
             rfsgSession = New NIRfsg(rfsgResourceName, False, True)
+            rfsgSession.Arb.GenerationMode = RfsgWaveformGenerationMode.Script
+            rfsgSession.RF.PowerLevelType = RfsgRFPowerLevelType.PeakPower
             rfsgSession.FrequencyReference.Configure(referenceClockSource, referenceClockRate)
             rfsgSession.DeviceEvents.MarkerEvents(markerNumber).ExportedOutputTerminal = RfsgMarkerEventExportedOutputTerminal.PxiTriggerLine0
             rfsgSession.RF.Configure(centerFrequency, dutAverageInputPower)
             rfsgSession.RF.Upconverter.FrequencyOffsetMode = UpconverterFrequencyOffsetMode.Auto
             rfsgSession.RF.ExternalGain = -rfsgExternalAttenuation
-            instrumentHandle = rfsgSession.GetInstrumentHandle().DangerousGetHandle()
-            NIRfsgPlayback.ReadAndDownloadWaveformFromFile(instrumentHandle, referenceWaveformFile, waveformName)
+            rfsgSession.Arb.ReadAndDownloadWaveformFromFileTdms(waveformName, referenceWaveformFile, 0)
+            rfsgIqRate = rfsgSession.Arb.Waveforms(waveformName).IQRate
             runtimeScaling = preFilterGain
-            NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling)
-            NIRfsgPlayback.RetrieveWaveformSampleRate(instrumentHandle, waveformName, rfsgIqRate)
-            NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * rfsgIqRate)
+            rfsgSession.Arb.PreFilterGain = runtimeScaling
+            rfsgSession.Arb.SignalBandwidth = 0.8 * rfsgIqRate
             waveformScript = [String].Format("script {0}{1}repeat forever{1}generate {2} marker{3}(0){1}end repeat{1}end script", scriptName, Environment.NewLine, waveformName, markerNumber)
-            NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript)
+            rfsgSession.Arb.Scripting.WriteScript(waveformScript)
             rfsgSession.Initiate()
         End Sub
 
@@ -265,14 +259,14 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpd
                 targetGain = gain
 
                 rfsgSession.Abort()
-                NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName)
+                rfsgSession.Arb.ClearWaveform(waveformName)
                 rfsgIqRate = 1 / normalizePredistortedWaveform.PrecisionTiming.SampleInterval.TotalSeconds
                 rfsgSession.Arb.WriteWaveform(waveformName, normalizePredistortedWaveform)
-                NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling)
-                NIRfsgPlayback.StoreWaveformSampleRate(instrumentHandle, waveformName, rfsgIqRate)
-                NIRfsgPlayback.StoreWaveformPapr(instrumentHandle, waveformName, (papr + powerOffset))
-                NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * rfsgIqRate)
-                NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript)
+                rfsgSession.Arb.PreFilterGain = runtimeScaling
+                rfsgSession.Arb.IQRate = rfsgIqRate
+                rfsgSession.Arb.Waveforms(waveformName).Papr = (papr + powerOffset)
+                rfsgSession.Arb.SignalBandwidth = 0.8 * rfsgIqRate
+                rfsgSession.Arb.Scripting.WriteScript(waveformScript)
                 rfsgSession.Initiate()
             Next
 
@@ -296,7 +290,7 @@ Namespace NationalInstruments.Examples.RFmxSpecAnIdpd
             specAn.Ampm.Results.FetchAMToPMTrace("", timeout, referencePowersAMToPM, measuredAMToPM, curveFitAMToPM)
 
             rfsgSession.Abort()
-            NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName)
+            rfsgSession.Arb.ClearWaveform(waveformName)
         End Sub
 
         Private Sub DisplayResults()

@@ -1,13 +1,13 @@
 /* Steps:
 1. Open RFSG session.
-2. Configure RFSG frequency reference.
+2. Configure RFSG frequency reference, generation Mode to Script, power level type and Pre-filter Gain.
 3. Configure marker0 to be generated from RFSG on the specified output terminal.
 4. Configure frequency and power level of RF output signal.
 5. Set RFSG External Gain. #4 and #5 ensure that the average power of the signal at
    the input of the DUT matches the user configured DUT Average Input Power.
 6. a. Read waveform from file and download Waveform from file to RFSG
-   b. Set Waveform Runtime Scaling to the negative of the desired Pre-filter Gain.
-   c. Read waveform sample rate, multiply by 0.8 and set the result to the signal bandwidth.
+   b. Read waveform IQ rate, multiply by 0.8 and set the result to the signal bandwidth.
+   c. Configure RFSG IQ rate and PAPR.
    d. Write script to generate the waveform specified in the script.
    e. This script is programmed to generate waveform continuously, with marker0 aligned to sample index 0.
 7. Initiate RFSG generation as per the selected script.
@@ -112,6 +112,7 @@ int main(int argc, char *argv[])
    ViReal64 rfsgFrequency = 10e+6;
 
    ViConstString waveformName = "Wfm";
+   ViConstString waveformChannelName = "waveform::Wfm";
    ViConstString script = "script AMPMScript\n  repeat forever\n  generate Wfm marker0(0)\n  end repeat\nend script";
 
    ViReal64 externalGain = 0.0;
@@ -190,15 +191,17 @@ int main(int argc, char *argv[])
 
    rfsgCheckWarn(niRFSG_init(rfsgResourceName, VI_TRUE, VI_FALSE, &rfsgSession));
    rfsgCheckWarn(niRFSG_ConfigureRefClock(rfsgSession, rfsgFrequencySource, rfsgFrequency));
+   rfsgCheckWarn(niRFSG_ConfigureGenerationMode(rfsgSession, NIRFSG_VAL_SCRIPT));
+   rfsgCheckWarn(niRFSG_SetAttributeViInt32(rfsgSession, "", NIRFSG_ATTR_POWER_LEVEL_TYPE, NIRFSG_VAL_PEAK_POWER));
    rfsgCheckWarn(niRFSG_ExportSignal(rfsgSession, NIRFSG_VAL_MARKER_EVENT, NIRFSG_VAL_MARKER0, rfsgOutputTerminal));
    rfsgCheckWarn(niRFSG_ConfigureRF(rfsgSession, centerFrequency, DUTAverageInputPower));
    externalGain = -1 * rfsgExternalAttenuation;
    rfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_EXTERNAL_GAIN, externalGain));
-   playbackCheckWarn(niRFSGPlayback_ReadAndDownloadWaveformFromFile(rfsgSession, waveFormFileName, waveformName));
-   playbackCheckWarn(niRFSGPlayback_StoreWaveformRuntimeScaling(rfsgSession, waveformName, runtimeScaling));
-   playbackCheckWarn(niRFSGPlayback_RetrieveWaveformSampleRate(rfsgSession, waveformName, &sampleRate));
-   playbackCheckWarn(niRFSGPlayback_StoreWaveformSignalBandwidth(rfsgSession, waveformName, 0.8*sampleRate));
-   playbackCheckWarn(niRFSGPlayback_SetScriptToGenerateSingleRFSG(rfsgSession, script));
+   rfsgCheckWarn(niRFSG_ReadAndDownloadWaveformFromFileTDMS(rfsgSession, waveformName, waveFormFileName, 0));
+   rfsgCheckWarn(niRFSG_GetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_IQ_RATE, &sampleRate));
+   rfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_ARB_PRE_FILTER_GAIN, runtimeScaling));
+   rfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_SIGNAL_BANDWIDTH, 0.8*sampleRate));
+   rfsgCheckWarn(niRFSG_WriteScript(rfsgSession, script));
    rfsgCheckWarn(niRFSG_Initiate(rfsgSession));
 
    /* Initialize a session */
@@ -321,16 +324,6 @@ Error:
          printf("WARNING: %s\n", errorMessage);
    }
 
-   if (playbackError)
-   {
-      errorOccured = playbackError;
-      niRFSGPlayback_GetError(&lastErrorCode, MAX_ERROR_DESCRIPTION, errorMessage);
-      if (playbackError < 0)
-         printf("ERROR: %s\n", errorMessage);
-      else
-         printf("WARNING: %s\n", errorMessage);
-   }
-
    if (instrumentHandle)
    {
       RFmxSpecAn_Close(instrumentHandle, RFMXSPECAN_VAL_FALSE);
@@ -338,7 +331,7 @@ Error:
    if (rfsgSession)
    {
       niRFSG_Abort(rfsgSession);
-      niRFSGPlayback_ClearWaveform(rfsgSession, waveformName);
+      niRFSG_ClearArbWaveform(rfsgSession, waveformName);
       niRFSG_close(rfsgSession);
    }
    if (referencePowersAMToAM)

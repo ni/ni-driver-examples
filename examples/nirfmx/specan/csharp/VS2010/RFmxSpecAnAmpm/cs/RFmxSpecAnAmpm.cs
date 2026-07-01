@@ -1,13 +1,13 @@
 /* Steps:
 1. Open RFSG session.
-2. Configure RFSG frequency reference.
+2. Configure RFSG frequency reference, generation Mode to Script, power level type and Pre-filter Gain.
 3. Configure marker0 to be generated from RFSG on the specified output terminal.
 4. Configure frequency and power level of RF output signal.
 5. Set RFSG External Gain. #4 and #5 ensure that the average power of the signal at
    the input of the DUT matches the user configured DUT Average Input Power.
 6. a. Read waveform from file and download Waveform from file to RFSG
-   b. Set Waveform Runtime Scaling to the negative of the desired Pre-filter Gain.
-   c. Read waveform sample rate, multiply by 0.8 and set the result to the signal bandwidth.
+   b. Read waveform IQ rate, multiply by 0.8 and set the result to the signal bandwidth.
+   c. Configure RFSG IQ rate and PAPR.
    d. Write script to generate the waveform specified in the script.
    e. This script is programmed to generate waveform continuously, with marker0 aligned to sample index 0.
 7. Initiate RFSG generation as per the selected script.
@@ -42,7 +42,6 @@ namespace NationalInstruments.Examples.RFmxSpecAnAmpm
       RFmxInstrMX instrSession;
       RFmxSpecAnMX specAn;
       NIRfsg rfsgSession;
-      IntPtr instrumentHandle;
 
       string rfsaResourceName = "RFSA";
       string rfsgResourceName = "RFSG";
@@ -133,6 +132,8 @@ namespace NationalInstruments.Examples.RFmxSpecAnAmpm
       {
          /* Configure RFSG */
          rfsgSession = new NIRfsg(rfsgResourceName, true, true);
+         rfsgSession.Arb.GenerationMode = RfsgWaveformGenerationMode.Script;
+         rfsgSession.RF.PowerLevelType = RfsgRFPowerLevelType.PeakPower;
          rfsgSession.FrequencyReference.Configure(referenceClockSource, referenceClockRate);
          rfsgSession.DeviceEvents.MarkerEvents[markerNumber].ExportedOutputTerminal = markerEventExportedOutputTerminal;
          rfsgSession.RF.Configure(centerFrequency, dutAverageInputPower);
@@ -143,13 +144,12 @@ namespace NationalInstruments.Examples.RFmxSpecAnAmpm
                  "      end repeat\n" +
                  "end script";
          rfsgSession.RF.ExternalGain = -rfsgExternalAttenuation;
-         instrumentHandle = rfsgSession.GetInstrumentHandle().DangerousGetHandle();
-         NIRfsgPlayback.ReadAndDownloadWaveformFromFile(instrumentHandle, waveformFileName, waveformName);
+         rfsgSession.Arb.ReadAndDownloadWaveformFromFileTdms(waveformName, waveformFileName, 0);
+         sampleRate = rfsgSession.Arb.Waveforms[waveformName].IQRate;
          runtimeScaling = preFilterGain;
-         NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling);
-         NIRfsgPlayback.RetrieveWaveformSampleRate(instrumentHandle, waveformName, out sampleRate);
-         NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * sampleRate);
-         NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript);
+         rfsgSession.Arb.PreFilterGain = runtimeScaling;
+         rfsgSession.Arb.SignalBandwidth = 0.8 * sampleRate;
+         rfsgSession.Arb.Scripting.WriteScript(waveformScript);
          rfsgSession.Initiate();
       }
 
@@ -207,7 +207,7 @@ namespace NationalInstruments.Examples.RFmxSpecAnAmpm
          specAn.Ampm.Results.FetchAMToPMTrace("", timeout, ref referencePowersAMToPM, ref measuredAMToPM, ref curveFitAMToPM);
 
          rfsgSession.Abort();
-         NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName);
+         rfsgSession.Arb.ClearWaveform(waveformName);
       }
 
       private void PrintResults()
