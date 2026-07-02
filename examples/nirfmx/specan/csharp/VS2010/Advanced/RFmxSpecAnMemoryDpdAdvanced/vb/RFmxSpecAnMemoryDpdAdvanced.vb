@@ -1,6 +1,6 @@
 ' Steps:
 '1. Open RFSG session.
-'2. Configure RFSG frequency reference, generation mode to Script.
+'2. Configure RFSG frequency reference.
 '3. Configure marker0 to be generated from RFSG on the specified output terminal.
 '4. Configure frequency and power level of RF output signal.
 '5. Configure power level type.
@@ -24,34 +24,35 @@
 '15. Configure pre-DPD CFR.
 '16. Configure waveform settings for pre-DPD CFR with filtering.
 '17. Apply pre-DPD CFR.
-'18. configure the reference waveform.
-'19. Configure power of the signal at the input of the DUT. Select and configure the Memory
+'18. Read PAPR from file.
+'19. configure the reference waveform.
+'20. Configure power of the signal at the input of the DUT. Select and configure the Memory
 '    polynomial or Generalized memory polynomial model and its parameters to estimate the predistotor.
-'20. Set the measurement sample rate and the measurement interval to use for analysis.
-'21. Enable iterative DPD.
-'22. Configure DPD NMSE Enabled.
-'23. Configure the Memory models Correction type.
-'24. Configure apply DPD CFR settings before calling RFmx initiate.
+'21. Set the measurement sample rate and the measurement interval to use for analysis.
+'22. Enable iterative DPD.
+'23. Configure DPD NMSE Enabled.
+'24. Configure the Memory models Correction type.
+'25. Configure apply DPD CFR settings before calling RFmx initiate.
 '    This is because these settings are used by measurement when performing iterative DPD.
-'25. Perform Auto Level to compute an approximate reference level to use by the analyser.
-'26. Set the previous iteration polynomial, in case DPD is measured iteratively.
-'27. Initiates DPD measurement and then configure Apply Digital Predistortion to remove the
+'26. Perform Auto Level to compute an approximate reference level to use by the analyser.
+'27. Set the previous iteration polynomial, in case DPD is measured iteratively.
+'28. Initiates DPD measurement and then configure Apply Digital Predistortion to remove the
 '    effects of memory and nonlinearity introduced by the DUT.
-'28. a. Fetch DPD Polynomial.
+'29. a. Fetch DPD Polynomial.
 '    b. Fetch NMSE (dB).
-'29. Abort RFSG generation and write a new waveform that is predistorted by applying momory polynomial coefficients.
+'30. Abort RFSG generation and write a new waveform that is predistorted by applying momory polynomial coefficients.
 '    Set Waveform Runtime Scaling to desired Pre-filter Gain.
 '    Set the sample rate computed from Apply Digital Predistortion.
 '    Set the final PAPR to the sum of the actual PAPR and the Power Offset as computed
 '    by Apply Digital Predistortion.
 '    Set the Signal Bandwidth.
 '    Initiate RFSG generation Using the script that was selected earlier.
-'30. Perform Auto Level to compute an approximate reference level while generating the predistorted waveform.
-'31. Select and configure AMPM measurement in RFmx after DPD measurement is complete.
+'31. Perform Auto Level to compute an approximate reference level while generating the predistorted waveform.
+'32. Select and configure AMPM measurement in RFmx after DPD measurement is complete.
 '    AMPM measurement is used to inspect the measure the AM-AM and AM-PM response of the DUT.
-'32. Initiate and fetch AMPM results.
-'33. Close RFmx session.
-'34. Close RFSG session.
+'33. Initiate and fetch AMPM results.
+'34. Close RFmx session.
+'35. Close RFSG session.
 'It is recommended to clear the waveform before closing RFSG session.*/
 
 Imports NationalInstruments.RFmx.InstrMX
@@ -65,6 +66,7 @@ Public Class RFmxSpecAnMemoryDpdAdvanced
    Private instrSession As RFmxInstrMX
    Private specAn As RFmxSpecAnMX
    Private rfsgSession As NIRfsg
+   Private instrumentHandle As IntPtr
 
    Private rfsaResourceName As String = "RFSA"
    Private rfsgResourceName As String = "RFSG"
@@ -213,13 +215,14 @@ Public Class RFmxSpecAnMemoryDpdAdvanced
 
    Private Sub ConfigureRfsgAndRFmx()
       rfsgSession = New NIRfsg(rfsgResourceName, False, True)
-      rfsgSession.Arb.GenerationMode = RfsgWaveformGenerationMode.Script
       rfsgSession.FrequencyReference.Configure(referenceClockSource, referenceClockRate)
       rfsgSession.DeviceEvents.MarkerEvents(markerNumber).ExportedOutputTerminal = RfsgMarkerEventExportedOutputTerminal.PxiTriggerLine0
       rfsgSession.RF.Configure(centerFrequency, dutAverageInputPower)
       rfsgSession.RF.PowerLevelType = powerLevelType
       waveformScript = [String].Format("script {0}{1}repeat forever{1}generate {2} marker{3}(0){1}end repeat{1}end script", scriptName, Environment.NewLine, waveformName, markerNumber)
       rfsgSession.RF.ExternalGain = -rfsgExternalAttenuation
+      instrumentHandle = rfsgSession.GetInstrumentHandle().DangerousGetHandle()
+      NIRfsgPlayback.ReadWaveformFromFileComplex(referenceWaveformFile, referenceWaveformComplexSingle)
 
       instrSession.ConfigureFrequencyReference("", frequencyReferenceSource, frequencyReferenceFrequency)
       specAn.SetSelectedPorts("", selectedPorts)
@@ -251,21 +254,23 @@ Public Class RFmxSpecAnMemoryDpdAdvanced
          Next
          specAn.Dpd.PreDpd.ApplyPreDpdSignalConditioning("", referenceWaveformComplexSingle, dpdApplyDpdIdleDurationPresent,
             preDpdWaveformWithComplexSingle, papr)
+      Else
+         NIRfsgPlayback.ReadPaprFromFile(referenceWaveformFile, 0, papr)
       End If
       If preDpdCfrEnabled = RFmxSpecAnMXDpdPreDpdCfrEnabled.[True] Then
          rfsgSession.Arb.WriteWaveform(waveformName, preDpdWaveformWithComplexSingle)
+
          sampleRate = 1 / preDpdWaveformWithComplexSingle.PrecisionTiming.SampleInterval.TotalSeconds
-         rfsgSession.Arb.IQRate = sampleRate
       Else
-         rfsgSession.Arb.ReadAndDownloadWaveformFromFileTdms(waveformName, referenceWaveformFile, 0)
-         sampleRate = rfsgSession.Arb.Waveforms(waveformName).IQRate
-         papr = rfsgSession.Arb.Waveforms(waveformName).Papr
+         rfsgSession.Arb.WriteWaveform(waveformName, referenceWaveformComplexSingle)
+         sampleRate = 1 / referenceWaveformComplexSingle.PrecisionTiming.SampleInterval.TotalSeconds
       End If
-      rfsgSession.Arb.Waveforms(waveformName).Papr = papr
+      NIRfsgPlayback.StoreWaveformSampleRate(instrumentHandle, waveformName, sampleRate)
+      NIRfsgPlayback.StoreWaveformPapr(instrumentHandle, waveformName, papr)
       runtimeScaling = preFilterGain
-      rfsgSession.Arb.PreFilterGain = runtimeScaling
-      rfsgSession.Arb.SignalBandwidth = 0.8 * sampleRate
-      rfsgSession.Arb.Scripting.WriteScript(waveformScript)
+      NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling)
+      NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * sampleRate)
+      NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript)
       rfsgSession.Initiate()
 
       If preDpdCfrEnabled = RFmxSpecAnMXDpdPreDpdCfrEnabled.True Then
@@ -314,14 +319,14 @@ Public Class RFmxSpecAnMemoryDpdAdvanced
          Console.WriteLine("NMSE            {0}", nmse)
 
          rfsgSession.Abort()
-         rfsgSession.Arb.ClearWaveform(waveformName)
+         NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName)
          rfsgIqRate = 1 / waveformWithDpdComplexSingle.PrecisionTiming.SampleInterval.TotalSeconds
          rfsgSession.Arb.WriteWaveform(waveformName, waveformWithDpdComplexSingle)
-         rfsgSession.Arb.PreFilterGain = runtimeScaling
-         rfsgSession.Arb.IQRate = rfsgIqRate
-         rfsgSession.Arb.Waveforms(waveformName).Papr = (papr + powerOffset)
-         rfsgSession.Arb.SignalBandwidth = 0.8 * rfsgIqRate
-         rfsgSession.Arb.Scripting.WriteScript(waveformScript)
+         NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling)
+         NIRfsgPlayback.StoreWaveformSampleRate(instrumentHandle, waveformName, rfsgIqRate)
+         NIRfsgPlayback.StoreWaveformPapr(instrumentHandle, waveformName, (papr + powerOffset))
+         NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * rfsgIqRate)
+         NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript)
          rfsgSession.Initiate()
       Next
 
@@ -348,7 +353,7 @@ Public Class RFmxSpecAnMemoryDpdAdvanced
       specAn.Ampm.Results.FetchAMToPMTrace("", timeout, referencePowersAMToPM, measuredAMToPM, curveFitAMToPM)
 
       rfsgSession.Abort()
-      rfsgSession.Arb.ClearWaveform(waveformName)
+      NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName)
    End Sub
 
    Private Sub DisplayResults()

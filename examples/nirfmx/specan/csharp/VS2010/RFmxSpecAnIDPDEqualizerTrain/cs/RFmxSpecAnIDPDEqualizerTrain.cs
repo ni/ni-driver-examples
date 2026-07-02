@@ -1,11 +1,10 @@
 /* Steps:
 1. Open RFSG session.
-2. Configure RFSG frequency reference and Generation mode to Script.
+2. Configure RFSG frequency reference.
 3. Configure marker0 to be generated from RFSG on the specified output terminal.
 4. Configure frequency and power level of RF output signal.
-5. Set RFSG External Gain and Power Level Type. #4 and #5 ensure that the average power of the signal at the input of the DUT
+5. Set RFSG External Gain. #4 and #5 ensure that the average power of the signal at the input of the DUT
    matches the user configured DUT Average Input Power.
-   Configure RFSG Power Level Type and Upconverter Frequency Offset Mode
 6. Open RFmx session.
 7. Configure frequency reference of the analyser.
 8. Configure Selected Ports.
@@ -49,6 +48,7 @@ namespace NationalInstruments.Examples.RFmxSpecAnIdpdEqualizerTrain
       RFmxInstrMX instrSession;
       RFmxSpecAnMX specAn;
       NIRfsg rfsgSession;
+      IntPtr instrumentHandle;
 
       string rfsaResourceName = "RFSA";
       string rfsgResourceName = "RFSG";
@@ -140,7 +140,6 @@ namespace NationalInstruments.Examples.RFmxSpecAnIdpdEqualizerTrain
       private void ConfigureRfsg()
       {
          rfsgSession = new NIRfsg(rfsgResourceName, false, true);
-         rfsgSession.Arb.GenerationMode = RfsgWaveformGenerationMode.Script;
          rfsgSession.FrequencyReference.Configure(referenceClockSource, referenceClockRate);
          rfsgSession.DeviceEvents.MarkerEvents[markerNumber].ExportedOutputTerminal =
                                  RfsgMarkerEventExportedOutputTerminal.PxiTriggerLine0;
@@ -148,6 +147,8 @@ namespace NationalInstruments.Examples.RFmxSpecAnIdpdEqualizerTrain
          rfsgSession.RF.PowerLevelType = RfsgRFPowerLevelType.PeakPower;
          rfsgSession.RF.ExternalGain = -rfsgExternalAttenuation;
          rfsgSession.RF.Upconverter.FrequencyOffsetMode = UpconverterFrequencyOffsetMode.Auto;
+
+         instrumentHandle = rfsgSession.GetInstrumentHandle().DangerousGetHandle();
       }
 
       private void ConfigureRFmx()
@@ -211,13 +212,13 @@ namespace NationalInstruments.Examples.RFmxSpecAnIdpdEqualizerTrain
 
          rfsgIqRate = 1 / normalizedEqualizerWaveform.PrecisionTiming.SampleInterval.TotalSeconds;
          rfsgSession.Arb.WriteWaveform(waveformName, normalizedEqualizerWaveform);
-         rfsgSession.Arb.PreFilterGain = runtimeScaling;
-         rfsgSession.Arb.IQRate = rfsgIqRate;
-         rfsgSession.Arb.Waveforms[waveformName].Papr = papr;
-         rfsgSession.Arb.SignalBandwidth = 0.8 * rfsgIqRate;
+         NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling);
+         NIRfsgPlayback.StoreWaveformSampleRate(instrumentHandle, waveformName, rfsgIqRate);
+         NIRfsgPlayback.StoreWaveformPapr(instrumentHandle, waveformName, papr);
+         NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * rfsgIqRate);
          waveformScript = String.Format("script {0}{1}repeat forever{1}generate {2} marker{3}(0){1}end repeat{1}end script",
                scriptName, Environment.NewLine, waveformName, markerNumber);
-         rfsgSession.Arb.Scripting.WriteScript(waveformScript);
+         NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript);
          rfsgSession.Initiate();
 
          specAn.AutoLevel("", signalBandwidth, autoLevelMeasurementInterval, out autoLevelReferenceLevel);
@@ -256,7 +257,7 @@ namespace NationalInstruments.Examples.RFmxSpecAnIdpdEqualizerTrain
             if (rfsgSession != null)
             {
                rfsgSession.Abort();
-               rfsgSession.Arb.ClearWaveform(waveformName);
+               NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName);
                rfsgSession.Close();
                rfsgSession = null;
             }

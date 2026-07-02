@@ -93,6 +93,10 @@
       <Name>NationalInstruments.ModularInstruments.NIRfsg.Fx40</Name>
       <HintPath />
     </Reference>
+    <Reference Include="NationalInstruments.ModularInstruments.NIRfsgPlayback.Fx40">
+      <Name>NationalInstruments.ModularInstruments.NIRfsgPlayback.Fx40</Name>
+      <HintPath />
+    </Reference>
     <Reference Include="NationalInstruments.RFmx.InstrMX.Fx40">
       <Name>NationalInstruments.RFmx.InstrMX.Fx40</Name>
       <HintPath />

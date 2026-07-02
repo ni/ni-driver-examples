@@ -1,18 +1,15 @@
 '[1] Steps:
 '1. Open an NI-RFSG session.
-'2. Configure RFSG frequency reference  & waveform to script mode.
-'3. Configure frequency and power level of RF output signal.
-'4. Set RFSG External Gain, Power Level Type and Pre-filter Gain.
-'5. Export the Marker Event marker0 to the to the terminal specified by the user, which is also used as the source for the digital edge trigger on RFSA.
-'6. Configure RFSG LO Source to Automatic SG SA Shared.
-'7. Read waveform from file and download it to RFSG.
+'2. Configure RFSG frequency reference.
+'3. Configure frequency And power level of RF output signal. 
+'4. Set RFSG External Gain.
+'5. Export the Marker Event marker0 to the to the terminal specified by the user, which Is also used as the source for the digital edge trigger on RFSA. 
+'6. Read waveform from file And download it to RFSG.
+'7. Set Automatic SG SA Shared LO to Enabled.
 
-'[2] Steps to perform ModAcc measurement:
-'8. Retrieve the waveform PAPR, Signal Bandwidth and IQ rate. Add the waveform PAPR to the RFSA reference level while configuring to every list step.
-'   Configure RFSG Signal Bandwidth, IQ rate, and PAPR. With the signal bandwidth configured and the Upconverter Frequency Offset Mode set to
-'   Automatic by default, the RFSG LO is placed outside the signal, if signal bandwidth is less than half of the device instantaneous bandwidth;
-'   otherwise, the LO is placed at the center of the signal.
-'9. Write script to generate the waveform specified in the script. This script is programmed to generate waveform continuously. The marker0 is configured at sample0.
+'[2] Steps to perform ModAcc measurement
+'8.  Set LO Offset Mode to Auto while performing an in-band ModAcc measurement. This causes the RFSG LO to be placed outside the signal, if signal bandwidth Is less than half of the device instantaneous bandwidth; otherwise, the LO Is placed at the center of the signal.
+'9.  Write script to generate the waveform specified in the script. This script Is programmed to generate waveform continuously. The marker0 Is configured at sample0.
 '10. Initiate signal generation.
 '---------------------------------------------------------------------------------------------------------------------------------------------------
 '11. Open a New RFmx session.
@@ -27,21 +24,25 @@
 '20. Initiate OFDMModAcc measurement.
 '21. Fetch OFDMModAcc measurements.
 
-'[3] Steps to perform SEM measurement:
+'[3] Steps to perform SEM measurement
 '22. Stop signal generation.
-'23. Initiate signal generation.
+'23. Configure LO Offset Mode for SEM measurement.
+'    Set LO Offset Mode to Auto if the SEM measurement span does Not include the frequency of the RFSG LO.This causes the RFSG LO to be placed outside the signal, if signal bandwidth Is less than half of the device instantaneous bandwidth; otherwise, the LO Is placed at the center of the signal.
+'    Set LO Offset Mode to No Offset if the SEM measurement span includes the frequency of the RFSG LO. This causes the RFSG LO to be placed at the center of the signal And avoids RFSG LO leakage impacting the SEM offset results.
+'24. Initiate signal generation.
 '---------------------------------------------------------------------------------------------------------------------------------------------------
-'24. Select SEM measurement and disable traces.
-'25. Configure SEM Averaging properties (Averaging Enabled, Averaging Count, Averaging Type)
-'26. Initiate SEM measurement.
-'27. Fetch SEM measurements.
+'25. Select SEM measurement And disable traces. 
+'26. Configure SEM Averaging properties (Averaging Enabled, Averaging Count, Averaging Type)
+'27. Initiate SEM measurement.
+'28. Fetch SEM measurements.
 
-'[4] Steps:
-'28. Close the RFmx Session.
-'29. Close the RFSG session.
-'It is recommended to clear the waveform before closing RFSG session.
+'[4] Steps
+'29. Close the RFmx Session.
+'30. Close the RFSG session. 
+'It Is recommended to clear the waveform before closing RFSG session.
 
 Imports NationalInstruments.ModularInstruments.NIRfsg
+Imports NationalInstruments.ModularInstruments.NIRfsgPlayback
 Imports NationalInstruments.RFmx.InstrMX
 Imports NationalInstruments.RFmx.WlanMX
 
@@ -51,6 +52,7 @@ Namespace NationalInstruments.Examples.RFmxWlanFemTestWithAutomaticSGSASharedLO
 		Private instrSession As RFmxInstrMX
 		Private wlan As RFmxWlanMX
 		Private rfsgSession As NIRfsg
+		Private instrumentHandle As IntPtr
 
 		Private centerFrequency As Double
 
@@ -85,6 +87,7 @@ Namespace NationalInstruments.Examples.RFmxWlanFemTestWithAutomaticSGSASharedLO
 		Private vectorAveragingTimeAlignmentEnabled As RFmxWlanMXOfdmModAccVectorAveragingTimeAlignmentEnabled
 		Private vectorAveragingPhaseAlignmentEnabled As RFmxWlanMXOfdmModAccVectorAveragingPhaseAlignmentEnabled
 
+		Private rfsgLOOffsetMode As NIRfsgPlaybackLOOffsetMode
 		Private semAveragingEnabled As RFmxWlanMXSemAveragingEnabled
 		Private semAveragingCount As Int32
 		Private semAveragingType As RFmxWlanMXSemAveragingType
@@ -183,6 +186,7 @@ Namespace NationalInstruments.Examples.RFmxWlanFemTestWithAutomaticSGSASharedLO
 			vectorAveragingTimeAlignmentEnabled = RFmxWlanMXOfdmModAccVectorAveragingTimeAlignmentEnabled.[True]
 			vectorAveragingPhaseAlignmentEnabled = RFmxWlanMXOfdmModAccVectorAveragingPhaseAlignmentEnabled.[True]
 
+			rfsgLOOffsetMode = NIRfsgPlaybackLOOffsetMode.Auto
 			semAveragingEnabled = RFmxWlanMXSemAveragingEnabled.[False]
 			semAveragingCount = 10
 			semAveragingType = RFmxWlanMXSemAveragingType.Rms
@@ -198,22 +202,14 @@ Namespace NationalInstruments.Examples.RFmxWlanFemTestWithAutomaticSGSASharedLO
 		Private Sub ConfigureRfsg()
 			rfsgSession = New NIRfsg(rfsgResourceName, True, False)
 			rfsgSession.FrequencyReference.Configure(rfsgFrequencyReferenceSource, rfsgFrequency)
-			rfsgSession.Arb.GenerationMode = RfsgWaveformGenerationMode.Script
 			rfsgSession.RF.Configure(centerFrequency, powerLevel)
-			rfsgSession.RF.PowerLevelType = RfsgRFPowerLevelType.PeakPower
-			rfsgSession.Arb.PreFilterGain = -1.5
-			rfsgSession.RF.ExternalGain = -1 * rfsgExternalAttenuation
 			rfsgSession.DeviceEvents.MarkerEvents(markerNumber).ExportedOutputTerminal = RfsgMarkerEventExportedOutputTerminal.Pfi0
-			rfsgSession.RF.LocalOscillator.Source = RfsgLocalOscillatorSource.AutomaticSGSAShared
-			rfsgSession.RF.Upconverter.FrequencyOffsetMode = UpconverterFrequencyOffsetMode.Auto
-			rfsgSession.Arb.ReadAndDownloadWaveformFromFileTdms(waveformName, waveformFilePath, 0)
-			Dim waveformPapr As Double = rfsgSession.Arb.Waveforms(waveformName).Papr
-			Dim waveformSignalBandwidth As Double = rfsgSession.Arb.Waveforms(waveformName).SignalBandwidth
-			Dim waveformIqRate As Double = rfsgSession.Arb.Waveforms(waveformName).IQRate
-			rfsgSession.Arb.SignalBandwidth = waveformSignalBandwidth
-			rfsgSession.Arb.IQRate = waveformIqRate
-			rfsgSession.RF.PeakPowerAdjustment = waveformPapr
-			rfsgSession.Arb.Scripting.WriteScript(script)
+			rfsgSession.RF.ExternalGain = -1 * rfsgExternalAttenuation
+			instrumentHandle = rfsgSession.GetInstrumentHandle().DangerousGetHandle()
+			NIRfsgPlayback.ReadAndDownloadWaveformFromFile(instrumentHandle, waveformFilePath, waveformName)
+			NIRfsgPlayback.StoreAutomaticSGSASharedLO(instrumentHandle, "", RfsgPlaybackAutomaticSGSASharedLO.Enabled)
+			NIRfsgPlayback.StoreWaveformLOOffsetMode(instrumentHandle, waveformName, rfsgLOOffsetMode)
+			NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, script)
 			rfsgSession.Initiate()
 		End Sub
 
@@ -239,6 +235,7 @@ Namespace NationalInstruments.Examples.RFmxWlanFemTestWithAutomaticSGSASharedLO
 			RetrieveOfdmModAccResults()
 
 			rfsgSession.Abort()
+			NIRfsgPlayback.StoreWaveformLOOffsetMode(instrumentHandle, waveformName, rfsgLOOffsetMode)
 			rfsgSession.Initiate()
 
 			wlan.SelectMeasurements("", RFmxWlanMXMeasurementTypes.Sem, False)
@@ -300,7 +297,7 @@ Namespace NationalInstruments.Examples.RFmxWlanFemTestWithAutomaticSGSASharedLO
 			End If
 			If rfsgSession IsNot Nothing Then
 				rfsgSession.Abort()
-				rfsgSession.Arb.ClearWaveform(waveformName)
+				NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName)
 				rfsgSession.Close()
 				rfsgSession = Nothing
 			End If

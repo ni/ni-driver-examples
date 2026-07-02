@@ -1,12 +1,12 @@
 /* Steps:
 1. Open RFSG session.
-2. Configure RFSG frequency reference and Generation mode to Script.
+2. Configure RFSG frequency reference.
 3. Configure marker0 to be generated from RFSG on the specified output terminal.
 4. Configure frequency and power level of RF output signal.
 5. Set RFSG External Gain. #4 and #5 ensure that the average power of the signal at the input of the DUT
    matches the user configured DUT Average Input Power.
 6. Read waveform from file and download Waveform from file to RFSG.
-   Set RFSG IQ Rate and Pre-filter Gain.
+   Set Waveform Runtime Scaling to the desired Pre-filter Gain.
    Read waveform sample rate, multiply by 0.8 and set the result to the signal bandwidth.
    Write script to generate the waveform specified in the script. This script is programmed
    to generate waveform continuously, with marker0 aligned to sample index 0.
@@ -210,18 +210,16 @@ int main(int argc, char *argv[])
 
    RfsgCheckWarn(niRFSG_init(rfsgResourceName, VI_TRUE, VI_FALSE, &rfsgSession));
    RfsgCheckWarn(niRFSG_ConfigureRefClock(rfsgSession, refClockSource, rfsgFrequency));
-   RfsgCheckWarn(niRFSG_ConfigureGenerationMode(rfsgSession, NIRFSG_VAL_SCRIPT));
-   RfsgCheckWarn(niRFSG_SetAttributeViInt32(rfsgSession, "", NIRFSG_ATTR_POWER_LEVEL_TYPE, NIRFSG_VAL_PEAK_POWER));
    RfsgCheckWarn(niRFSG_ExportSignal(rfsgSession, NIRFSG_VAL_MARKER_EVENT, NIRFSG_VAL_MARKER0,
       markerEventOutputTerminal));
    RfsgCheckWarn(niRFSG_ConfigureRF(rfsgSession, centerFrequency, DUTAverageInputPower));
    externalGain = -1 * rfsgExternalAttenuation;
    RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_EXTERNAL_GAIN, externalGain));
-   RfsgCheckWarn(niRFSG_ReadAndDownloadWaveformFromFileTDMS(rfsgSession, waveformName, waveFormFileName, 0));
-   RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_ARB_PRE_FILTER_GAIN, runtimeScaling));
-   RfsgCheckWarn(niRFSG_GetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_IQ_RATE, &sampleRate));
-   RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_SIGNAL_BANDWIDTH, 0.8*sampleRate));
-   RfsgCheckWarn(niRFSG_WriteScript(rfsgSession, script));
+   playbackCheckWarn(niRFSGPlayback_ReadAndDownloadWaveformFromFile(rfsgSession, waveFormFileName, waveformName));
+   playbackCheckWarn(niRFSGPlayback_StoreWaveformRuntimeScaling(rfsgSession, waveformName, runtimeScaling));
+   playbackCheckWarn(niRFSGPlayback_RetrieveWaveformSampleRate(rfsgSession, waveformName, &sampleRate));
+   playbackCheckWarn(niRFSGPlayback_StoreWaveformSignalBandwidth(rfsgSession, waveformName, 0.8*sampleRate));
+   playbackCheckWarn(niRFSGPlayback_SetScriptToGenerateSingleRFSG(rfsgSession, script));
    RfsgCheckWarn(niRFSG_Initiate(rfsgSession));
 
    /* Initialize a session */
@@ -288,15 +286,15 @@ int main(int argc, char *argv[])
    }
 
    RfsgCheckWarn(niRFSG_Abort(rfsgSession));
-   RfsgCheckWarn(niRFSG_ClearArbWaveform(rfsgSession, waveformName));
+   playbackCheckWarn(niRFSGPlayback_ClearWaveform(rfsgSession, waveformName));
 
    RfsgCheckWarn(niRFSG_WriteArbWaveformComplexF32(rfsgSession, waveformName, actualWaveformSize,
       (NIComplexNumberF32*)waveformWithDPDF32, VI_FALSE));
-   RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_ARB_PRE_FILTER_GAIN, runtimeScaling));
-   RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_IQ_RATE, 1 / dxOut));
-   RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_PEAK_POWER_ADJUSTMENT, (ViReal64)(PAPR + powerOffset)));
-   RfsgCheckWarn(niRFSG_SetAttributeViReal64(rfsgSession, "", NIRFSG_ATTR_SIGNAL_BANDWIDTH, 0.8*(1 / dxOut)));
-   RfsgCheckWarn(niRFSG_WriteScript(rfsgSession, script));
+   playbackCheckWarn(niRFSGPlayback_StoreWaveformRuntimeScaling(rfsgSession, waveformName, runtimeScaling));
+   playbackCheckWarn(niRFSGPlayback_StoreWaveformSampleRate(rfsgSession, waveformName, 1 / dxOut));
+   playbackCheckWarn(niRFSGPlayback_StoreWaveformPAPR(rfsgSession, waveformName, (ViReal64)(PAPR + powerOffset)));
+   playbackCheckWarn(niRFSGPlayback_StoreWaveformSignalBandwidth(rfsgSession, waveformName, 0.8*(1 / dxOut)));
+   playbackCheckWarn(niRFSGPlayback_SetScriptToGenerateSingleRFSG(rfsgSession, script));
    RfsgCheckWarn(niRFSG_Initiate(rfsgSession));
 
    RFmxCheckWarn(RFmxSpecAn_DPDFetchLookupTable(instrumentHandle, "", timeout, NULL, NULL, 0, &actualArraySize));
@@ -402,6 +400,16 @@ Error:
          printf("WARNING: %s\n", errorMessage);
    }
 
+   if (playbackError)
+   {
+      errorOccured = playbackError;
+      niRFSGPlayback_GetError(&lastErrorCode, MAX_ERROR_DESCRIPTION, errorMessage);
+      if (playbackError < 0)
+         printf("ERROR: %s\n", errorMessage);
+      else
+         printf("WARNING: %s\n", errorMessage);
+   }
+
    if (instrumentHandle)
    {
       RFmxSpecAn_Close(instrumentHandle, RFMXSPECAN_VAL_FALSE);
@@ -409,7 +417,7 @@ Error:
    if (rfsgSession)
    {
       niRFSG_Abort(rfsgSession);
-      niRFSG_ClearArbWaveform(rfsgSession, waveformName);
+      niRFSGPlayback_ClearWaveform(rfsgSession, waveformName);
       niRFSG_close(rfsgSession);
    }
    if (referencePowersAMToAM)

@@ -1,6 +1,6 @@
 ' Steps:
 '1. Open RFSG session.
-'2. Configure RFSG frequency reference, generation Mode to Script, power level type and Pre-filter Gain.
+'2. Configure RFSG frequency reference.
 '3. Configure marker0 to be generated from RFSG on the specified output terminal.
 '4. Configure frequency and power level of RF output signal.
 '5. Set RFSG External Gain. #4 and #5 ensure that the average power of the signal at the input of the DUT
@@ -55,6 +55,7 @@ Public Class RFmxSpecAnMemoryDpd
    Private instrSession As RFmxInstrMX
    Private specAn As RFmxSpecAnMX
    Private rfsgSession As NIRfsg
+   Private instrumentHandle As IntPtr
 
    Private rfsaResourceName As String = "RFSA"
    Private rfsgResourceName As String = "RFSG"
@@ -155,19 +156,18 @@ Public Class RFmxSpecAnMemoryDpd
 
    Private Sub ConfigureRfsg()
       rfsgSession = New NIRfsg(rfsgResourceName, False, True)
-      rfsgSession.Arb.GenerationMode = RfsgWaveformGenerationMode.Script
-      rfsgSession.RF.PowerLevelType = RfsgRFPowerLevelType.PeakPower
       rfsgSession.FrequencyReference.Configure(referenceClockSource, referenceClockRate)
       rfsgSession.DeviceEvents.MarkerEvents(markerNumber).ExportedOutputTerminal = RfsgMarkerEventExportedOutputTerminal.PxiTriggerLine0
       rfsgSession.RF.Configure(centerFrequency, dutAverageInputPower)
       waveformScript = [String].Format("script {0}{1}repeat forever{1}generate {2} marker{3}(0){1}end repeat{1}end script", scriptName, Environment.NewLine, waveformName, markerNumber)
       rfsgSession.RF.ExternalGain = -rfsgExternalAttenuation
-      rfsgSession.Arb.ReadAndDownloadWaveformFromFileTdms(waveformName, referenceWaveformFile, 0)
+      instrumentHandle = rfsgSession.GetInstrumentHandle().DangerousGetHandle()
+      NIRfsgPlayback.ReadAndDownloadWaveformFromFile(instrumentHandle, referenceWaveformFile, waveformName)
       runtimeScaling = preFilterGain
-      rfsgSession.Arb.PreFilterGain = runtimeScaling
-      sampleRate = rfsgSession.Arb.Waveforms(waveformName).IQRate
-      rfsgSession.Arb.SignalBandwidth = 0.8 * sampleRate
-      rfsgSession.Arb.Scripting.WriteScript(waveformScript)
+      NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling)
+      NIRfsgPlayback.RetrieveWaveformSampleRate(instrumentHandle, waveformName, sampleRate)
+      NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * sampleRate)
+      NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript)
       rfsgSession.Initiate()
    End Sub
 
@@ -208,14 +208,14 @@ Public Class RFmxSpecAnMemoryDpd
          specAn.Dpd.ApplyDpd.ApplyDigitalPredistortion("", referenceWaveformComplexSingle, RFmxSpecAnMXDpdApplyDpdIdleDurationPresent.[False], timeout, waveformWithDpdComplexSingle, papr,
             powerOffset)
          rfsgSession.Abort()
-         rfsgSession.Arb.ClearWaveform(waveformName)
+         NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName)
          rfsgIqRate = 1 / waveformWithDpdComplexSingle.PrecisionTiming.SampleInterval.TotalSeconds
          rfsgSession.Arb.WriteWaveform(waveformName, waveformWithDpdComplexSingle)
-         rfsgSession.Arb.PreFilterGain = runtimeScaling
-         rfsgSession.Arb.IQRate = rfsgIqRate
-         rfsgSession.Arb.Waveforms(waveformName).Papr = (papr + powerOffset)
-         rfsgSession.Arb.SignalBandwidth = 0.8 * rfsgIqRate
-         rfsgSession.Arb.Scripting.WriteScript(waveformScript)
+         NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling)
+         NIRfsgPlayback.StoreWaveformSampleRate(instrumentHandle, waveformName, rfsgIqRate)
+         NIRfsgPlayback.StoreWaveformPapr(instrumentHandle, waveformName, (papr + powerOffset))
+         NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * rfsgIqRate)
+         NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript)
          rfsgSession.Initiate()
 
          specAn.Dpd.Results.FetchDpdPolynomial("", timeout, dpdPolynomial)
@@ -239,7 +239,7 @@ Public Class RFmxSpecAnMemoryDpd
       specAn.Ampm.Results.FetchAMToPMTrace("", timeout, referencePowersAMToPM, measuredAMToPM, curveFitAMToPM)
 
       rfsgSession.Abort()
-      rfsgSession.Arb.ClearWaveform(waveformName)
+      NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName)
    End Sub
 
    Private Sub DisplayResults()

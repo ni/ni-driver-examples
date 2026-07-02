@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="RFmxNRListModeWithSGSAHandshaking"
+	Name="RFmxBTCSPowerRamp"
 	ProjectGUID="{E17F6106-F89F-4162-8CE2-7F383B9F23E2}"
-	RootNamespace="RFmxNRListModeWithSGSAHandshaking"
+	RootNamespace="RFmxBTCSPowerRamp"
 	TargetFrameworkVersion="0"
 	>
 	<Platforms>
@@ -44,7 +44,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="&quot;$(NIEXTCCOMPILERSUPP)include&quot;;&quot;$(VXIPNPPATH)WinNT\Include&quot;;&quot;$(NIIVIPATH)Include&quot;"
+				AdditionalIncludeDirectories="$(NIEXTCCOMPILERSUPP)include"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				StringPooling="true"
 				RuntimeLibrary="0"
@@ -69,12 +69,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="niRFmxInstr.lib niRFmxNR.lib niRFSG.lib niRFSGPlayback.lib"
-				OutputFile="$(OutDir)/RFmxNRListModeWithSGSAHandshaking.exe"
+				AdditionalDependencies="niRFmxInstr.lib niRFmxBT.lib"
+				OutputFile="$(OutDir)/RFmxBTCSPowerRamp.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(NIEXTCCOMPILERSUPP)lib64\msvc&quot;;&quot;$(NIIVIPATH)Lib_x64\msc&quot;"
-				ProgramDatabaseFile="$(IntDir)/RFmxNRListModeWithSGSAHandshaking.pdb"
+				AdditionalLibraryDirectories="$(NIEXTCCOMPILERSUPP)lib64\msvc"
+				ProgramDatabaseFile="$(IntDir)/RFmxBTCSPowerRamp.pdb"
 				SubSystem="1"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -92,7 +92,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="$(IntDir)/RFmxNRListModeWithSGSAHandshaking.bsc"
+				OutputFile="$(IntDir)/RFmxBTCSPowerRamp.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -132,7 +132,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(NIEXTCCOMPILERSUPP)include&quot;;&quot;$(VXIPNPPATH)WinNT\Include&quot;;&quot;$(NIIVIPATH)Include&quot;"
+				AdditionalIncludeDirectories="$(NIEXTCCOMPILERSUPP)include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -159,13 +159,13 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="niRFmxInstr.lib niRFmxNR.lib niRFSG.lib niRFSGPlayback.lib"
-				OutputFile="$(OutDir)/RFmxNRListModeWithSGSAHandshaking.exe"
+				AdditionalDependencies="niRFmxInstr.lib niRFmxBT.lib"
+				OutputFile="$(OutDir)/RFmxBTCSPowerRamp.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
-				AdditionalLibraryDirectories="&quot;$(NIEXTCCOMPILERSUPP)lib64\msvc&quot;;&quot;$(NIIVIPATH)Lib_x64\msc&quot;"
+				AdditionalLibraryDirectories="$(NIEXTCCOMPILERSUPP)lib64\msvc"
 				GenerateDebugInformation="true"
-				ProgramDatabaseFile="$(IntDir)/RFmxNRListModeWithSGSAHandshaking.pdb"
+				ProgramDatabaseFile="$(IntDir)/RFmxBTCSPowerRamp.pdb"
 				SubSystem="1"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -183,7 +183,7 @@
 			<Tool
 				Name="VCBscMakeTool"
 				SuppressStartupBanner="true"
-				OutputFile="$(IntDir)/RFmxNRListModeWithSGSAHandshaking.bsc"
+				OutputFile="$(IntDir)/RFmxBTCSPowerRamp.bsc"
 			/>
 			<Tool
 				Name="VCFxCopTool"
@@ -229,7 +229,7 @@
 			Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 			>
 			<File
-				RelativePath=".\RFmxNRListModeWithSGSAHandshaking.c"
+				RelativePath=".\RFmxBTCSPowerRamp.c"
 				>
 			</File>
 		</Filter>

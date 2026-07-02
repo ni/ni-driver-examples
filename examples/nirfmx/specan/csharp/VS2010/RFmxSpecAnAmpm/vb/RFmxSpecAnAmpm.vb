@@ -1,6 +1,6 @@
 ' Steps
 '1. Open RFSG session.
-'2. Configure RFSG frequency reference, generation Mode to Script, power level type and Pre-filter Gain.
+'2. Configure RFSG frequency reference.
 '3. Configure marker0 to be generated from RFSG on the specified output terminal.
 '4. Configure frequency and power level of RF output signal.
 '5. Set RFSG External Gain. #4 and #5 ensure that the average power of the signal at
@@ -38,6 +38,7 @@ Public Class RFmxSpecAnAmpm
    Private instrSession As RFmxInstrMX
    Private specAn As RFmxSpecAnMX
    Private rfsgSession As NIRfsg
+   Private instrumentHandle As IntPtr
 
    Private rfsaResourceName As String = "RFSA"
    Private rfsgResourceName As String = "RFSG"
@@ -133,19 +134,18 @@ Public Class RFmxSpecAnAmpm
       ' Configure RFSG
 
       rfsgSession = New NIRfsg(rfsgResourceName, True, True)
-      rfsgSession.Arb.GenerationMode = RfsgWaveformGenerationMode.Script
-      rfsgSession.RF.PowerLevelType = RfsgRFPowerLevelType.PeakPower
       rfsgSession.FrequencyReference.Configure(referenceClockSource, referenceClockRate)
       rfsgSession.DeviceEvents.MarkerEvents(markerNumber).ExportedOutputTerminal = markerEventExportedOutputTerminal
       rfsgSession.RF.Configure(centerFrequency, dutAverageInputPower)
       waveformScript = "script " & scriptName & vbLf & vbTab & vbTab & "Repeat forever" & vbLf & vbTab & vbTab & vbTab & "Generate " & waveformName & " marker" & markerNumber & "(0)" & vbLf & vbTab & vbTab & "end repeat" & vbLf & "end script"
       rfsgSession.RF.ExternalGain = -rfsgExternalAttenuation
-      rfsgSession.Arb.ReadAndDownloadWaveformFromFileTdms(waveformName, waveformFileName, 0)
-      sampleRate = rfsgSession.Arb.Waveforms(waveformName).IQRate
+      instrumentHandle = rfsgSession.GetInstrumentHandle().DangerousGetHandle()
+      NIRfsgPlayback.ReadAndDownloadWaveformFromFile(instrumentHandle, waveformFileName, waveformName)
       runtimeScaling = preFilterGain
-      rfsgSession.Arb.PreFilterGain = runtimeScaling
-      rfsgSession.Arb.SignalBandwidth = 0.8 * sampleRate
-      rfsgSession.Arb.Scripting.WriteScript(waveformScript)
+      NIRfsgPlayback.StoreWaveformRuntimeScaling(instrumentHandle, waveformName, runtimeScaling)
+      NIRfsgPlayback.RetrieveWaveformSampleRate(instrumentHandle, waveformName, sampleRate)
+      NIRfsgPlayback.StoreWaveformSignalBandwidth(instrumentHandle, waveformName, 0.8 * sampleRate)
+      NIRfsgPlayback.SetScriptToGenerateSingleRfsg(instrumentHandle, waveformScript)
       rfsgSession.Initiate()
    End Sub
 
@@ -192,7 +192,7 @@ Public Class RFmxSpecAnAmpm
       specAn.Ampm.Results.FetchAMToPMTrace("", timeout, referencePowersAMToPM, measuredAMToPM, curveFitAMToPM)
 
       rfsgSession.Abort()
-      rfsgSession.Arb.ClearWaveform(waveformName)
+      NIRfsgPlayback.ClearWaveform(instrumentHandle, waveformName)
    End Sub
 
    Private Sub PrintResults()
