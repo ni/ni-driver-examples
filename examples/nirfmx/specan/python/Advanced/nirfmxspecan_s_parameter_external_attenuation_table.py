@@ -46,7 +46,7 @@ def example(resource_name, option_string):
 
     # S-parameter external attenuation table
     table_name = ""
-    format_ = nirfmxinstr.LinearInterpolationFormat.REAL_AND_IMAGINARY
+    format_ = nirfmxinstr.LinearInterpolationFormat.MAGNITUDE_AND_PHASE
     s_parameter_orientation = nirfmxinstr.SParameterOrientation.PORT1_TOWARDS_DUT
     s_parameter_type = nirfmxinstr.SParameterType.SCALAR
 

@@ -188,7 +188,6 @@ def example(resource_name, option_string):
             specan.sem.results.fetch_composite_measurement_status("", timeout)
         )
 
-        # Print results in the same style as the .NET example.
         composite_pass = (
             composite_measurement_status == nirfmxspecan.SemCompositeMeasurementStatus.PASS
             or composite_measurement_status == nirfmxspecan.SemCompositeMeasurementStatus.PASS.value

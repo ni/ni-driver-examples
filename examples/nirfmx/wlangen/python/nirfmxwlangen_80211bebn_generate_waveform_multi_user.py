@@ -228,7 +228,7 @@ def example(resource_names, power_levels, external_attenuations, option_string):
         print(f"Waveform Duration{{s}} : {waveform_duration}")
         print(f"Packet Extension Duration{{s}} : {packet_extension_duration}")
 
-        # Fetch actual headroom per channel (matches .NET GetActualHeadroom loop)
+        # Fetch actual headroom per channel
         actual_headroom = [None] * num_tx
         for i in range(num_tx):
             channel_string = f"channel{i}"

@@ -17,8 +17,6 @@ r"""Steps:
 16. Initiate IDPD measurement.
 17. Fetch trained equalizer coefficients.
 18. Close sessions.
-
-Note: Full deployment requires NIRfsg + NIRfsgPlayback and a TDMS waveform file.
 """
 
 import argparse
@@ -49,10 +47,7 @@ def _normalize_complex_waveform(waveform):
 
 
 def example(resource_name, rfsg_resource_name, option_string, reference_waveform_file):
-    """Run Example.
-
-    Note: Full deployment requires an NIRfsg session + TDMS waveform file.
-    """
+    """Run Example."""
     selected_ports = ""
     center_frequency = 1.0e9     # Hz
     reference_level = 0.0        # dBm
