@@ -183,7 +183,7 @@ def example(resource_name, option_string):
             False,
         )
 
-        # Create and Download Waveform (MIMO call matches .NET RFSGCreateAndDownloadMIMOWaveforms)
+        # Create and Download Waveform
         wlangen_session.rfsg_create_and_download_mimo_waveforms([rfsg_session], "", waveform_name)
 
         # Fetch results from trigger frame session

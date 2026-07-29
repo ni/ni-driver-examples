@@ -1,28 +1,27 @@
 r"""Steps:
 1. Open NI-RFSG sessions.
-2. Configure Reference Clock Source, Frequency, Power Level and External Gain.
-3. Export marker0 event to the specified output terminal.
-4. Read the waveforms from the tdms file and write them to RFSG memory.
+2. Configure Reference Clock Source, Frequency, Power Level Type, Power Level and External Gain.
+3. Export marker0 event to per-chain PXI trigger line.
+4. Read waveform from TDMS file and download it to RFSG memory (per-chain waveform index).
 5. Set waveform generation mode to Script.
-6. Set the Script to be used for generation.
-7. Synchronize the generators using TClk.
-8. Initiate generation.
-9. Open a new RFmx Session.
-10. Configure Frequency Reference.
-11. Configure Number of Receive Chains and Center Frequency.
-12. Configure Selected Ports and Signal Analyser properties (Reference Level and External Attenuation).
-13. Configure Trigger Type and Trigger Parameters.
-14. Configure Frequency Range, CC bandwidth, Cell ID, Band, BWP Subcarrier Spacing and Auto RB Detection Enabled.
-15. Configure PUSCH and PUSCH RB Allocation.
-16. Configure PUSCH DMRS including Antenna Ports and Number of CDM Groups.
-17. Select ModAcc measurement and enable Traces.
-18. Configure the interval used for Pre-FFT error estimation, settings for the post-FFT tracking,
+6. Write script and synchronize the generators using NI-TClk.
+7. Initiate generation.
+8. Open a new RFmx Session.
+9. Configure Frequency Reference.
+10. Configure Number of Receive Chains and Center Frequency.
+11. Configure Selected Ports and Signal Analyser properties (Reference Level and External Attenuation).
+12. Configure Trigger Type and Trigger Parameters.
+13. Configure Frequency Range, CC bandwidth, Cell ID, Band, BWP Subcarrier Spacing and Auto RB Detection Enabled.
+14. Configure PUSCH and PUSCH RB Allocation.
+15. Configure PUSCH DMRS including Antenna Ports and Number of CDM Groups.
+16. Select ModAcc measurement and enable Traces.
+17. Configure the interval used for Pre-FFT error estimation, settings for the post-FFT tracking,
     Synchronization Mode and Averaging Parameters for the ModAcc measurement.
-19. Configure Measurement Interval.
-20. Initiate the Measurement.
-21. Fetch ModAcc Measurements and Traces.
-22. Close RFmx Session.
-23. Close the NI-RFSG sessions.
+18. Configure Measurement Interval.
+19. Initiate the Measurement.
+20. Fetch ModAcc Measurements and Traces.
+21. Close RFmx Session.
+22. Close the NI-RFSG sessions.
 """
 
 import argparse
@@ -30,6 +29,7 @@ import os
 import sys
 
 import nirfmxnr
+import nitclk
 import numpy
 
 import nirfmxinstr
@@ -56,7 +56,8 @@ def example(rfsg_resource_names, rfsa_resource_names, option_string, waveform_fi
     rfsg_external_attenuation = 0.0  # dB
     power_level = -10.0  # dBm
 
-    frequency_reference_source = "PxiClock"
+    rfsg_reference_clock_source = "PXI_CLK"
+    frequency_reference_source = "PXI_Clk"
     frequency_reference_frequency = 10.0e6  # Hz
 
     enable_trigger = True
@@ -96,6 +97,11 @@ def example(rfsg_resource_names, rfsa_resource_names, option_string, waveform_fi
     averaging_enabled = nirfmxnr.ModAccAveragingEnabled.FALSE
     averaging_count = 10
 
+    waveform_name = "Wfm"
+    script_name = "GenerateWfm"
+    marker_index = "0"
+    pxi_trigger_lines = ["PXI_Trig0", "PXI_Trig1"]
+
     timeout = 10.0  # s
 
     rfsg_sessions = []
@@ -103,19 +109,31 @@ def example(rfsg_resource_names, rfsa_resource_names, option_string, waveform_fi
     nr = None
 
     try:
-        # --- Configure and start RFSG sessions ---
+        # --- Configure RFSG sessions ---
         for i, rfsg_name in enumerate(rfsg_resource_names):
             session = nirfsg.Session(rfsg_name)
-            session.frequency_reference.configure_frequency_reference(
-                nirfsg.FrequencyReferenceSource.PXI_CLOCK, frequency_reference_frequency
+            session.configure_ref_clock(rfsg_reference_clock_source, frequency_reference_frequency)
+            session.configure_rf(center_frequency, power_level)
+            session.power_level_type = nirfsg.PowerLevelType.PEAK
+            session.external_gain = -1.0 * rfsg_external_attenuation
+            session.markers[marker_index].exported_marker_event_output_terminal = pxi_trigger_lines[i]
+            session.read_and_download_waveform_from_file_tdms(waveform_name, waveform_file_path, i)
+            session.generation_mode = nirfsg.GenerationMode.SCRIPT
+            waveform_script = (
+                f"script {script_name}\n"
+                "repeat forever\n"
+                f"generate {waveform_name} marker{marker_index}(0)\n"
+                "end repeat\n"
+                "end script"
             )
-            session.rf.configure_rf(center_frequency, power_level)
-            session.rf.external_gain = -1.0 * rfsg_external_attenuation
-            # Note: With nirfsgplayback, you would load a 2x2 MIMO waveform here per chain.
-            # The .NET example uses NR_FR1_UL_MIMO_BW-100MHz_SCS-30kHz_Ports-01_SF-1ms.tdms
-            # Since nirfsgplayback is not available in Python, CW generation is used.
-            session.initiate()
+            session.write_script(waveform_script)
+            session.selected_script = script_name
             rfsg_sessions.append(session)
+
+        # Synchronize and initiate all RFSG sessions using NI-TClk
+        nitclk.configure_for_homogeneous_triggers(rfsg_sessions)
+        nitclk.synchronize(rfsg_sessions, 0.0)
+        nitclk.initiate(rfsg_sessions)
 
         # --- Configure RFmx ---
         instr_session = nirfmxinstr.Session(",".join(rfsa_resource_names), option_string)
@@ -245,6 +263,10 @@ def example(rfsg_resource_names, rfsa_resource_names, option_string, waveform_fi
         for session in rfsg_sessions:
             try:
                 session.abort()
+            except Exception:
+                pass
+            try:
+            try:
                 session.close()
             except Exception:
                 pass
@@ -267,7 +289,7 @@ def _main(argsv):
         help="Comma-separated resource names of NI-RFSA (RFmx Instr) devices.",
     )
     parser.add_argument("-op", "--option-string", default="", type=str, help="Option string")
-    parser.add_argument("-wf", "--waveform-file-path", default=_DEFAULT_WAVEFORM_FILE, help="Path to NR waveform support TDMS file.")
+    parser.add_argument("-wf", "--waveform-file-path", default=_DEFAULT_WAVEFORM_FILE, help="Path to NR MIMO waveform TDMS file.")
     args = parser.parse_args(argsv)
     example(
         args.rfsg_resource_names.split(","),
@@ -287,7 +309,7 @@ def test_main():
 
 
 def test_example():
-    example(["RFSG1", "RFSG2"], ["RFSA1", "RFSA2"], {})
+    example(["RFSG1", "RFSG2"], ["RFSA1", "RFSA2"], "", _DEFAULT_WAVEFORM_FILE)
 
 
 if __name__ == "__main__":

@@ -116,11 +116,11 @@ def example(rfsg_resource_name, rfsa_resource_name, option_string, waveform_file
     try:
         # --- Configure and start RFSG ---
         rfsg_session = nirfsg.Session(rfsg_resource_name)
-        rfsg_session.frequency_reference.configure_frequency_reference(
-            nirfsg.FrequencyReferenceSource.ONBOARD_CLOCK, frequency_reference_frequency
+        rfsg_session.configure_ref_clock(
+            frequency_reference_source, frequency_reference_frequency
         )
         rfsg_session.generation_mode = nirfsg.GenerationMode.SCRIPT
-        rfsg_session.rf.configure_rf(center_frequency, power_level)
+        rfsg_session.configure_rf(center_frequency, power_level)
         rfsg_session.power_level_type = nirfsg.PowerLevelType.PEAK
         rfsg_session.arb_pre_filter_gain = -1.5
         rfsg_session.external_gain = -1.0 * rfsg_external_attenuation
@@ -137,6 +137,7 @@ def example(rfsg_resource_name, rfsa_resource_name, option_string, waveform_file
         rfsg_session.iq_rate = waveform_iq_rate
         rfsg_session.peak_power_adjustment = waveform_papr
         rfsg_session.write_script(script)
+        rfsg_session.selected_script = "GenerateWaveform"
         rfsg_session.initiate()
 
         # --- Configure RFmx ---

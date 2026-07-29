@@ -3,34 +3,35 @@ RFmx NR FEM Test with Automatic SG/SA Shared LO Example
 
 Steps (RFSG):
 1. Open NI-RFSG session.
-2. Configure RFSG frequency reference.
-3. Configure RF output frequency and power level.
-4. Set Automatic SG/SA Shared LO to Enabled (via NIRfsgPlayback StoreAutomaticSGSASharedLO).
-5. Set LO Offset Mode to Auto while performing an in-band ModAcc measurement.
-6. Initiate signal generation.
+2. Set generation mode to Script.
+3. Configure RFSG frequency reference.
+4. Configure RF output frequency and power level.
+5. Set RFSG LO Source to Automatic_SG_SA_Shared.
+6. Read waveform from file and download it to RFSG memory.
+7. Write generation script and initiate signal generation.
 
 Steps (ModAcc measurement):
-7. Open a new RFmx session.
-8. Configure the Frequency Reference properties (Clock Source and Clock Frequency).
-9. Configure Selected Ports.
-10. Set LO Source to Automatic_SG_SA_Shared.
-11. Configure basic signal properties (Center Frequency, Reference Level and External Attenuation).
-12. Configure IQ Power Edge Trigger properties.
-13. Configure Link Direction, Frequency Range, CC Bandwidth, Cell ID, Band and BWP Subcarrier Spacing.
-14. Set LO Leakage Avoidance Enabled to True.
-15. Select ModAcc measurement and disable Traces.
-16. Initiate ModAcc measurement.
-17. Fetch ModAcc measurements.
+8.  Open a new RFmx session.
+9.  Configure the Frequency Reference properties (Clock Source and Clock Frequency).
+10. Configure Selected Ports.
+11. Set LO Source to Automatic_SG_SA_Shared.
+12. Configure basic signal properties (Center Frequency, Reference Level and External Attenuation).
+13. Configure Digital Edge Trigger properties.
+14. Configure Link Direction, Frequency Range, CC Bandwidth, Cell ID, Band and BWP Subcarrier Spacing.
+15. Set LO Leakage Avoidance Enabled to True.
+16. Select ModAcc measurement and disable Traces.
+17. Initiate ModAcc measurement.
+18. Fetch ModAcc measurements.
 
 Steps (SEM measurement):
-18. Re-initiate signal generation for SEM measurement.
-19. Select SEM measurement and disable Traces.
-20. Initiate SEM measurement.
-21. Fetch SEM measurements.
+19. Abort RFSG, write script, and re-initiate for SEM measurement.
+20. Select SEM measurement and disable Traces.
+21. Initiate SEM measurement.
+22. Fetch SEM measurements.
 
 Steps (cleanup):
-22. Close the RFmx Session.
-23. Close the RFSG session.
+23. Close the RFmx Session.
+24. Close the RFSG session.
 """
 
 import argparse
@@ -38,7 +39,6 @@ import os
 import sys
 
 import nirfmxnr
-import numpy
 
 import nirfmxinstr
 import nirfsg
@@ -63,17 +63,19 @@ def example(rfsg_resource_name, rfsa_resource_name, option_string, waveform_file
     frequency_reference_source = "OnboardClock"
     frequency_reference_frequency = 10.0e6  # Hz
 
-    iq_power_edge_enabled = False
-    iq_power_edge_level = -20.0  # dB
+    enable_trigger = False
+    digital_edge_source = "PXI_Trig0"
+    digital_edge = nirfmxnr.DigitalEdgeTriggerEdge.RISING_EDGE
     trigger_delay = 0.0  # s
-    minimum_quiet_time_mode = nirfmxnr.TriggerMinimumQuietTimeMode.AUTO
-    minimum_quiet_time = 5.0e-6  # s
 
-    frequency_range = nirfmxnr.FrequencyRange.RANGE1
-    carrier_bandwidth = 100e6  # Hz
-    subcarrier_spacing = 30e3  # Hz
-    band = 78
+    frequency_range = nirfmxnr.FrequencyRange.RANGE2_1
+    carrier_bandwidth = 50e6  # Hz
+    subcarrier_spacing = 120e3  # Hz
+    band = 257
     cell_id = 0
+
+    waveform_name = "Wfm"
+    script_name = "GenerateWaveform"
 
     timeout = 10.0  # s
 
@@ -84,17 +86,21 @@ def example(rfsg_resource_name, rfsa_resource_name, option_string, waveform_file
     try:
         # --- Configure and start RFSG ---
         rfsg_session = nirfsg.Session(rfsg_resource_name)
-        rfsg_session.frequency_reference.configure_frequency_reference(
-            nirfsg.FrequencyReferenceSource.ONBOARD_CLOCK, frequency_reference_frequency
+        rfsg_session.generation_mode = nirfsg.GenerationMode.SCRIPT
+        rfsg_session.configure_ref_clock(frequency_reference_source, frequency_reference_frequency)
+        rfsg_session.configure_rf(center_frequency, power_level)
+        rfsg_session.external_gain = -1.0 * rfsg_external_attenuation
+        rfsg_session.read_and_download_waveform_from_file_tdms(waveform_name, waveform_file_path, 0)
+        rfsg_session.lo_source = nirfsg.LoSource.AUTOMATIC_SG_SA_SHARED
+        waveform_script = (
+            f"script {script_name}\n"
+            "repeat forever\n"
+            f"generate {waveform_name}\n"
+            "end repeat\n"
+            "end script"
         )
-        rfsg_session.rf.configure_rf(center_frequency, power_level)
-        rfsg_session.rf.external_gain = -1.0 * rfsg_external_attenuation
-        # Note: With nirfsgplayback, you would load a modulated NR waveform here
-        # and configure Automatic SG/SA Shared LO via:
-        #   NIRfsgPlayback.StoreAutomaticSGSASharedLO(handle, "", Enabled)
-        #   NIRfsgPlayback.StoreWaveformLOOffsetMode(handle, waveformName, Auto)
-        # Since nirfsgplayback is not available in Python, CW generation is used
-        # and an IQ power edge trigger is used on the analyzer side.
+        rfsg_session.write_script(waveform_script)
+        rfsg_session.selected_script = script_name
         rfsg_session.initiate()
 
         # --- Configure RFmx ---
@@ -108,17 +114,7 @@ def example(rfsg_resource_name, rfsa_resource_name, option_string, waveform_file
         instr_session.set_lo_source("", "Automatic_SG_SA_Shared")
 
         nr.configure_rf("", center_frequency, rfsa_reference_level, rfsa_external_attenuation)
-        nr.configure_iq_power_edge_trigger(
-            "",
-            "0",
-            nirfmxnr.IQPowerEdgeTriggerSlope.RISING_SLOPE,
-            iq_power_edge_level,
-            trigger_delay,
-            minimum_quiet_time_mode,
-            minimum_quiet_time,
-            nirfmxnr.IQPowerEdgeTriggerLevelType.RELATIVE,
-            iq_power_edge_enabled,
-        )
+        nr.configure_digital_edge_trigger("", digital_edge_source, digital_edge, trigger_delay, enable_trigger)
 
         nr.set_link_direction("", nirfmxnr.LinkDirection.UPLINK)
         nr.set_frequency_range("", frequency_range)
@@ -140,6 +136,8 @@ def example(rfsg_resource_name, rfsa_resource_name, option_string, waveform_file
 
         # Re-start RFSG for SEM measurement
         rfsg_session.abort()
+        rfsg_session.write_script(waveform_script)
+        rfsg_session.selected_script = script_name
         rfsg_session.initiate()
 
         # --- SEM measurement ---
@@ -203,6 +201,10 @@ def example(rfsg_resource_name, rfsa_resource_name, option_string, waveform_file
             instr_session = None
         if rfsg_session is not None:
             rfsg_session.abort()
+            try:
+                rfsg_session.clear_arb_waveform(waveform_name)
+            except Exception:
+                pass
             rfsg_session.close()
             rfsg_session = None
 
@@ -230,7 +232,7 @@ def test_main():
 
 
 def test_example():
-    example("RFSG", "RFSA", {})
+    example("RFSG", "RFSA", "", _DEFAULT_WAVEFORM_FILE)
 
 
 if __name__ == "__main__":

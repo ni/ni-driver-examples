@@ -79,10 +79,7 @@ def _normalize_complex_waveform(waveform):
 
 
 def example(resource_name, rfsg_resource_name, option_string, reference_waveform_file):
-    """Run Example.
-
-    This example mirrors the .NET IDPD workflow with RFSG + RFmx.
-    """
+    """Run Example."""
     selected_ports = ""
     center_frequency = 1.0e9  # Hz
     reference_level = 0.0  # dBm
