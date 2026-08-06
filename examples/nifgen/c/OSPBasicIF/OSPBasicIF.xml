@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nidna:ExampleProgram 
+    xmlns:nidna="http://www.ni.com/Schemas/DNA/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.ni.com/Schemas/DNA/1.0 ..\DNA\1.0\NiExampleProgram.xsd" 
+    SchemaVersion="1.0" 
+    ContentType="EXAMPLE" 
+<Title>
+	<Text Locale="US">OSPBasicIF.prj</Text>
+</Title>
+<Description>
+	<Text Locale="US">This example shows how to use Onboard Signal Processing (OSP) capabilities to generate some simple IQ (16-QAM) data. If you have a National Instruments Digitizer and the Modulation Toolkit, you can use the Modulation Toolkit's MT niScope QAM Eye Diagram.vi example to demodulate and view the 16-QAM data.</Text>
+</Description>
+<Keywords>
+	<Item>NI-FGEN</Item>
+	<Item>waveforms</Item>
+	<Item>fgen</Item>
+	<Item>niFgen</Item>
+	<Item>5441</Item>
+	<Item>basic</Item>
+	<Item>simple</Item>
+	<Item>digital</Item>
+	<Item>OSP</Item>
+	<Item>IF</Item>
+	<Item>16-QAM</Item>
+	<Item>upconversion</Item>
+	<Item>5442</Item>
+</Keywords>
+<Navigation>
+	<Item>5937</Item>
+	<Item>4786</Item>
+</Navigation>
+<ProgrammingLanguages>
+<Item>LabWindows/CVI</Item>
+</ProgrammingLanguages>
+<RequiredSoftware>
+<NiSoftware MinVersion="7.0">LabWindows/CVI</NiSoftware> 
+</RequiredSoftware>
+<RequiredNiFGenHardware>
+<Device>
+<Model>7111</Model>
+<Model>728BC4C4</Model>
+</Device>
+</RequiredNiFGenHardware>

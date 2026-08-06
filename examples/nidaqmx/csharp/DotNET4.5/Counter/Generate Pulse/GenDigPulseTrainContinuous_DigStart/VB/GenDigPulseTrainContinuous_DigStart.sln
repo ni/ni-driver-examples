@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GenDigPulseTrainContinuous_DigStart", "GenDigPulseTrainContinuous_DigStart.vbproj", "{CE29F235-C4A4-42E7-820D-905E4FEAE621}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{CE29F235-C4A4-42E7-820D-905E4FEAE621}.Debug.ActiveCfg = Debug|.NET
+		{CE29F235-C4A4-42E7-820D-905E4FEAE621}.Debug.Build.0 = Debug|.NET
+		{CE29F235-C4A4-42E7-820D-905E4FEAE621}.Release.ActiveCfg = Release|.NET
+		{CE29F235-C4A4-42E7-820D-905E4FEAE621}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

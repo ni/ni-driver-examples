@@ -328,7 +328,6 @@ namespace NationalInstruments.Examples.ContAcq0_20mACurrentSamples_IntClk
             this.shuntResistorLocationComboxBox.Name = "shuntResistorLocationComboxBox";
             this.shuntResistorLocationComboxBox.Size = new System.Drawing.Size(80, 21);
             this.shuntResistorLocationComboxBox.TabIndex = 1;
-            this.shuntResistorLocationComboxBox.SelectedIndexChanged += new System.EventHandler(this.shuntResistorLocationComboBox_SelectedIndexChanged);
             // 
             // shuntResistorLocationLabel
             // 
@@ -520,14 +519,15 @@ namespace NationalInstruments.Examples.ContAcq0_20mACurrentSamples_IntClk
             {
                 // Create a new task
                 myTask= new Task();
-            
+
                 switch(shuntResistorLocationComboxBox.SelectedItem.ToString())
                 {
                     case "Internal":
                         // Create a virtual channel
                         myTask.AIChannels.CreateCurrentChannel(physicalChannelComboBox.Text,"",
                             (AITerminalConfiguration)(-1), Convert.ToDouble(minimumValueNumeric.Value),
-                            Convert.ToDouble(maximumValueNumeric.Value), AICurrentUnits.Amps);
+                            Convert.ToDouble(maximumValueNumeric.Value), AICurrentUnits.Amps,
+                            AICurrentShuntLocation.Internal, Convert.ToDouble(shuntResistorNumeric.Value), "");
                         break;
                     case "External":
                         // Create a virtual channel
@@ -599,20 +599,6 @@ namespace NationalInstruments.Examples.ContAcq0_20mACurrentSamples_IntClk
                 stopButton.Enabled=false;
             }
 
-        }
-
-        private void shuntResistorLocationComboBox_SelectedIndexChanged(object sender, System.EventArgs e)
-        {
-            switch(shuntResistorLocationComboxBox.SelectedItem.ToString())
-            {
-                case "Internal": 
-                    shuntResistorNumeric.Enabled=false;
-                    break;
-                case "External":
-                default: 
-                    shuntResistorNumeric.Enabled=true;
-                    break;
-            }
         }
 
         private void dataToDataTable(AnalogWaveform<double>[] sourceArray, ref DataTable dataTable)

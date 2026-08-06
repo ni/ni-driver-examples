@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GenDigPulseTrainContinuous_PauseTrigger", "GenDigPulseTrainContinuous_PauseTrigger.vbproj", "{8C71CA6B-8603-472E-A544-D8BFA1131916}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{8C71CA6B-8603-472E-A544-D8BFA1131916}.Debug.ActiveCfg = Debug|.NET
+		{8C71CA6B-8603-472E-A544-D8BFA1131916}.Debug.Build.0 = Debug|.NET
+		{8C71CA6B-8603-472E-A544-D8BFA1131916}.Release.ActiveCfg = Release|.NET
+		{8C71CA6B-8603-472E-A544-D8BFA1131916}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

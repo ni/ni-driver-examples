@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcquireIQinBlocks.2010", "AcquireIQinBlocks.2010.csproj", "{F51CF0F0-8073-40E3-B881-3EF71E628494}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F51CF0F0-8073-40E3-B881-3EF71E628494}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F51CF0F0-8073-40E3-B881-3EF71E628494}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F51CF0F0-8073-40E3-B881-3EF71E628494}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F51CF0F0-8073-40E3-B881-3EF71E628494}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

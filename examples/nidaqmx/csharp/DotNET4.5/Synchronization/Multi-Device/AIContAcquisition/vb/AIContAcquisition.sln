@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "AIContAcquisition", "AIContAcquisition.vbproj", "{F03147B5-CE4F-4F54-A869-8E6BD3C86EF7}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{F03147B5-CE4F-4F54-A869-8E6BD3C86EF7}.Debug.ActiveCfg = Debug|.NET
+		{F03147B5-CE4F-4F54-A869-8E6BD3C86EF7}.Debug.Build.0 = Debug|.NET
+		{F03147B5-CE4F-4F54-A869-8E6BD3C86EF7}.Release.ActiveCfg = Release|.NET
+		{F03147B5-CE4F-4F54-A869-8E6BD3C86EF7}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

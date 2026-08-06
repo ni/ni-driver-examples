@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiDeviceSync_AIAOShardTimebaseAndTrig_DSA", "MultiDeviceSync_AIAOShardTimebaseAndTrig_DSA.csproj", "{EF34A232-4816-441A-8DA2-7E4DF440E87F}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{EF34A232-4816-441A-8DA2-7E4DF440E87F}.Debug.ActiveCfg = Debug|.NET
+		{EF34A232-4816-441A-8DA2-7E4DF440E87F}.Debug.Build.0 = Debug|.NET
+		{EF34A232-4816-441A-8DA2-7E4DF440E87F}.Release.ActiveCfg = Release|.NET
+		{EF34A232-4816-441A-8DA2-7E4DF440E87F}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

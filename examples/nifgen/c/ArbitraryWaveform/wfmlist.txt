@@ -1,0 +1,5 @@
+rampup.bin 1
+sine.bin 0.5
+square.bin 0.5
+dc.bin 1
+

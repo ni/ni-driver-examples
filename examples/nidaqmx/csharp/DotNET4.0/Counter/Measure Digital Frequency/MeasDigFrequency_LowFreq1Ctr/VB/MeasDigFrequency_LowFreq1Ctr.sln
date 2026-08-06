@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MeasDigFrequency_LowFreq1Ctr", "MeasDigFrequency_LowFreq1Ctr.vbproj", "{F6690706-C674-4B95-AF8A-0118E6EE9CFC}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{F6690706-C674-4B95-AF8A-0118E6EE9CFC}.Debug.ActiveCfg = Debug|.NET
+		{F6690706-C674-4B95-AF8A-0118E6EE9CFC}.Debug.Build.0 = Debug|.NET
+		{F6690706-C674-4B95-AF8A-0118E6EE9CFC}.Release.ActiveCfg = Release|.NET
+		{F6690706-C674-4B95-AF8A-0118E6EE9CFC}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

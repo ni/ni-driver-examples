@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WriteDigChan_WatchdogTimer", "WriteDigChan_WatchdogTimer.csproj", "{F15FBFF2-A8EF-4FAA-8768-E8A45CC5B036}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{F15FBFF2-A8EF-4FAA-8768-E8A45CC5B036}.Debug.ActiveCfg = Debug|.NET
+		{F15FBFF2-A8EF-4FAA-8768-E8A45CC5B036}.Debug.Build.0 = Debug|.NET
+		{F15FBFF2-A8EF-4FAA-8768-E8A45CC5B036}.Release.ActiveCfg = Release|.NET
+		{F15FBFF2-A8EF-4FAA-8768-E8A45CC5B036}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
