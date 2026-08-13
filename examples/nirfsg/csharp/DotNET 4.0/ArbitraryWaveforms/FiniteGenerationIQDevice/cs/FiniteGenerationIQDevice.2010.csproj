@@ -53,7 +53,8 @@
     <Reference Include="Ivi.Driver">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="NationalInstruments.Common">
+    <Reference Include="NationalInstruments.Common, Version=19.1.40.49152">
+      <SpecificVersion>True</SpecificVersion>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.Common">
