@@ -40,14 +40,22 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ivi.Driver" />
+    <Reference Include="Ivi.Driver">
+      <Name>Ivi.Driver</Name>
+      <HintPath />
+    </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.Common">
-		<SpecificVersion>False</SpecificVersion>
+      <Name>NationalInstruments.ModularInstruments.Common</Name>
+      <HintPath />
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.NIRfsg.Fx40">
-		<SpecificVersion>False</SpecificVersion>
+      <Name>NationalInstruments.ModularInstruments.NIRfsg.Fx40</Name>
+      <HintPath />
     </Reference>
-    <Reference Include="System" />
+    <Reference Include="System">
+      <Name>System</Name>
+      <HintPath />
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -23,7 +23,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-	<DefineConstants>NETFX4_0</DefineConstants>
+    <DefineConstants>NETFX4_0</DefineConstants>
     <OutputPath>bin.2010\Debug\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
@@ -33,7 +33,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DefineTrace>true</DefineTrace>
-	<DefineConstants>NETFX4_0</DefineConstants>
+    <DefineConstants>NETFX4_0</DefineConstants>
     <OutputPath>bin.2010\Release\</OutputPath>
     <DocumentationFile>
     </DocumentationFile>
@@ -43,18 +43,19 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ivi.Driver"/>
-    <Reference Include="NationalInstruments.Common">
-		<SpecificVersion>False</SpecificVersion>
+    <Reference Include="Ivi.Driver" />
+    <Reference Include="NationalInstruments.Common, Version=19.1.40.49152">
+      <SpecificVersion>True</SpecificVersion>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.Common">
-		<SpecificVersion>False</SpecificVersion>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.ModularInstrumentsSystem">
-		<SpecificVersion>False</SpecificVersion>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.NIRfsg.Fx40">
-		<SpecificVersion>False</SpecificVersion>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
