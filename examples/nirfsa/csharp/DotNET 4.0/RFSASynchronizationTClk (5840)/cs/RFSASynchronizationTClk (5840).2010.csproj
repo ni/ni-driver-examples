@@ -38,7 +38,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ivi.Driver" />
-    <Reference Include="NationalInstruments.Common">
+    <Reference Include="NationalInstruments.Common, Version=19.1.40.49152">
+      <SpecificVersion>True</SpecificVersion>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.Common">
