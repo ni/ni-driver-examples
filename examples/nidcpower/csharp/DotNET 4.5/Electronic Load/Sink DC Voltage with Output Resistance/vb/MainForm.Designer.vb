@@ -65,7 +65,7 @@ Partial Class MainForm
         Me.currentLimitLabel.AutoSize = True
         Me.currentLimitLabel.Location = New System.Drawing.Point(6, 76)
         Me.currentLimitLabel.Name = "currentLimitLabel"
-        Me.currentLimitLabel.Size = New System.Drawing.Size(81, 13)
+        Me.currentLimitLabel.Size = New System.Drawing.Size(95, 15)
         Me.currentLimitLabel.TabIndex = 4
         Me.currentLimitLabel.Text = "Current Limit (A)"
         '
@@ -74,7 +74,7 @@ Partial Class MainForm
         Me.currentLimitRangeLabel.AutoSize = True
         Me.currentLimitRangeLabel.Location = New System.Drawing.Point(6, 102)
         Me.currentLimitRangeLabel.Name = "currentLimitRangeLabel"
-        Me.currentLimitRangeLabel.Size = New System.Drawing.Size(118, 13)
+        Me.currentLimitRangeLabel.Size = New System.Drawing.Size(135, 15)
         Me.currentLimitRangeLabel.TabIndex = 6
         Me.currentLimitRangeLabel.Text = "Current Limit Range (A)"
         '
@@ -83,7 +83,7 @@ Partial Class MainForm
         Me.voltageLevelLabel.AutoSize = True
         Me.voltageLevelLabel.Location = New System.Drawing.Point(6, 23)
         Me.voltageLevelLabel.Name = "voltageLevelLabel"
-        Me.voltageLevelLabel.Size = New System.Drawing.Size(88, 13)
+        Me.voltageLevelLabel.Size = New System.Drawing.Size(98, 15)
         Me.voltageLevelLabel.TabIndex = 0
         Me.voltageLevelLabel.Text = "Voltage Level (V)"
         '
@@ -92,16 +92,100 @@ Partial Class MainForm
         Me.voltageLevelRangeLabel.AutoSize = True
         Me.voltageLevelRangeLabel.Location = New System.Drawing.Point(6, 49)
         Me.voltageLevelRangeLabel.Name = "voltageLevelRangeLabel"
-        Me.voltageLevelRangeLabel.Size = New System.Drawing.Size(123, 13)
+        Me.voltageLevelRangeLabel.Size = New System.Drawing.Size(138, 15)
         Me.voltageLevelRangeLabel.TabIndex = 2
         Me.voltageLevelRangeLabel.Text = "Voltage Level Range (V)"
+        '
+        'sourceDelayLabel
+        '
+        Me.sourceDelayLabel.AutoSize = True
+        Me.sourceDelayLabel.Location = New System.Drawing.Point(6, 156)
+        Me.sourceDelayLabel.Name = "sourceDelayLabel"
+        Me.sourceDelayLabel.Size = New System.Drawing.Size(97, 15)
+        Me.sourceDelayLabel.TabIndex = 10
+        Me.sourceDelayLabel.Text = "Source Delay (s)"
+        '
+        'voltageMeasurementLabel
+        '
+        Me.voltageMeasurementLabel.AutoSize = True
+        Me.voltageMeasurementLabel.Location = New System.Drawing.Point(6, 23)
+        Me.voltageMeasurementLabel.Name = "voltageMeasurementLabel"
+        Me.voltageMeasurementLabel.Size = New System.Drawing.Size(66, 15)
+        Me.voltageMeasurementLabel.TabIndex = 0
+        Me.voltageMeasurementLabel.Text = "Voltage (V)"
+        '
+        'currentMeasurementLabel
+        '
+        Me.currentMeasurementLabel.AutoSize = True
+        Me.currentMeasurementLabel.Location = New System.Drawing.Point(6, 49)
+        Me.currentMeasurementLabel.Name = "currentMeasurementLabel"
+        Me.currentMeasurementLabel.Size = New System.Drawing.Size(65, 15)
+        Me.currentMeasurementLabel.TabIndex = 2
+        Me.currentMeasurementLabel.Text = "Current (A)"
+        '
+        'inComplianceLabel
+        '
+        Me.inComplianceLabel.AutoSize = True
+        Me.inComplianceLabel.Location = New System.Drawing.Point(30, 85)
+        Me.inComplianceLabel.Name = "inComplianceLabel"
+        Me.inComplianceLabel.Size = New System.Drawing.Size(156, 15)
+        Me.inComplianceLabel.TabIndex = 4
+        Me.inComplianceLabel.Text = "Compliance/Limit Reached"
+        '
+        'currentLimitNumeric
+        '
+        Me.currentLimitNumeric.DecimalPlaces = 6
+        Me.currentLimitNumeric.Increment = New Decimal(New Integer() {1, 0, 0, 196608})
+        Me.currentLimitNumeric.Location = New System.Drawing.Point(160, 72)
+        Me.currentLimitNumeric.Maximum = New Decimal(New Integer() {-1, -1, -1, 0})
+        Me.currentLimitNumeric.Minimum = New Decimal(New Integer() {-1, -1, -1, -2147483648})
+        Me.currentLimitNumeric.Name = "currentLimitNumeric"
+        Me.currentLimitNumeric.Size = New System.Drawing.Size(91, 20)
+        Me.currentLimitNumeric.TabIndex = 5
+        Me.currentLimitNumeric.Value = New Decimal(New Integer() {4, 0, 0, 0})
+        '
+        'currentLimitRangeNumeric
+        '
+        Me.currentLimitRangeNumeric.DecimalPlaces = 6
+        Me.currentLimitRangeNumeric.Increment = New Decimal(New Integer() {1, 0, 0, 196608})
+        Me.currentLimitRangeNumeric.Location = New System.Drawing.Point(160, 98)
+        Me.currentLimitRangeNumeric.Maximum = New Decimal(New Integer() {-1, -1, -1, 0})
+        Me.currentLimitRangeNumeric.Minimum = New Decimal(New Integer() {-1, -1, -1, -2147483648})
+        Me.currentLimitRangeNumeric.Name = "currentLimitRangeNumeric"
+        Me.currentLimitRangeNumeric.Size = New System.Drawing.Size(91, 20)
+        Me.currentLimitRangeNumeric.TabIndex = 7
+        Me.currentLimitRangeNumeric.Value = New Decimal(New Integer() {4, 0, 0, 0})
+        '
+        'voltageLevelNumeric
+        '
+        Me.voltageLevelNumeric.DecimalPlaces = 6
+        Me.voltageLevelNumeric.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
+        Me.voltageLevelNumeric.Location = New System.Drawing.Point(160, 19)
+        Me.voltageLevelNumeric.Maximum = New Decimal(New Integer() {-1, -1, -1, 0})
+        Me.voltageLevelNumeric.Minimum = New Decimal(New Integer() {-1, -1, -1, -2147483648})
+        Me.voltageLevelNumeric.Name = "voltageLevelNumeric"
+        Me.voltageLevelNumeric.Size = New System.Drawing.Size(91, 20)
+        Me.voltageLevelNumeric.TabIndex = 1
+        Me.voltageLevelNumeric.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'voltageLevelRangeNumeric
+        '
+        Me.voltageLevelRangeNumeric.DecimalPlaces = 6
+        Me.voltageLevelRangeNumeric.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
+        Me.voltageLevelRangeNumeric.Location = New System.Drawing.Point(160, 45)
+        Me.voltageLevelRangeNumeric.Maximum = New Decimal(New Integer() {-1, -1, -1, 0})
+        Me.voltageLevelRangeNumeric.Minimum = New Decimal(New Integer() {-1, -1, -1, -2147483648})
+        Me.voltageLevelRangeNumeric.Name = "voltageLevelRangeNumeric"
+        Me.voltageLevelRangeNumeric.Size = New System.Drawing.Size(91, 20)
+        Me.voltageLevelRangeNumeric.TabIndex = 3
+        Me.voltageLevelRangeNumeric.Value = New Decimal(New Integer() {6, 0, 0, 0})
         '
         'outputResistanceLabel
         '
         Me.outputResistanceLabel.AutoSize = True
         Me.outputResistanceLabel.Location = New System.Drawing.Point(6, 130)
         Me.outputResistanceLabel.Name = "outputResistanceLabel"
-        Me.outputResistanceLabel.Size = New System.Drawing.Size(125, 13)
+        Me.outputResistanceLabel.Size = New System.Drawing.Size(151, 15)
         Me.outputResistanceLabel.TabIndex = 8
         Me.outputResistanceLabel.Text = "Output Resistance (Ohms)"
         '
@@ -117,90 +201,6 @@ Partial Class MainForm
         Me.outputResistanceNumeric.TabIndex = 9
         Me.outputResistanceNumeric.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
-        'sourceDelayLabel
-        '
-        Me.sourceDelayLabel.AutoSize = True
-        Me.sourceDelayLabel.Location = New System.Drawing.Point(6, 156)
-        Me.sourceDelayLabel.Name = "sourceDelayLabel"
-        Me.sourceDelayLabel.Size = New System.Drawing.Size(85, 13)
-        Me.sourceDelayLabel.TabIndex = 10
-        Me.sourceDelayLabel.Text = "Source Delay (s)"
-        '
-        'voltageMeasurementLabel
-        '
-        Me.voltageMeasurementLabel.AutoSize = True
-        Me.voltageMeasurementLabel.Location = New System.Drawing.Point(6, 23)
-        Me.voltageMeasurementLabel.Name = "voltageMeasurementLabel"
-        Me.voltageMeasurementLabel.Size = New System.Drawing.Size(59, 13)
-        Me.voltageMeasurementLabel.TabIndex = 0
-        Me.voltageMeasurementLabel.Text = "Voltage (V)"
-        '
-        'currentMeasurementLabel
-        '
-        Me.currentMeasurementLabel.AutoSize = True
-        Me.currentMeasurementLabel.Location = New System.Drawing.Point(6, 49)
-        Me.currentMeasurementLabel.Name = "currentMeasurementLabel"
-        Me.currentMeasurementLabel.Size = New System.Drawing.Size(57, 13)
-        Me.currentMeasurementLabel.TabIndex = 2
-        Me.currentMeasurementLabel.Text = "Current (A)"
-        '
-        'inComplianceLabel
-        '
-        Me.inComplianceLabel.AutoSize = True
-        Me.inComplianceLabel.Location = New System.Drawing.Point(30, 85)
-        Me.inComplianceLabel.Name = "inComplianceLabel"
-        Me.inComplianceLabel.Size = New System.Drawing.Size(135, 13)
-        Me.inComplianceLabel.TabIndex = 4
-        Me.inComplianceLabel.Text = "Compliance/Limit Reached"
-        '
-        'currentLimitNumeric
-        '
-        Me.currentLimitNumeric.DecimalPlaces = 6
-        Me.currentLimitNumeric.Increment = New Decimal(New Integer() {1, 0, 0, 196608})
-        Me.currentLimitNumeric.Location = New System.Drawing.Point(160, 72)
-        Me.currentLimitNumeric.Maximum = New Decimal(New Integer() {-1, -1, -1, 0})
-        Me.currentLimitNumeric.Minimum = New Decimal(New Integer() {-1, -1, -1, -2147483648})
-        Me.currentLimitNumeric.Name = "currentLimitNumeric"
-        Me.currentLimitNumeric.Size = New System.Drawing.Size(91, 20)
-        Me.currentLimitNumeric.TabIndex = 5
-        Me.currentLimitNumeric.Value = New Decimal(New Integer() {1, 0, 0, 65536})
-        '
-        'currentLimitRangeNumeric
-        '
-        Me.currentLimitRangeNumeric.DecimalPlaces = 6
-        Me.currentLimitRangeNumeric.Increment = New Decimal(New Integer() {1, 0, 0, 196608})
-        Me.currentLimitRangeNumeric.Location = New System.Drawing.Point(160, 98)
-        Me.currentLimitRangeNumeric.Maximum = New Decimal(New Integer() {-1, -1, -1, 0})
-        Me.currentLimitRangeNumeric.Minimum = New Decimal(New Integer() {-1, -1, -1, -2147483648})
-        Me.currentLimitRangeNumeric.Name = "currentLimitRangeNumeric"
-        Me.currentLimitRangeNumeric.Size = New System.Drawing.Size(91, 20)
-        Me.currentLimitRangeNumeric.TabIndex = 7
-        Me.currentLimitRangeNumeric.Value = New Decimal(New Integer() {1, 0, 0, 65536})
-        '
-        'voltageLevelNumeric
-        '
-        Me.voltageLevelNumeric.DecimalPlaces = 6
-        Me.voltageLevelNumeric.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
-        Me.voltageLevelNumeric.Location = New System.Drawing.Point(160, 19)
-        Me.voltageLevelNumeric.Maximum = New Decimal(New Integer() {-1, -1, -1, 0})
-        Me.voltageLevelNumeric.Minimum = New Decimal(New Integer() {-1, -1, -1, -2147483648})
-        Me.voltageLevelNumeric.Name = "voltageLevelNumeric"
-        Me.voltageLevelNumeric.Size = New System.Drawing.Size(91, 20)
-        Me.voltageLevelNumeric.TabIndex = 1
-        Me.voltageLevelNumeric.Value = New Decimal(New Integer() {2, 0, 0, 0})
-        '
-        'voltageLevelRangeNumeric
-        '
-        Me.voltageLevelRangeNumeric.DecimalPlaces = 6
-        Me.voltageLevelRangeNumeric.Increment = New Decimal(New Integer() {1, 0, 0, 65536})
-        Me.voltageLevelRangeNumeric.Location = New System.Drawing.Point(160, 45)
-        Me.voltageLevelRangeNumeric.Maximum = New Decimal(New Integer() {-1, -1, -1, 0})
-        Me.voltageLevelRangeNumeric.Minimum = New Decimal(New Integer() {-1, -1, -1, -2147483648})
-        Me.voltageLevelRangeNumeric.Name = "voltageLevelRangeNumeric"
-        Me.voltageLevelRangeNumeric.Size = New System.Drawing.Size(91, 20)
-        Me.voltageLevelRangeNumeric.TabIndex = 3
-        Me.voltageLevelRangeNumeric.Value = New Decimal(New Integer() {6, 0, 0, 0})
-        '
         'sourceDelayNumeric
         '
         Me.sourceDelayNumeric.DecimalPlaces = 6
@@ -210,23 +210,7 @@ Partial Class MainForm
         Me.sourceDelayNumeric.Name = "sourceDelayNumeric"
         Me.sourceDelayNumeric.Size = New System.Drawing.Size(91, 20)
         Me.sourceDelayNumeric.TabIndex = 11
-        Me.sourceDelayNumeric.Value = New Decimal(New Integer() {5, 0, 0, 131072})
-        '
-        'outputShortedLabel
-        '
-        Me.outputShortedLabel.AutoSize = True
-        Me.outputShortedLabel.Location = New System.Drawing.Point(6, 182)
-        Me.outputShortedLabel.Name = "outputShortedLabel"
-        Me.outputShortedLabel.Size = New System.Drawing.Size(79, 13)
-        Me.outputShortedLabel.TabIndex = 12
-        Me.outputShortedLabel.Text = "Output Shorted"
-        '
-        'outputShortedCheckBox
-        '
-        Me.outputShortedCheckBox.Location = New System.Drawing.Point(160, 180)
-        Me.outputShortedCheckBox.Name = "outputShortedCheckBox"
-        Me.outputShortedCheckBox.Size = New System.Drawing.Size(91, 21)
-        Me.outputShortedCheckBox.TabIndex = 13
+        Me.sourceDelayNumeric.Value = New Decimal(New Integer() {5, 0, 0, 65536})
         '
         'startButton
         '
@@ -261,7 +245,7 @@ Partial Class MainForm
         Me.resourceNameLabel.AutoSize = True
         Me.resourceNameLabel.Location = New System.Drawing.Point(6, 22)
         Me.resourceNameLabel.Name = "resourceNameLabel"
-        Me.resourceNameLabel.Size = New System.Drawing.Size(84, 13)
+        Me.resourceNameLabel.Size = New System.Drawing.Size(97, 15)
         Me.resourceNameLabel.TabIndex = 0
         Me.resourceNameLabel.Text = "Resource Name"
         '
@@ -306,6 +290,22 @@ Partial Class MainForm
         Me.inComplianceButtonLed.Size = New System.Drawing.Size(21, 21)
         Me.inComplianceButtonLed.TabIndex = 5
         Me.inComplianceButtonLed.UseVisualStyleBackColor = True
+        '
+        'outputShortedLabel
+        '
+        Me.outputShortedLabel.AutoSize = True
+        Me.outputShortedLabel.Location = New System.Drawing.Point(6, 182)
+        Me.outputShortedLabel.Name = "outputShortedLabel"
+        Me.outputShortedLabel.Size = New System.Drawing.Size(89, 15)
+        Me.outputShortedLabel.TabIndex = 12
+        Me.outputShortedLabel.Text = "Output Shorted"
+        '
+        'outputShortedCheckBox
+        '
+        Me.outputShortedCheckBox.Location = New System.Drawing.Point(160, 180)
+        Me.outputShortedCheckBox.Name = "outputShortedCheckBox"
+        Me.outputShortedCheckBox.Size = New System.Drawing.Size(91, 21)
+        Me.outputShortedCheckBox.TabIndex = 13
         '
         'configurationGroupBox
         '

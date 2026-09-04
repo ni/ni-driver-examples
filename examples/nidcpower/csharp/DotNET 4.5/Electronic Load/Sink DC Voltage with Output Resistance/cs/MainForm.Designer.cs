@@ -71,7 +71,7 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             this.currentLimitLabel.AutoSize = true;
             this.currentLimitLabel.Location = new System.Drawing.Point(6, 76);
             this.currentLimitLabel.Name = "currentLimitLabel";
-            this.currentLimitLabel.Size = new System.Drawing.Size(81, 13);
+            this.currentLimitLabel.Size = new System.Drawing.Size(95, 15);
             this.currentLimitLabel.TabIndex = 4;
             this.currentLimitLabel.Text = "Current Limit (A)";
             //
@@ -80,7 +80,7 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             this.currentLimitRangeLabel.AutoSize = true;
             this.currentLimitRangeLabel.Location = new System.Drawing.Point(6, 102);
             this.currentLimitRangeLabel.Name = "currentLimitRangeLabel";
-            this.currentLimitRangeLabel.Size = new System.Drawing.Size(118, 13);
+            this.currentLimitRangeLabel.Size = new System.Drawing.Size(135, 15);
             this.currentLimitRangeLabel.TabIndex = 6;
             this.currentLimitRangeLabel.Text = "Current Limit Range (A)";
             //
@@ -89,7 +89,7 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             this.voltageLevelLabel.AutoSize = true;
             this.voltageLevelLabel.Location = new System.Drawing.Point(6, 23);
             this.voltageLevelLabel.Name = "voltageLevelLabel";
-            this.voltageLevelLabel.Size = new System.Drawing.Size(88, 13);
+            this.voltageLevelLabel.Size = new System.Drawing.Size(98, 15);
             this.voltageLevelLabel.TabIndex = 0;
             this.voltageLevelLabel.Text = "Voltage Level (V)";
             //
@@ -98,53 +98,16 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             this.voltageLevelRangeLabel.AutoSize = true;
             this.voltageLevelRangeLabel.Location = new System.Drawing.Point(6, 49);
             this.voltageLevelRangeLabel.Name = "voltageLevelRangeLabel";
-            this.voltageLevelRangeLabel.Size = new System.Drawing.Size(123, 13);
+            this.voltageLevelRangeLabel.Size = new System.Drawing.Size(138, 15);
             this.voltageLevelRangeLabel.TabIndex = 2;
             this.voltageLevelRangeLabel.Text = "Voltage Level Range (V)";
-            //
-            // outputResistanceLabel
-            //
-            this.outputResistanceLabel.AutoSize = true;
-            this.outputResistanceLabel.Location = new System.Drawing.Point(6, 127);
-            this.outputResistanceLabel.Name = "outputResistanceLabel";
-            this.outputResistanceLabel.Size = new System.Drawing.Size(125, 13);
-            this.outputResistanceLabel.TabIndex = 8;
-            this.outputResistanceLabel.Text = "Output Resistance (Ohms)";
-            //
-            // outputResistanceNumeric
-            //
-            this.outputResistanceNumeric.DecimalPlaces = 6;
-            this.outputResistanceNumeric.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            65536});
-            this.outputResistanceNumeric.Location = new System.Drawing.Point(160, 125);
-            this.outputResistanceNumeric.Maximum = new decimal(new int[] {
-            -1,
-            -1,
-            -1,
-            0});
-            this.outputResistanceNumeric.Minimum = new decimal(new int[] {
-            -1,
-            -1,
-            -1,
-            -2147483648});
-            this.outputResistanceNumeric.Name = "outputResistanceNumeric";
-            this.outputResistanceNumeric.Size = new System.Drawing.Size(91, 20);
-            this.outputResistanceNumeric.TabIndex = 9;
-            this.outputResistanceNumeric.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             //
             // sourceDelayLabel
             //
             this.sourceDelayLabel.AutoSize = true;
             this.sourceDelayLabel.Location = new System.Drawing.Point(6, 153);
             this.sourceDelayLabel.Name = "sourceDelayLabel";
-            this.sourceDelayLabel.Size = new System.Drawing.Size(85, 13);
+            this.sourceDelayLabel.Size = new System.Drawing.Size(97, 15);
             this.sourceDelayLabel.TabIndex = 10;
             this.sourceDelayLabel.Text = "Source Delay (s)";
             //
@@ -153,7 +116,7 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             this.voltageMeasurementLabel.AutoSize = true;
             this.voltageMeasurementLabel.Location = new System.Drawing.Point(6, 23);
             this.voltageMeasurementLabel.Name = "voltageMeasurementLabel";
-            this.voltageMeasurementLabel.Size = new System.Drawing.Size(59, 13);
+            this.voltageMeasurementLabel.Size = new System.Drawing.Size(66, 15);
             this.voltageMeasurementLabel.TabIndex = 0;
             this.voltageMeasurementLabel.Text = "Voltage (V)";
             //
@@ -162,7 +125,7 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             this.currentMeasurementLabel.AutoSize = true;
             this.currentMeasurementLabel.Location = new System.Drawing.Point(6, 49);
             this.currentMeasurementLabel.Name = "currentMeasurementLabel";
-            this.currentMeasurementLabel.Size = new System.Drawing.Size(57, 13);
+            this.currentMeasurementLabel.Size = new System.Drawing.Size(65, 15);
             this.currentMeasurementLabel.TabIndex = 2;
             this.currentMeasurementLabel.Text = "Current (A)";
             //
@@ -171,7 +134,7 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             this.inComplianceLabel.AutoSize = true;
             this.inComplianceLabel.Location = new System.Drawing.Point(30, 85);
             this.inComplianceLabel.Name = "inComplianceLabel";
-            this.inComplianceLabel.Size = new System.Drawing.Size(135, 13);
+            this.inComplianceLabel.Size = new System.Drawing.Size(156, 15);
             this.inComplianceLabel.TabIndex = 4;
             this.inComplianceLabel.Text = "Compliance/Limit Reached";
             //
@@ -198,10 +161,10 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             this.currentLimitNumeric.Size = new System.Drawing.Size(91, 20);
             this.currentLimitNumeric.TabIndex = 5;
             this.currentLimitNumeric.Value = new decimal(new int[] {
-            1,
+            4,
             0,
             0,
-            65536});
+            0});
             //
             // currentLimitRangeNumeric
             //
@@ -226,10 +189,10 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             this.currentLimitRangeNumeric.Size = new System.Drawing.Size(91, 20);
             this.currentLimitRangeNumeric.TabIndex = 7;
             this.currentLimitRangeNumeric.Value = new decimal(new int[] {
-            1,
+            4,
             0,
             0,
-            65536});
+            0});
             //
             // voltageLevelNumeric
             //
@@ -254,7 +217,7 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             this.voltageLevelNumeric.Size = new System.Drawing.Size(91, 20);
             this.voltageLevelNumeric.TabIndex = 1;
             this.voltageLevelNumeric.Value = new decimal(new int[] {
-            2,
+            1,
             0,
             0,
             0});
@@ -287,6 +250,43 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             0,
             0});
             //
+            // outputResistanceLabel
+            //
+            this.outputResistanceLabel.AutoSize = true;
+            this.outputResistanceLabel.Location = new System.Drawing.Point(6, 127);
+            this.outputResistanceLabel.Name = "outputResistanceLabel";
+            this.outputResistanceLabel.Size = new System.Drawing.Size(151, 15);
+            this.outputResistanceLabel.TabIndex = 8;
+            this.outputResistanceLabel.Text = "Output Resistance (Ohms)";
+            //
+            // outputResistanceNumeric
+            //
+            this.outputResistanceNumeric.DecimalPlaces = 6;
+            this.outputResistanceNumeric.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            65536});
+            this.outputResistanceNumeric.Location = new System.Drawing.Point(160, 125);
+            this.outputResistanceNumeric.Maximum = new decimal(new int[] {
+            -1,
+            -1,
+            -1,
+            0});
+            this.outputResistanceNumeric.Minimum = new decimal(new int[] {
+            -1,
+            -1,
+            -1,
+            -2147483648});
+            this.outputResistanceNumeric.Name = "outputResistanceNumeric";
+            this.outputResistanceNumeric.Size = new System.Drawing.Size(91, 20);
+            this.outputResistanceNumeric.TabIndex = 9;
+            this.outputResistanceNumeric.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            //
             // sourceDelayNumeric
             //
             this.sourceDelayNumeric.DecimalPlaces = 6;
@@ -308,23 +308,7 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             5,
             0,
             0,
-            131072});
-            //
-            // outputShortedLabel
-            //
-            this.outputShortedLabel.AutoSize = true;
-            this.outputShortedLabel.Location = new System.Drawing.Point(6, 179);
-            this.outputShortedLabel.Name = "outputShortedLabel";
-            this.outputShortedLabel.Size = new System.Drawing.Size(79, 13);
-            this.outputShortedLabel.TabIndex = 12;
-            this.outputShortedLabel.Text = "Output Shorted";
-            //
-            // outputShortedCheckBox
-            //
-            this.outputShortedCheckBox.Location = new System.Drawing.Point(160, 177);
-            this.outputShortedCheckBox.Name = "outputShortedCheckBox";
-            this.outputShortedCheckBox.Size = new System.Drawing.Size(91, 21);
-            this.outputShortedCheckBox.TabIndex = 13;
+            65536});
             //
             // startButton
             //
@@ -360,7 +344,7 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             this.resourceNameLabel.AutoSize = true;
             this.resourceNameLabel.Location = new System.Drawing.Point(6, 22);
             this.resourceNameLabel.Name = "resourceNameLabel";
-            this.resourceNameLabel.Size = new System.Drawing.Size(84, 13);
+            this.resourceNameLabel.Size = new System.Drawing.Size(97, 15);
             this.resourceNameLabel.TabIndex = 0;
             this.resourceNameLabel.Text = "Resource Name";
             //
@@ -405,6 +389,22 @@ namespace NationalInstruments.Examples.SinkDCVoltageWithOutputResistance
             this.inComplianceButtonLed.Size = new System.Drawing.Size(21, 21);
             this.inComplianceButtonLed.TabIndex = 5;
             this.inComplianceButtonLed.UseVisualStyleBackColor = true;
+            //
+            // outputShortedLabel
+            //
+            this.outputShortedLabel.AutoSize = true;
+            this.outputShortedLabel.Location = new System.Drawing.Point(6, 179);
+            this.outputShortedLabel.Name = "outputShortedLabel";
+            this.outputShortedLabel.Size = new System.Drawing.Size(89, 15);
+            this.outputShortedLabel.TabIndex = 12;
+            this.outputShortedLabel.Text = "Output Shorted";
+            //
+            // outputShortedCheckBox
+            //
+            this.outputShortedCheckBox.Location = new System.Drawing.Point(160, 177);
+            this.outputShortedCheckBox.Name = "outputShortedCheckBox";
+            this.outputShortedCheckBox.Size = new System.Drawing.Size(91, 21);
+            this.outputShortedCheckBox.TabIndex = 13;
             //
             // configurationGroupBox
             //
