@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "5673Synchronization(TClk,SharedLO,Script).2012", "5673Synchronization(TClk,SharedLO,Script).2012.vbproj", "{8D106FE0-AFA6-408C-978F-0021433C063C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8D106FE0-AFA6-408C-978F-0021433C063C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D106FE0-AFA6-408C-978F-0021433C063C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D106FE0-AFA6-408C-978F-0021433C063C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D106FE0-AFA6-408C-978F-0021433C063C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

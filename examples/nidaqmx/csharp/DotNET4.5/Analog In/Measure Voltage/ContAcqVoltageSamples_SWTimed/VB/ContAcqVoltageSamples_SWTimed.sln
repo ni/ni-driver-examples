@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ContAcqVoltageSamples_SWTimed", "ContAcqVoltageSamples_SWTimed.vbproj", "{5BF034D5-6E75-41E9-A5FC-EF52F32D0213}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{5BF034D5-6E75-41E9-A5FC-EF52F32D0213}.Debug.ActiveCfg = Debug|.NET
+		{5BF034D5-6E75-41E9-A5FC-EF52F32D0213}.Debug.Build.0 = Debug|.NET
+		{5BF034D5-6E75-41E9-A5FC-EF52F32D0213}.Release.ActiveCfg = Release|.NET
+		{5BF034D5-6E75-41E9-A5FC-EF52F32D0213}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ContWriteDigPort_ExtClk", "ContWriteDigPort_ExtClk.vbproj", "{C030D737-B95C-4C11-ADCD-9129AD69ABFE}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{C030D737-B95C-4C11-ADCD-9129AD69ABFE}.Debug.ActiveCfg = Debug|.NET
+		{C030D737-B95C-4C11-ADCD-9129AD69ABFE}.Debug.Build.0 = Debug|.NET
+		{C030D737-B95C-4C11-ADCD-9129AD69ABFE}.Release.ActiveCfg = Release|.NET
+		{C030D737-B95C-4C11-ADCD-9129AD69ABFE}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

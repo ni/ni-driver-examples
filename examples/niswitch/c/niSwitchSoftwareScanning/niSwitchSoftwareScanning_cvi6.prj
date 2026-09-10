@@ -1,0 +1,131 @@
+[Project Header]
+Version = 600
+Pathname Line0001 = "/c/Program Files/IVI/Drivers/NISWITCH/Examples/CVI/niSwitchSoftwareScanning/niSwitchSoftwareS"
+Pathname Line0002 = "canning.prj"
+CVI Dir = "/c/program files/national instruments/measurementstudio/cvi"
+VXIplug&play Framework Dir = "/C/VXIpnp/winnt"
+Number of Files = 5
+Target Type = "Executable"
+Flags = 16
+
+[File 0001]
+File Type = "Include"
+Res Id = 1
+Path Is Rel = False
+Path Rel Path = "/c/Documents and Settings/All Users/Documents/National Instruments/NI-SWITCH/Examples/CVI/niSwitchErrorHandler/niSwitchErrorHandler.h"
+Path Line0001 = "/c/Documents and Settings/All Users/Documents/National Instruments/NI-SWITCH/Examples/CVI/niSwitchErrorHandler/niSwitchErrorHandler."
+Path Line0002 = "h"
+Exclude = False
+Project Flags = 0
+
+[File 0002]
+File Type = "CSource"
+Res Id = 2
+Path Is Rel = False
+Path Rel Path = "/c/Documents and Settings/All Users/Documents/National Instruments/NI-SWITCH/Examples/CVI/niSwitchErrorHandler/niSwitchErrorHandler.c"
+Path Line0001 = "/c/Documents and Settings/All Users/Documents/National Instruments/NI-SWITCH/Examples/CVI/niSwitchErrorHandler/niSwitchErrorHandler."
+Path Line0002 = "c"
+Exclude = False
+Compile Into Object File = False
+Project Flags = 0
+
+[File 0003]
+File Type = "CSource"
+Res Id = 3
+Path Is Rel = True
+Path Rel To = "Project"
+Path Rel Path = "niSwitchSoftwareScanning.c"
+Path Line0001 = "/c/Documents and Settings/All Users/Documents/National Instruments/NI-SWITCH/Examples/CVI/niSwitchSoftwareScanning/niSwitchSoftwareS"
+Path Line0002 = "canning.c"
+Exclude = False
+Compile Into Object File = False
+Project Flags = 0
+
+[File 0004]
+File Type = "Function Panel"
+Res Id = 4
+Path Is Rel = False
+Path Rel Path = "NISWITCH/niSwitch.fp"
+Path = "/c/Program Files/IVI Foundation/IVI/Drivers/niSwitch/niSwitch.fp"
+Exclude = False
+Project Flags = 0
+
+[File 0005]
+File Type = "Library"
+Res Id = 5
+Path Is Rel = False
+Path = "/c/Program Files/IVI Foundation/IVI/Lib/msc/niswitch.lib"
+Exclude = False
+Project Flags = 0
+
+[Compiler Options]
+Default Calling Convention = "cdecl"
+Require Prototypes = True
+Require Return Values = True
+Enable Pointer Mismatch Warning = False
+Enable Unreachable Code Warning = False
+Enable Unreferenced Identifiers Warning = False
+Enable Assignment In Conditional Warning = False
+O Option Compatible With 5.0 = False
+Uninitialized Locals Compile Warning = "Conservative"
+
+[Run Options]
+Stack Size = 250000
+Image Base Address = 4194304
+
+[Compiler Defines]
+Compiler Defines = "/DWIN32_LEAN_AND_MEAN"
+
+[Include Paths]
+Include Path 1 Is Rel = False
+Include Path 1 = "/c/Program Files/IVI/Include"
+
+[Create Executable]
+Executable File_Debug Is Rel = True
+Executable File_Debug Rel To = "Project"
+Executable File_Debug Rel Path = "niSwitchSoftwareScanning_dbg.exe"
+Executable File_Debug Line0001 = "/c/Program Files/IVI/Drivers/NISWITCH/Examples/CVI/niSwitchSoftwareScanning/niSwitchSoftwareS"
+Executable File_Debug Line0002 = "canning_dbg.exe"
+Executable File_Release Is Rel = True
+Executable File_Release Rel To = "Project"
+Executable File_Release Rel Path = "niSwitchSoftwareScanning.exe"
+Executable File_Release Line0001 = "/c/Program Files/IVI/Drivers/NISWITCH/Examples/CVI/niSwitchSoftwareScanning/niSwitchSoftwareS"
+Executable File_Release Line0002 = "canning.exe"
+Icon File Is Rel = False
+Icon File = ""
+Application Title = ""
+DLL Exports = "Include File Symbols"
+DLL Import Library Choice = "Gen Lib For Current Mode"
+Use VXIPNP Subdirectories for Import Libraries = False
+Use Dflt Import Lib Base Name = True
+Where to Copy DLL = "Do not copy"
+Add Type Lib To DLL = False
+Include Type Lib Help Links = False
+Type Lib FP File Is Rel = False
+Type Lib FP File = ""
+Type Lib Guid = ""
+Runtime Support = "Full Runtime Support"
+Instrument Driver Support Only = False
+
+[External Compiler Support]
+UIR Callbacks File Option = 0
+Using LoadExternalModule = False
+Create Project Symbols File = True
+UIR Callbacks Obj File Is Rel = False
+UIR Callbacks Obj File = ""
+Project Symbols H File Is Rel = False
+Project Symbols H File = ""
+Project Symbols Obj File Is Rel = False
+Project Symbols Obj File = ""
+
+[ActiveX Server Options]
+Specification File Is Rel = False
+Specification File = ""
+Source File Is Rel = False
+Source File = ""
+Include File Is Rel = False
+Include File = ""
+IDL File Is Rel = False
+IDL File = ""
+Register ActiveX Server = False
+

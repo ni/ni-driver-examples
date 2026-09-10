@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+# SharpDevelop 4.4
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleScriptIQDevice.2010", "SimpleScriptIQDevice.2010.csproj", "{D1569966-2DF6-464A-8709-46684D27361B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D1569966-2DF6-464A-8709-46684D27361B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1569966-2DF6-464A-8709-46684D27361B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1569966-2DF6-464A-8709-46684D27361B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D1569966-2DF6-464A-8709-46684D27361B}.Debug|x86.Build.0 = Debug|Any CPU
+		{D1569966-2DF6-464A-8709-46684D27361B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1569966-2DF6-464A-8709-46684D27361B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1569966-2DF6-464A-8709-46684D27361B}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
