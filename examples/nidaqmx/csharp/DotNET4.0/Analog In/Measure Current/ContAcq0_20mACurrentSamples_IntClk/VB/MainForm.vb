@@ -454,7 +454,8 @@ Public Class MainForm
                 Case "Internal"
                     myTask.AIChannels.CreateCurrentChannel(physicalChannelComboBox.Text, _
                     "", CType(-1, AITerminalConfiguration), Convert.ToDouble(minimumValueNumeric.Value), _
-                    Convert.ToDouble(maximumValueNumeric.Value), AICurrentUnits.Amps)
+                    Convert.ToDouble(maximumValueNumeric.Value), AICurrentUnits.Amps, _
+                    AICurrentShuntLocation.Internal, Convert.ToDouble(shuntResistorNumeric.Value), "")
 
                 Case "External"
                     myTask.AIChannels.CreateCurrentChannel(physicalChannelComboBox.Text, _
@@ -522,15 +523,6 @@ Public Class MainForm
             startButton.Enabled = True
         End Try
 
-    End Sub
-
-    Private Sub shuntResistComboxBox_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles shuntResistorLocationComboxBox.SelectedIndexChanged
-        Select Case shuntResistorLocationComboxBox.SelectedItem.ToString()
-            Case "Internal"
-                shuntResistorNumeric.Enabled = False
-            Case "External"
-                shuntResistorNumeric.Enabled = True
-        End Select
     End Sub
 
     Private Sub dataToDataTable(ByVal sourceArray As AnalogWaveform(Of Double)(), ByRef dataTable As DataTable)

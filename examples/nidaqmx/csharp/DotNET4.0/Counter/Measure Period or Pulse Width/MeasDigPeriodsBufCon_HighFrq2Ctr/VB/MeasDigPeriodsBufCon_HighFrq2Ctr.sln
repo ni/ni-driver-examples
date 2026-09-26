@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MeasDigPeriodsBufCon_HighFrq2Ctr", "MeasDigPeriodsBufCon_HighFrq2Ctr.vbproj", "{F1CDB076-D941-4CBC-8EB4-9E85DA1C5FE2}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{F1CDB076-D941-4CBC-8EB4-9E85DA1C5FE2}.Debug.ActiveCfg = Debug|.NET
+		{F1CDB076-D941-4CBC-8EB4-9E85DA1C5FE2}.Debug.Build.0 = Debug|.NET
+		{F1CDB076-D941-4CBC-8EB4-9E85DA1C5FE2}.Release.ActiveCfg = Release|.NET
+		{F1CDB076-D941-4CBC-8EB4-9E85DA1C5FE2}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

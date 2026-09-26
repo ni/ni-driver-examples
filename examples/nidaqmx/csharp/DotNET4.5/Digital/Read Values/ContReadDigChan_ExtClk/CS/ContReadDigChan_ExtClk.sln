@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContReadDigChan_ExtClk", "ContReadDigChan_ExtClk.csproj", "{4E938D59-68F9-480D-99A2-B7CD6E547453}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{4E938D59-68F9-480D-99A2-B7CD6E547453}.Debug.ActiveCfg = Debug|.NET
+		{4E938D59-68F9-480D-99A2-B7CD6E547453}.Debug.Build.0 = Debug|.NET
+		{4E938D59-68F9-480D-99A2-B7CD6E547453}.Release.ActiveCfg = Release|.NET
+		{4E938D59-68F9-480D-99A2-B7CD6E547453}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

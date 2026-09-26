@@ -8,120 +8,164 @@
 /*                                                                           */
 /* Modification History:                                                     */
 /*     Date    Initials  Description                                         */
-/*     4-99    BC        Created                                             */
+/*     8-03    DC        Created                                             */
 /*****************************************************************************/
-#include "niFgen.h"
-#include <stdio.h>
-#include <stdlib.h>
+
+#include <utility.h>
+#include <ansi_c.h>
+#include <cvirte.h>     /* Needed if linking in external compiler; harmless otherwise */
+#include <userint.h>
 #include <string.h>
-#include <math.h>
+#include "nifgen.h"
+#include "ClockMode.h"
+#include "niModInstCustCtrl.h"
 
-#define WFM_SIZE 64
 
-int main(int argc, char *argv[]) {
-   ViChar Resource[256], ActualClockModeName[20];
-   const ViChar * ChannelName = "";
-   ViReal64 SampleRate, ActualSampleRate;
-   ViStatus error = VI_SUCCESS;
-   ViSession vi=VI_NULL;
-   ViInt32 i;
-   ViInt32 wfmHandle, ClockMode, ActualClockMode;
-   ViReal64 sine[WFM_SIZE];
+#define WFM_SIZE 256
 
-   if(argc == 1) {
-      /*- Prompt for parameters -----------------------------------------------*/
-      #define BUFSIZE 256
-      ViChar inputLine[BUFSIZE];
+static int gui;
+ViSession vi=VI_NULL;
+ViStatus error = VI_SUCCESS;
+ViReal64 sine[WFM_SIZE];
 
-      // set default values
-      strcpy(Resource, "PXI1Slot2");
-      SampleRate = 20e+6;
-      ClockMode  = NIFGEN_VAL_AUTOMATIC;
+void ErrorBox(void);
 
-      // Optionally override defaults from the command line.
-      // If user simply hits enter, inputLine is an empty string, and sscanf will not
-      // update its target variable (so the default value is preserved)
+/****************************************************************************\
+  Function for displaying messages in the error box
+\****************************************************************************/
+void ErrorBox() {
+    ViUInt32 errMsgSize;
+    ViChar*  errMsg;
+    if(error <0) {
+        errMsgSize = niFgen_GetError(vi, VI_NULL, 0, VI_NULL);
+        errMsg = (ViChar *) malloc(sizeof(ViChar) * errMsgSize);
+        niFgen_GetError(vi, &error, errMsgSize, errMsg);
+        ResetTextBox(gui, GUI_ERROR_MESSAGE, errMsg);
+        free(errMsg);
+    }
+    else if(error == VI_SUCCESS) ResetTextBox(gui, GUI_ERROR_MESSAGE, "");
+}
 
-      printf("\nSpecify Inputs (Enter to accept default)\n");
+/****************************************************************************\
+  Starts the interative pannel
+\****************************************************************************/
+int main (int argc, char *argv[])
+{
+    ViInt32 i;
+    if (InitCVIRTE (0, argv, 0) == 0)   /* Needed if linking in external compiler; harmless otherwise */
+        return -1;  /* out of memory */
+    if ((gui = LoadPanel (0, "ClockMode.uir", GUI)) < 0)
+        return -1;
+    niModInstCVICust_NewCtrl (gui, GUI_RESOURCE, "nifgen");        
+    DisplayPanel (gui);
 
-      printf("Resource Name (%s): ", Resource);
-      if ( fgets(inputLine,BUFSIZE,stdin) ) sscanf(inputLine, "%s", Resource);
+    /*- Create waveform data --------------------------------------------*/
+    // Sine:
+    for (i = 0; i < WFM_SIZE; i++)
+        sine[i] = sin(((ViReal64)i/WFM_SIZE)*2*3.141596);
+    
+    RunUserInterface ();
+    niModInstCVICust_DiscardCtrl (gui, GUI_RESOURCE);    
+    return 0;
+}
 
-      printf("Sample Rate in Hz (%lf): ", SampleRate);
-      if ( fgets(inputLine,BUFSIZE,stdin) ) sscanf(inputLine, "%lf", &SampleRate);
 
-      printf("Clock Mode {0=HiRes | 1=DivideDown | 2=Automatic} (%d): ", ClockMode);
-      if ( fgets(inputLine,BUFSIZE,stdin) ) sscanf(inputLine, "%d", &ClockMode);
+/****************************************************************************\
+  Loads in the waveform and starts generation
+\****************************************************************************/
+void wfmGenerate() { 
+    ViChar Resource[256], Channel[256];
+    ViReal64 SampleRate, ActualSampleRate;
+    ViInt32 wfmHandle, ClockMode;
+    
+    /*- Get all the control values -------------------------------------------*/
+    GetCtrlVal(gui, GUI_RESOURCE, Resource);
+    GetCtrlVal(gui, GUI_CHANNEL, Channel);
+    GetCtrlVal(gui, GUI_SAMPLE_RATE, &SampleRate);
+    GetCtrlVal(gui, GUI_CLOCK_MODE, &ClockMode);
 
-      // Print newline(s) to visually separate output from input
-      printf("\n\n");
-   }
-   else if(argc == 4) {
-      /*- Get parameters from the command line ------------------------------*/
-      strcpy(Resource, argv[1]);
-      SampleRate = strtod(argv[2], NULL);
-      ClockMode = strtol(argv[3], NULL, 0);
-   }
-   else {
-      /*- Show usage --------------------------------------------------------*/
-      printf("Usage: %s <resource> <sample rate> <clock mode>\n", argv[0]);
-      return -1;
-   }
+    checkErr(niFgen_init(Resource, VI_TRUE, VI_TRUE, &vi));
 
-   /*- Create some waveform data --------------------------------------------*/
-   // Sine:
-   for (i = 0; i < WFM_SIZE; i++)
-       sine[i] = sin(((ViReal64)i/WFM_SIZE)*2*3.141596);   
-  
-   /*- Initialize the session -----------------------------------------------*/
-   printf("Initializing %s\n", Resource);
-   checkErr(niFgen_init(Resource, VI_TRUE, VI_TRUE, &vi));
+    /*- Configure the active channels for the session ----------------------*/
+    checkErr(niFgen_ConfigureChannels(vi, "0"));
 
-   /*- Configure the active channels for the session ------------------------*/
-   checkErr(niFgen_ConfigureChannels(vi, "0"));
-  
-   /*- Configure the device for arb mode ------------------------------------*/  
-   checkErr(niFgen_ConfigureOutputMode(vi, NIFGEN_VAL_OUTPUT_ARB));
+    /*- Prepare arb for sequence mode output --------------------------------*/
+    checkErr(niFgen_ConfigureOutputMode(vi, NIFGEN_VAL_OUTPUT_ARB));
 
-   /*- Create the waveform and download the data ----------------------------*/
-   checkErr(niFgen_CreateArbWaveform(vi, WFM_SIZE, sine, &wfmHandle)); 
+    /*- Create arbitrary waveform ----------------------------------------*/
+    checkErr(niFgen_CreateWaveformF64 (vi, Channel, WFM_SIZE, sine, &wfmHandle));
 
-   /*- Select the waveform to generate --------------------------------------*/
-   checkErr(niFgen_ConfigureArbWaveform(vi, ChannelName, wfmHandle, 1.0, 0)); 
+    /*- Select arb waveform to generate, configure clock --------------------*/
+    checkErr(niFgen_ConfigureArbWaveform(vi, Channel, wfmHandle, 1, 0)); 
+    checkErr(niFgen_ConfigureSampleRate(vi, SampleRate));
+    checkErr(niFgen_ConfigureClockMode(vi, ClockMode));
 
-   /*- Configure the sample clock -------------------------------------------*/
-   checkErr(niFgen_ConfigureClockMode(vi, ClockMode));
-   checkErr(niFgen_ConfigureSampleRate(vi, SampleRate));
+    /*- Generate the sequence -----------------------------------------------*/
+    checkErr(niFgen_InitiateGeneration(vi));
 
-   /*- Enable output and generate  ------------------------------------------*/
-   checkErr(niFgen_ConfigureOutputEnabled(vi, ChannelName, VI_TRUE));
-   checkErr(niFgen_InitiateGeneration(vi));
-
-   /*- Get the actual clock mode and sample rate ----------------------------*/
-   checkErr(niFgen_GetAttributeViInt32(vi, ChannelName, NIFGEN_ATTR_CLOCK_MODE, &ActualClockMode));
-   if (ActualClockMode == NIFGEN_VAL_DIVIDE_DOWN) strcpy(ActualClockModeName, "Divide Down");
-   else if (ActualClockMode == NIFGEN_VAL_HIGH_RESOLUTION) strcpy(ActualClockModeName, "High Resolution");
-   else strcpy(ActualClockModeName, "Automatic");
-   checkErr(niFgen_GetAttributeViReal64(vi, ChannelName, NIFGEN_ATTR_ACTUAL_ARB_SAMPLE_RATE, &ActualSampleRate));
-
-   printf("Generating sine wave at %lf Hz in %s clock mode\n", ActualSampleRate, ActualClockModeName);
-
-   // clear the input buffer, then wait for user input before closing the session.
-   // (DAQmx devices will quit generating the output when the session is closed).
-   fflush( stdin );
-   printf("Press Enter to continue...\n");
-   getchar();
-
+    /*- Update the control values -------------------------------------------*/
+    SetCtrlVal(gui, GUI_GENERATE, VI_TRUE);
+    checkErr(niFgen_GetAttributeViInt32 (vi, "", NIFGEN_ATTR_CLOCK_MODE,
+                                         &ClockMode));
+    SetCtrlVal(gui, GUI_ACTUAL_CLOCK_MODE, ClockMode);
+    checkErr(niFgen_GetAttributeViReal64 (vi, "",
+                                          NIFGEN_ATTR_ACTUAL_ARB_SAMPLE_RATE,
+                                          &SampleRate));
+    SetCtrlVal(gui, GUI_ACTUAL_SAMPLE_RATE, SampleRate);                                         
+    
 Error:
-   /*- Process any errors ---------------------------------------------------*/
-   if(error != VI_SUCCESS) {
-      ViChar errMsg[256];
-      niFgen_ErrorHandler(vi, error, errMsg);
-      printf("Error %x: %s\n", error, errMsg);
-   }
+    ErrorBox();
+    if((error != VI_SUCCESS) && (vi != VI_NULL)) {
+        niFgen_close(vi);
+        vi = VI_NULL;
+        SetCtrlVal(gui, GUI_GENERATE, VI_FALSE);
+    }
+}
 
-   /*- Close the session ----------------------------------------------------*/
-   if (vi) niFgen_close (vi);
-   return 0;
+
+/****************************************************************************\
+  Close the session and exit the program when the stop button is pushed
+\****************************************************************************/
+int CVICALLBACK stop (int panel, int control, int event,
+        void *callbackData, int eventData1, int eventData2)
+{
+        switch (event)
+        {
+        case EVENT_COMMIT:
+            if(vi != VI_NULL) {
+                niFgen_AbortGeneration(vi);
+                niFgen_close(vi);
+            }
+            QuitUserInterface (0);
+            break;
+        }
+    return 0;
+}
+
+/****************************************************************************\
+  Start generation when the generate button is pushed
+  Close the session when the generate button is released
+\****************************************************************************/
+int CVICALLBACK generate (int panel, int control, int event,
+        void *callbackData, int eventData1, int eventData2)
+{
+    int Generate;
+    switch (event)
+        {
+        case EVENT_COMMIT:
+            GetCtrlVal(gui, GUI_GENERATE, &Generate);
+            if(Generate) {
+                wfmGenerate();
+            }
+            else {
+                if(vi != VI_NULL) {
+                    checkErr(niFgen_AbortGeneration(vi));
+Error:
+                    ErrorBox();
+                }
+            }
+            break;
+        }
+    return 0;
 }
 

@@ -17,4 +17,4 @@ Language Version:        8.0
 
 Driver Name:             DAQmx
 
-Driver Version:          26.5
+Driver Version:          26.8

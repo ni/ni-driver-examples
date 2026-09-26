@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nidna:ExampleProgram 
+    xmlns:nidna="http://www.ni.com/Schemas/DNA/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.ni.com/Schemas/DNA/1.0 ..\DNA\1.0\NiExampleProgram.xsd" 
+    SchemaVersion="1.0" 
+    ContentType="EXAMPLE" 
+<Title>
+	<Text Locale="US">ReferenceClock.prj</Text>
+</Title>
+<Description>
+	<Text Locale="US">This example shows how to use reference clocks.  Select a clock source and a clock frequency and start the generation to phase lock the sample clock to the reference clock and begin generating.   You can also route the reference clock out.
+
+Note:  The PCI-5421 has an onboard reference clock that is intended to be shared among multiple devices.  To share the onboard reference clock, press the Route Onboard Ref Clk To RTSI 7 button and select RTSI 7 as your reference clock source and 10MHz as your reference clock frequency on all modules you wish to synchronize.</Text>
+</Description>
+<Keywords>
+	<Item>NI-FGEN</Item>
+	<Item>54xx</Item>
+	<Item>5411</Item>
+	<Item>5401</Item>
+	<Item>5431</Item>
+	<Item>5421</Item>
+	<Item>fgen</Item>
+	<Item>niFgen</Item>
+	<Item>reference</Item>
+	<Item>clock</Item>
+	<Item>RTSI</Item>
+	<Item>PLL</Item>
+	<Item>5412</Item>
+	<Item>5406</Item>
+	<Item>5402</Item>
+	<Item>5442</Item>
+	<Item>5450</Item>
+	<Item>5451</Item>
+</Keywords>
+<Navigation>
+	<Item>5938</Item>
+</Navigation>
+<ProgrammingLanguages>
+<Item>LabWindows/CVI</Item>
+</ProgrammingLanguages>
+<RequiredSoftware>
+<NiSoftware MinVersion="7.0">LabWindows/CVI</NiSoftware> 
+</RequiredSoftware>
+<RequiredNiFGenHardware>
+<Device>
+<Family>FGEN FuncGen</Family>
+<Model>1A80</Model>
+<Model>1A70</Model>
+<Model>1E50</Model>
+<Model>1890</Model>
+<Model>1240</Model>
+<Model>1230</Model>
+<Model>700B</Model>
+<Model>700C</Model>
+<Model>18D0</Model>
+<Model>18E0</Model>
+<Model>7111</Model>
+<Model>710F</Model>
+<Model>7167</Model>
+<Model>7168</Model>
+<Model>7197</Model>
+<Model>7198</Model>
+<Model>71E2</Model>
+<Model>71E3</Model>
+<Model>728BC4C4</Model>
+<Model>73C4C4C4</Model>
+<Model>728DC4C4</Model>
+</Device>
+</RequiredNiFGenHardware>

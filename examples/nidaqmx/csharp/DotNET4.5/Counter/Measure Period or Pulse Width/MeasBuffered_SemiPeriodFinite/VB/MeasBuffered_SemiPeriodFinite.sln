@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MeasBuffered_SemiPeriodFinite", "MeasBuffered_SemiPeriodFinite.vbproj", "{BB78D9A6-1314-4BC0-AEE6-761F7DF3FAD0}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{BB78D9A6-1314-4BC0-AEE6-761F7DF3FAD0}.Debug.ActiveCfg = Debug|.NET
+		{BB78D9A6-1314-4BC0-AEE6-761F7DF3FAD0}.Debug.Build.0 = Debug|.NET
+		{BB78D9A6-1314-4BC0-AEE6-761F7DF3FAD0}.Release.ActiveCfg = Release|.NET
+		{BB78D9A6-1314-4BC0-AEE6-761F7DF3FAD0}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

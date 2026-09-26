@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "565xDigitalModulation.2010", "565xDigitalModulation.2010.csproj", "{E15429F1-8DA3-4C9A-8CEF-A531F4A70D1C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E15429F1-8DA3-4C9A-8CEF-A531F4A70D1C}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{E15429F1-8DA3-4C9A-8CEF-A531F4A70D1C}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{E15429F1-8DA3-4C9A-8CEF-A531F4A70D1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E15429F1-8DA3-4C9A-8CEF-A531F4A70D1C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
