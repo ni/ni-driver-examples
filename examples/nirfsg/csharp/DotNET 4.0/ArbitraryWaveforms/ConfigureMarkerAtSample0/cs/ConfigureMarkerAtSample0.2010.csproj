@@ -40,35 +40,13 @@
     <StartupObject>NationalInstruments.Examples.ConfigureMarkerAtSample0.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ivi.Driver">
-      <Name>Ivi.Driver</Name>
-      <HintPath />
-    </Reference>
-    <Reference Include="NationalInstruments.Common, Version=19.1.40.49152">
-      <SpecificVersion>True</SpecificVersion>
-      <Name>NationalInstruments.Common</Name>
-      <HintPath />
-    </Reference>
-    <Reference Include="NationalInstruments.ModularInstruments.Common">
-      <Name>NationalInstruments.ModularInstruments.Common</Name>
-      <HintPath />
-    </Reference>
-    <Reference Include="NationalInstruments.ModularInstruments.NIRfsg.Fx40">
-      <Name>NationalInstruments.ModularInstruments.NIRfsg.Fx40</Name>
-      <HintPath />
-    </Reference>
-    <Reference Include="System">
-      <Name>System</Name>
-      <HintPath />
-    </Reference>
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-      <HintPath />
-    </Reference>
-    <Reference Include="System.Xml">
-      <Name>System.Xml</Name>
-      <HintPath />
-    </Reference>
+    <Reference Include="Ivi.Driver" />
+    <Reference Include="NationalInstruments.Common" />
+    <Reference Include="NationalInstruments.ModularInstruments.Common" />
+    <Reference Include="NationalInstruments.ModularInstruments.NIRfsg.Fx40" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigureMarkerAtSample0.cs" />
