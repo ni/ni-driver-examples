@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nidna:ExampleProgram 
+    xmlns:nidna="http://www.ni.com/Schemas/DNA/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.ni.com/Schemas/DNA/1.0 ..\DNA\1.0\NiExampleProgram.xsd" 
+    SchemaVersion="1.0" 
+    ContentType="EXAMPLE" 
+<Title>
+	<Text Locale="US">FrequencySweep5404.prj</Text>
+</Title>
+<Description>
+	<Text Locale="US">This example demonstrates frequency sweeping with the 5404.The frequency values (calculated using logarthmic spacing) are precomputed and stored in an array.  The sine wave is then updated with the appropriate frequency either on a timed or user-controlled basis.</Text>
+</Description>
+<Keywords>
+	<Item>function</Item>
+	<Item>frequency</Item>
+	<Item>sweep</Item>
+	<Item>54xx</Item>
+	<Item>5404</Item>
+	<Item>generation</Item>
+	<Item>list</Item>
+	<Item>standard</Item>
+	<Item>fgen</Item>
+	<Item>NI-FGEN</Item>
+	<Item>niFgen</Item>
+</Keywords>
+<Navigation>
+	<Item>4596</Item>
+</Navigation>
+<ProgrammingLanguages>
+<Item>LabWindows/CVI</Item>
+</ProgrammingLanguages>
+<RequiredSoftware>
+<NiSoftware MinVersion="7.0">LabWindows/CVI</NiSoftware> 
+</RequiredSoftware>
+<RequiredNiFGenHardware>
+<Device>
+<Family>FGEN 5404</Family>
+<Model>1E50</Model>
+</Device>
+</RequiredNiFGenHardware>

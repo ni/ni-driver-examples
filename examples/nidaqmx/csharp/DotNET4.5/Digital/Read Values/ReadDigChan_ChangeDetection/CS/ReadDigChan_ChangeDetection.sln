@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadDigChan_ChangeDetection", "ReadDigChan_ChangeDetection.csproj", "{DA55DBE5-5A53-4CBA-81AC-975FD4D1CD36}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{DA55DBE5-5A53-4CBA-81AC-975FD4D1CD36}.Debug.ActiveCfg = Debug|.NET
+		{DA55DBE5-5A53-4CBA-81AC-975FD4D1CD36}.Debug.Build.0 = Debug|.NET
+		{DA55DBE5-5A53-4CBA-81AC-975FD4D1CD36}.Release.ActiveCfg = Release|.NET
+		{DA55DBE5-5A53-4CBA-81AC-975FD4D1CD36}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
