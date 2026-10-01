@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nidna:ExampleProgram 
+    xmlns:nidna="http://www.ni.com/Schemas/DNA/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.ni.com/Schemas/DNA/1.0 ..\DNA\1.0\NiExampleProgram.xsd" 
+    SchemaVersion="1.0" 
+    ContentType="EXAMPLE" 
+<Title>
+	<Text Locale="US">SynchronizeTClk.prj</Text>
+</Title>
+<Description>
+	<Text Locale="US">This example demonstrates how to generate synchronized waveforms with any number of SMC-based PXI waveform generators in the same chassis or any number of SMC-based PCI waveform generators sharing a common RTSI bus.  The waveform generators continuously generate synchronized square waves.  Immediate trigger is used to start generation on all modules.
+
+Assumptions:  
+
+For PXI:  Modules must be in one PXI chassis, because the PXI backplane is used for synchronization and trigger distribution.  Ensure that the PXI chassis has been properly identified in MAX.
+
+For PCI:  Modules must be in one PCI computer, and connected with a RTSI bus because the RTSI bus is used for synchronization and trigger distribution.  Ensure that MAX indicates that the cable was created and that synchronized instruments are connected to it.</Text>
+</Description>
+<Keywords>
+	<Item>5421</Item>
+	<Item>synchronization</Item>
+	<Item>NI-FGEN</Item>
+	<Item>clock</Item>
+	<Item>niTClk</Item>
+	<Item>fgen</Item>
+	<Item>niFgen</Item>
+	<Item>TClk</Item>
+	<Item>NI-TCLK</Item>
+	<Item>5412</Item>
+	<Item>5422</Item>
+	<Item>5441</Item>
+	<Item>5442</Item>
+	<Item>5450</Item>
+	<Item>5451</Item>
+</Keywords>
+<Navigation>
+	<Item>5934</Item>
+</Navigation>
+<ProgrammingLanguages>
+<Item>LabWindows/CVI</Item>
+</ProgrammingLanguages>
+<RequiredSoftware>
+<NiSoftware MinVersion="7.0">LabWindows/CVI</NiSoftware> 
+</RequiredSoftware>
+<RequiredNiFGenHardware>
+<Device>
+<Family>FGEN TClk</Family>
+<Model>700B</Model>
+<Model>700C</Model>
+<Model>7111</Model>
+<Model>710F</Model>
+<Model>7167</Model>
+<Model>7168</Model>
+<Model>728BC4C4</Model>
+<Model>73C4C4C4</Model>
+<Model>728DC4C4</Model>
+</Device>
+</RequiredNiFGenHardware>

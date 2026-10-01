@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nidna:ExampleProgram 
+    xmlns:nidna="http://www.ni.com/Schemas/DNA/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.ni.com/Schemas/DNA/1.0 ..\DNA\1.0\NiExampleProgram.xsd" 
+    SchemaVersion="1.0" 
+    ContentType="EXAMPLE" 
+<Title>
+	<Text Locale="US">SweepGenerator.prj</Text>
+</Title>
+<Description>
+	<Text Locale="US">This example shows how to use the Frequency List mode to generate a frequency sweep.</Text>
+</Description>
+<Keywords>
+	<Item>frequency</Item>
+	<Item>generation</Item>
+	<Item>generating</Item>
+	<Item>list</Item>
+	<Item>sweep</Item>
+	<Item>54xx</Item>
+	<Item>5431</Item>
+	<Item>5411</Item>
+	<Item>5401</Item>
+	<Item>function</Item>
+	<Item>fgen</Item>
+	<Item>NI-FGEN</Item>
+	<Item>niFgen</Item>
+	<Item>5441</Item>
+	<Item>5406</Item>
+	<Item>5402</Item>
+	<Item>5442</Item>
+</Keywords>
+<Navigation>
+	<Item>4596</Item>
+</Navigation>
+<ProgrammingLanguages>
+<Item>LabWindows/CVI</Item>
+</ProgrammingLanguages>
+<RequiredSoftware>
+<NiSoftware MinVersion="8.6">LabWindows/CVI</NiSoftware> 
+</RequiredSoftware>
+<RequiredNiFGenHardware>
+<Device>
+<Family>FGEN Sweep</Family>
+<Model>1A80</Model>
+<Model>1A70</Model>
+<Model>1890</Model>
+<Model>1240</Model>
+<Model>1230</Model>
+<Model>18D0</Model>
+<Model>18E0</Model>
+<Model>7111</Model>
+<Model>7197</Model>
+<Model>7198</Model>
+<Model>71E2</Model>
+<Model>71E3</Model>
+<Model></Model>
+<Model>728BC4C4</Model>
+</Device>
+</RequiredNiFGenHardware>

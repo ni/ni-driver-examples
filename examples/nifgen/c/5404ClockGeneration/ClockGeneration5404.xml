@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nidna:ExampleProgram 
+    xmlns:nidna="http://www.ni.com/Schemas/DNA/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.ni.com/Schemas/DNA/1.0 ..\DNA\1.0\NiExampleProgram.xsd" 
+    SchemaVersion="1.0" 
+    ContentType="EXAMPLE" 
+<Title>
+	<Text Locale="US">ClockGeneration5404.prj</Text>
+</Title>
+<Description>
+	<Text Locale="US">This example shows how to generate a TTL clock signal at an arbitrary frequency with a NI 5404 frequency synthesizer.
+
+This example also demonstrates changing generation attributes on-the-fly.</Text>
+</Description>
+<Keywords>
+	<Item>function</Item>
+	<Item>synchronization</Item>
+	<Item>generation</Item>
+	<Item>generating</Item>
+	<Item>external</Item>
+	<Item>clock</Item>
+	<Item>5404</Item>
+	<Item>54xx</Item>
+	<Item>standard</Item>
+	<Item>fgen</Item>
+	<Item>NI-FGEN</Item>
+	<Item>niFgen</Item>
+</Keywords>
+<Navigation>
+	<Item>4596</Item>
+</Navigation>
+<ProgrammingLanguages>
+<Item>LabWindows/CVI</Item>
+</ProgrammingLanguages>
+<RequiredSoftware>
+<NiSoftware MinVersion="7.0">LabWindows/CVI</NiSoftware> 
+</RequiredSoftware>
+<RequiredNiFGenHardware>
+<Device>
+<Family>FGEN 5404</Family>
+<Model>1E50</Model>
+</Device>
+</RequiredNiFGenHardware>

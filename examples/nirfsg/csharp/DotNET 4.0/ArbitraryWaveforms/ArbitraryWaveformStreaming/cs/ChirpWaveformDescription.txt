@@ -1,0 +1,12 @@
+DESCRIPTION OF CHIRPWAVEFORM.BIN
+
+This file is a binary file that contains 3,750,000 16-bit I and Q samples.
+The byte order for the binary data is Little Endian (low byte before high byte).
+
+The waveform pattern represented in the file is a Chirp signal created with
+the following attributes
+
+Start Freq     :-2.5M
+Stop Freq      : 2.5M
+Chirp Duration : 450ms
+IQ Rate        : 8.333333MS/sec
