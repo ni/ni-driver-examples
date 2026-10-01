@@ -46,16 +46,16 @@
     <Reference Include="Ivi.Driver" />
     <Reference Include="NationalInstruments.Common, Version=19.1.40.49152">
       <SpecificVersion>True</SpecificVersion>
-      <SpecificVersion>False</SpecificVersion>
+		<SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.Common">
-      <SpecificVersion>False</SpecificVersion>
+		<SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.ModularInstrumentsSystem">
-      <SpecificVersion>False</SpecificVersion>
+		<SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.NIRfsg.Fx40">
-      <SpecificVersion>False</SpecificVersion>
+		<SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
