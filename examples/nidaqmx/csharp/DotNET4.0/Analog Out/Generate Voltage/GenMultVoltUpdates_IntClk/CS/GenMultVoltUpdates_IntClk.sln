@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenMultVoltUpdates_IntClk", "GenMultVoltUpdates_IntClk.csproj", "{31D1CF9F-0809-4017-A764-6B90EFA2A40E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{31D1CF9F-0809-4017-A764-6B90EFA2A40E}.Debug.ActiveCfg = Debug|.NET
+		{31D1CF9F-0809-4017-A764-6B90EFA2A40E}.Debug.Build.0 = Debug|.NET
+		{31D1CF9F-0809-4017-A764-6B90EFA2A40E}.Release.ActiveCfg = Release|.NET
+		{31D1CF9F-0809-4017-A764-6B90EFA2A40E}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

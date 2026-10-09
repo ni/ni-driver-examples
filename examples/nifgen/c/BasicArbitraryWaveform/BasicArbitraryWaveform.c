@@ -1,6 +1,6 @@
 /*****************************************************************************/
 /* National Instruments Function Generator                                   */
-/* Basic Arbitrary Waveform Example source file                              */
+/* Arbitrary Waveform Example source file                                    */
 /*                                                                           */
 /* National Instruments, Austin Texas                                        */
 /* PH. (800)433-3488   Fax (512)794-5678                                     */
@@ -8,119 +8,250 @@
 /*                                                                           */
 /* Modification History:                                                     */
 /*     Date    Initials  Description                                         */
-/*     4-99    BC        Created                                             */
+/*     8-03    DC        Created                                             */
 /*****************************************************************************/
-#include "niFgen.h"
-#include <stdio.h>
-#include <stdlib.h>
+
+#include <utility.h>
+#include <ansi_c.h>
+#include <cvirte.h>     /* Needed if linking in external compiler; harmless otherwise */
+#include <userint.h>
 #include <string.h>
-#include <math.h>
+#include "nifgen.h"
+#include "BasicArbitraryWaveform.h"
+#include "niModInstCustCtrl.h"
 
-#define WFM_SIZE 64
+#define WFM_SIZE 256
 
-int main(int argc, char *argv[]) {
-   ViChar Resource[256];
-   const ViChar * ChannelName = "0";
-   ViReal64 SampleRate, Gain, DCOffset;
-   ViStatus error = VI_SUCCESS;
-   ViSession vi=VI_NULL;
-   ViInt32 i;
-   ViInt32 wfmHandle;
-   ViReal64 sine[WFM_SIZE];
+static int gui;
+ViSession vi=VI_NULL;
+ViStatus error = VI_SUCCESS;
+ViReal64 sine[WFM_SIZE], square[WFM_SIZE], ramp[WFM_SIZE];
 
-   if(argc == 1) {
-      /*- Prompt for parameters -----------------------------------------------*/
-      #define BUFSIZE 256
-      ViChar inputLine[BUFSIZE];
+void ErrorBox(void);
 
-      // set default values
-      strcpy(Resource, "PXI1Slot2");
-      SampleRate = 40e+6;
-      Gain = 1.0;
-      DCOffset = 0.0;
+/****************************************************************************\
+  Function for displaying messages in the error box
+\****************************************************************************/
+void ErrorBox() {
+    ViUInt32 errMsgSize;
+    ViChar*  errMsg;
+    if(error <0) {
+        errMsgSize = niFgen_GetError(vi, VI_NULL, 0, VI_NULL);
+        errMsg = (ViChar *) malloc(sizeof(ViChar) * errMsgSize);
+        niFgen_GetError(vi, &error, errMsgSize, errMsg);
+        ResetTextBox(gui, GUI_ERROR_MESSAGE, errMsg);
+        free(errMsg);
+    }
+    else if(error == VI_SUCCESS) ResetTextBox(gui, GUI_ERROR_MESSAGE, "");
+}
 
-      // Optionally override defaults from the command line.
-      // If user simply hits enter, inputLine is an empty string, and sscanf will not
-      // update its target variable (so the default value is preserved)
+/****************************************************************************\
+  Starts the interative pannel
+\****************************************************************************/
+int main (int argc, char *argv[])
+{
+    ViInt32 i;
+    if (InitCVIRTE (0, argv, 0) == 0)   /* Needed if linking in external compiler; harmless otherwise */
+        return -1;  /* out of memory */
+    if ((gui = LoadPanel (0, "BasicArbitraryWaveform.uir", GUI)) < 0)
+        return -1;
+    niModInstCVICust_NewCtrl (gui, GUI_RESOURCE, "nifgen");        
+    DisplayPanel (gui);
 
-      printf("\nSpecify Inputs (Enter to accept default)\n");
+    /*- Create some waveform data --------------------------------------------*/
+    // Sine:
+    for (i = 0; i < WFM_SIZE; i++)
+        sine[i] = sin(((ViReal64)i/WFM_SIZE)*2*3.141596);
 
-      printf("Resource Name (%s): ", Resource);
-      if ( fgets(inputLine,BUFSIZE,stdin) ) sscanf(inputLine, "%s", Resource);
+    // Square
+    for (i = 0; i < WFM_SIZE; i++) {
+        if (i < WFM_SIZE/2) square[i] = 1;
+        else square[i] = -1;
+    }
+    
+    // Ramp
+    for (i = 0; i < WFM_SIZE; i++)
+        ramp[i] = (ViReal64)i/WFM_SIZE*2 - 1;
+    
+    PlotY (gui, GUI_GRAPH, sine, WFM_SIZE, VAL_DOUBLE, VAL_FAT_LINE,
+           VAL_EMPTY_SQUARE, VAL_SOLID, 1, VAL_CYAN);
+    SetCtrlVal(gui, GUI_WAVEFORM, 0);
+    
+    RunUserInterface ();
+    niModInstCVICust_DiscardCtrl (gui, GUI_RESOURCE);    
+    return 0;
+}
 
-      printf("Sample Rate in Hz (%lf): ", SampleRate);
-      if ( fgets(inputLine,BUFSIZE,stdin) ) sscanf(inputLine, "%lf", &SampleRate);
 
-      printf("Gain (%lf): ", Gain);
-      if ( fgets(inputLine,BUFSIZE,stdin) ) sscanf(inputLine, "%lf", &Gain);
+/****************************************************************************\
+  Loads in the waveform and starts generation
+\****************************************************************************/
+void wfmGenerate() { 
+    ViChar Resource[256], Channel[256];
+    ViReal64 SampleRate, Gain, dcOffset, ActualSampleRate;
+    ViInt32 wfmHandle, wfm;
+    
+    /*- Get all the control values -------------------------------------------*/
+    GetCtrlVal(gui, GUI_RESOURCE, Resource);
+    GetCtrlVal(gui, GUI_CHANNEL, Channel);
+    GetCtrlVal(gui, GUI_SAMPLE_RATE, &SampleRate);
+    GetCtrlVal(gui, GUI_GAIN, &Gain);
+    GetCtrlVal(gui, GUI_DC_OFFSET, &dcOffset);
+    GetCtrlVal(gui, GUI_WAVEFORM, &wfm);
 
-      printf("DC Offset (%lf): ", DCOffset);
-      if ( fgets(inputLine,BUFSIZE,stdin) ) sscanf(inputLine, "%lf", &DCOffset);
+    checkErr(niFgen_init (Resource, VI_TRUE, VI_TRUE, &vi));
 
-      // Print newline(s) to visually separate output from input
-      printf("\n\n");
-   }
-   else if(argc == 5) {
-      /*- Get parameters from the command line ------------------------------*/
-      strcpy(Resource, argv[1]);
-      SampleRate = strtod(argv[2], NULL);
-      Gain = strtod(argv[3], NULL);
-      DCOffset = strtod(argv[4], NULL);
-   }
-   else {
-      /*- Show usage --------------------------------------------------------*/
-      printf("Usage: %s <resource> <sample rate> <gain> <dc offset>\n", argv[0]);
-      return -1;
-   }
+    /*- Configure the active channels for the session ----------------------*/
+    checkErr(niFgen_ConfigureChannels(vi, "0"));
 
-   /*- Create some waveform data --------------------------------------------*/
-   // Sine:
-   for (i = 0; i < WFM_SIZE; i++)
-       sine[i] = sin(((ViReal64)i/WFM_SIZE)*2*3.141596);   
-  
-   /*- Initialize the session -----------------------------------------------*/
-   printf("Initializing %s\n", Resource);
-   checkErr(niFgen_init(Resource, VI_TRUE, VI_TRUE, &vi));
+    /*- Prepare arb for sequence mode output --------------------------------*/
+    checkErr(niFgen_ConfigureOutputMode(vi, NIFGEN_VAL_OUTPUT_ARB));
 
-   /*- Configure the active channels for the session ------------------------*/
-   checkErr(niFgen_ConfigureChannels(vi, "0"));
+    /*- Create an arbitrary sequence ----------------------------------------*/
+    if (wfm == 0) 
+        checkErr(niFgen_CreateWaveformF64 (vi, Channel, WFM_SIZE, sine, &wfmHandle));
+    else if (wfm == 1) 
+        checkErr(niFgen_CreateWaveformF64 (vi, Channel, WFM_SIZE, square, &wfmHandle));
+    else if (wfm == 2) 
+        checkErr(niFgen_CreateWaveformF64 (vi, Channel, WFM_SIZE, ramp, &wfmHandle));
 
-   /*- Configure the device for arb mode ------------------------------------*/  
-   checkErr(niFgen_ConfigureOutputMode(vi, NIFGEN_VAL_OUTPUT_ARB));
+    /*- Select arb waveform to generate, configure gain and offset ----------*/
+    checkErr(niFgen_ConfigureArbWaveform(vi, Channel, wfmHandle, Gain,
+                                        dcOffset)); 
 
-   /*- Create the waveform and download the data ----------------------------*/
-   checkErr(niFgen_CreateArbWaveform(vi, WFM_SIZE, sine, &wfmHandle)); 
+    checkErr(niFgen_ConfigureSampleRate(vi, SampleRate));
 
-   /*- Select the waveform to generate --------------------------------------*/
-   checkErr(niFgen_ConfigureArbWaveform(vi, ChannelName, wfmHandle, Gain,
-                                        DCOffset)); 
+    /*- Generate the sequence -----------------------------------------------*/
+    checkErr(niFgen_InitiateGeneration(vi));
 
-   /*- Configure the sample clock -------------------------------------------*/
-   checkErr(niFgen_ConfigureClockMode(vi, NIFGEN_VAL_HIGH_RESOLUTION));
-   checkErr(niFgen_ConfigureSampleRate(vi, SampleRate));
-
-   /*- Enable output and generate  ------------------------------------------*/
-   checkErr(niFgen_ConfigureOutputEnabled(vi, ChannelName, VI_TRUE));
-   checkErr(niFgen_InitiateGeneration(vi));
-
-   printf("Generating sine wave at %lf Hz\n", SampleRate);
-
-   // clear the input buffer, then wait for user input before closing the session.
-   // (DAQmx devices will quit generating the output when the session is closed).
-   fflush( stdin );
-   printf("Press Enter to continue...\n");
-   getchar();
-
+    /*- Update the control values ------------------------------------------*/
+    SetCtrlVal(gui, GUI_GENERATE, VI_TRUE);
+    
 Error:
-   /*- Process any errors ---------------------------------------------------*/
-   if(error != VI_SUCCESS) {
-      ViChar errMsg[256];
-      niFgen_ErrorHandler(vi, error, errMsg);
-      printf("Error %x: %s\n", error, errMsg);
-   }
+    ErrorBox();
+    if((error != VI_SUCCESS) && (vi != VI_NULL)) {
+        niFgen_close(vi);
+        vi = VI_NULL;
+        SetCtrlVal(gui, GUI_GENERATE, VI_FALSE);
+    }
+}
 
-   /*- Close the session ----------------------------------------------------*/
-   if (vi) niFgen_close (vi);
-   return 0;
+/****************************************************************************\
+  Change the gain when the gain knob is changed  
+\****************************************************************************/
+int CVICALLBACK gain (int panel, int control, int event,
+        void *callbackData, int eventData1, int eventData2)
+{
+    ViReal64 Gain;
+    switch (event)
+        {
+        case EVENT_VAL_CHANGED:
+            if(vi != VI_NULL) {
+                GetCtrlVal(gui, GUI_GAIN, &Gain);
+                checkErr(niFgen_SetAttributeViReal64(vi, VI_NULL, NIFGEN_ATTR_ARB_GAIN, 
+                                                Gain));
+                SetCtrlAttribute (gui, GUI_DC_OFFSET, ATTR_MAX_VALUE, Gain/2);
+                SetCtrlAttribute (gui, GUI_DC_OFFSET, ATTR_MIN_VALUE, -Gain/2);
+Error:
+                ErrorBox();
+            }
+            break;
+        }
+    return 0;
+}
+
+/****************************************************************************\
+  Change the dc offset when the dc offset knob is changed  
+\****************************************************************************/
+int CVICALLBACK dc_offset (int panel, int control, int event,
+        void *callbackData, int eventData1, int eventData2)
+{
+    ViReal64 dcOffset;
+    switch (event)
+        {
+        case EVENT_COMMIT:
+            if(vi != VI_NULL) {
+                GetCtrlVal(gui, GUI_DC_OFFSET, &dcOffset);
+                checkErr(niFgen_SetAttributeViReal64 (vi, "", NIFGEN_ATTR_ARB_OFFSET, dcOffset));
+Error:
+                ErrorBox();
+            }
+            break;
+        }
+    return 0;
+}
+
+/****************************************************************************\
+  Change the waveform when the waveform ring is changed  
+\****************************************************************************/
+int CVICALLBACK waveform (int panel, int control, int event,
+        void *callbackData, int eventData1, int eventData2)
+{
+    ViInt32 wfm;
+    switch (event)
+        {
+        case EVENT_COMMIT:
+            GetCtrlVal(gui, GUI_WAVEFORM, &wfm);
+            DeleteGraphPlot (gui, GUI_GRAPH, -1, VAL_IMMEDIATE_DRAW);
+            if (wfm == 0)     
+                PlotY (gui, GUI_GRAPH, sine, WFM_SIZE, VAL_DOUBLE, VAL_FAT_LINE,
+                VAL_EMPTY_SQUARE, VAL_SOLID, 1, VAL_CYAN);
+            else if (wfm == 1)
+                PlotY (gui, GUI_GRAPH, square, WFM_SIZE, VAL_DOUBLE, VAL_FAT_LINE,
+                VAL_EMPTY_SQUARE, VAL_SOLID, 1, VAL_CYAN);
+            else if (wfm == 2)
+                PlotY (gui, GUI_GRAPH, ramp, WFM_SIZE, VAL_DOUBLE, VAL_FAT_LINE,
+                VAL_EMPTY_SQUARE, VAL_SOLID, 1, VAL_CYAN);
+
+            break;
+        }
+    return 0;
+}
+
+
+/****************************************************************************\
+  Close the session and exit the program when the stop button is pushed
+\****************************************************************************/
+int CVICALLBACK stop (int panel, int control, int event,
+        void *callbackData, int eventData1, int eventData2)
+{
+        switch (event)
+        {
+        case EVENT_COMMIT:
+            if(vi != VI_NULL) {
+                niFgen_AbortGeneration(vi);
+                niFgen_close(vi);
+            }
+            QuitUserInterface (0);
+            break;
+        }
+    return 0;
+}
+
+/****************************************************************************\
+  Start generation when the generate button is pushed
+  Close the session when the generate button is released
+\****************************************************************************/
+int CVICALLBACK generate (int panel, int control, int event,
+        void *callbackData, int eventData1, int eventData2)
+{
+    int Generate;
+    switch (event)
+        {
+        case EVENT_COMMIT:
+            GetCtrlVal(gui, GUI_GENERATE, &Generate);
+            if(Generate) {
+                wfmGenerate();
+            }
+            else {
+                if(vi != VI_NULL) {
+                    checkErr(niFgen_AbortGeneration(vi));
+Error:
+                    ErrorBox();
+                }
+            }
+            break;
+        }
+    return 0;
 }
 

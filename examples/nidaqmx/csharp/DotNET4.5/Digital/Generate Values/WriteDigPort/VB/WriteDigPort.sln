@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "WriteDigPort", "WriteDigPort.vbproj", "{57D11D2A-6665-4DEA-A97B-E9DBDB2BE987}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{57D11D2A-6665-4DEA-A97B-E9DBDB2BE987}.Debug.ActiveCfg = Debug|.NET
+		{57D11D2A-6665-4DEA-A97B-E9DBDB2BE987}.Debug.Build.0 = Debug|.NET
+		{57D11D2A-6665-4DEA-A97B-E9DBDB2BE987}.Release.ActiveCfg = Release|.NET
+		{57D11D2A-6665-4DEA-A97B-E9DBDB2BE987}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

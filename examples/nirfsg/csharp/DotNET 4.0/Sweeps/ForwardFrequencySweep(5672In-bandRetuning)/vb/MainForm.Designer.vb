@@ -1,0 +1,364 @@
+Partial Class MainForm
+    ''' <summary>
+    ''' Required designer variable.
+    ''' </summary>
+    Private components As System.ComponentModel.IContainer = Nothing
+
+    ''' <summary>
+    ''' Clean up any resources being used.
+    ''' </summary>
+    ''' <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        If disposing AndAlso (components IsNot Nothing) Then
+            components.Dispose()
+        End If
+        MyBase.Dispose(disposing)
+    End Sub
+
+#Region "Windows Form Designer generated code"
+
+    ''' <summary>
+    ''' Required method for Designer support - do not modify
+    ''' the contents of Me method with the code editor.
+    ''' </summary>
+    Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
+        Me.frequencySweepGroupBox = New System.Windows.Forms.GroupBox()
+        Me.startFrequencyLabel = New System.Windows.Forms.Label()
+        Me.stopFrequencyLabel = New System.Windows.Forms.Label()
+        Me.numberStepsLabel = New System.Windows.Forms.Label()
+        Me.dwellTimeLabel = New System.Windows.Forms.Label()
+        Me.startFrequencyNumeric = New System.Windows.Forms.NumericUpDown()
+        Me.stopFrequencyNumeric = New System.Windows.Forms.NumericUpDown()
+        Me.numberStepsNumeric = New System.Windows.Forms.NumericUpDown()
+        Me.dwellTimeNumeric = New System.Windows.Forms.NumericUpDown()
+        Me.resourceNameLabel = New System.Windows.Forms.Label()
+        Me.deviceBandwidthToUseLabel = New System.Windows.Forms.Label()
+        Me.powerLevelLabel = New System.Windows.Forms.Label()
+        Me.actualCurrentFrequencyLabel = New System.Windows.Forms.Label()
+        Me.errorLabel = New System.Windows.Forms.Label()
+        Me.phaseDetectorFrequencyLabel = New System.Windows.Forms.Label()
+        Me.deviceBandwidthToUseNumeric = New System.Windows.Forms.NumericUpDown()
+        Me.powerLevelNumeric = New System.Windows.Forms.NumericUpDown()
+        Me.resourceNameComboBox = New System.Windows.Forms.ComboBox()
+        Me.actualCurrentFrequencyTextBox = New System.Windows.Forms.TextBox()
+        Me.errorTextBox = New System.Windows.Forms.TextBox()
+        Me.startButton = New System.Windows.Forms.Button()
+        Me.stopButton = New System.Windows.Forms.Button()        Me.phaseDetectorFrequencyComboBox = New System.Windows.Forms.ComboBox()
+        Me.rfsgStatusTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.configurationGroupBox = New System.Windows.Forms.GroupBox()
+        Me.frequencySweepGroupBox.SuspendLayout()
+        CType(Me.startFrequencyNumeric, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.stopFrequencyNumeric, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.numberStepsNumeric, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dwellTimeNumeric, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.deviceBandwidthToUseNumeric, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.powerLevelNumeric, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.configurationGroupBox.SuspendLayout()
+        Me.SuspendLayout()
+        '
+        'frequencySweepGroupBox
+        '
+        Me.frequencySweepGroupBox.Controls.Add(Me.startFrequencyLabel)
+        Me.frequencySweepGroupBox.Controls.Add(Me.stopFrequencyLabel)
+        Me.frequencySweepGroupBox.Controls.Add(Me.numberStepsLabel)
+        Me.frequencySweepGroupBox.Controls.Add(Me.dwellTimeLabel)
+        Me.frequencySweepGroupBox.Controls.Add(Me.startFrequencyNumeric)
+        Me.frequencySweepGroupBox.Controls.Add(Me.stopFrequencyNumeric)
+        Me.frequencySweepGroupBox.Controls.Add(Me.numberStepsNumeric)
+        Me.frequencySweepGroupBox.Controls.Add(Me.dwellTimeNumeric)
+        Me.frequencySweepGroupBox.Location = New System.Drawing.Point(229, 26)
+        Me.frequencySweepGroupBox.Name = "frequencySweepGroupBox"
+        Me.frequencySweepGroupBox.Size = New System.Drawing.Size(176, 235)
+        Me.frequencySweepGroupBox.TabIndex = 2
+        Me.frequencySweepGroupBox.TabStop = False
+        Me.frequencySweepGroupBox.Text = "Frequency Sweep Parameters"
+        '
+        'startFrequencyLabel
+        '
+        Me.startFrequencyLabel.AutoSize = True
+        Me.startFrequencyLabel.Location = New System.Drawing.Point(28, 24)
+        Me.startFrequencyLabel.Name = "startFrequencyLabel"
+        Me.startFrequencyLabel.Size = New System.Drawing.Size(104, 13)
+        Me.startFrequencyLabel.TabIndex = 3
+        Me.startFrequencyLabel.Text = "Start Frequency [Hz]"
+        '
+        'stopFrequencyLabel
+        '
+        Me.stopFrequencyLabel.AutoSize = True
+        Me.stopFrequencyLabel.Location = New System.Drawing.Point(29, 72)
+        Me.stopFrequencyLabel.Name = "stopFrequencyLabel"
+        Me.stopFrequencyLabel.Size = New System.Drawing.Size(101, 13)
+        Me.stopFrequencyLabel.TabIndex = 4
+        Me.stopFrequencyLabel.Text = "End Frequency [Hz]"
+        '
+        'numberStepsLabel
+        '
+        Me.numberStepsLabel.AutoSize = True
+        Me.numberStepsLabel.Location = New System.Drawing.Point(32, 127)
+        Me.numberStepsLabel.Name = "numberStepsLabel"
+        Me.numberStepsLabel.Size = New System.Drawing.Size(86, 13)
+        Me.numberStepsLabel.TabIndex = 5
+        Me.numberStepsLabel.Text = "Number of Steps"
+        '
+        'dwellTimeLabel
+        '
+        Me.dwellTimeLabel.AutoSize = True
+        Me.dwellTimeLabel.Location = New System.Drawing.Point(25, 184)
+        Me.dwellTimeLabel.Name = "dwellTimeLabel"
+        Me.dwellTimeLabel.Size = New System.Drawing.Size(137, 13)
+        Me.dwellTimeLabel.TabIndex = 6
+        Me.dwellTimeLabel.Text = "Dwell Time in Each Step [s]"
+        '
+        'startFrequencyNumeric
+        '
+        Me.startFrequencyNumeric.DecimalPlaces = 6
+        Me.startFrequencyNumeric.Location = New System.Drawing.Point(25, 44)
+        Me.startFrequencyNumeric.Maximum = New Decimal(New Integer() {-1, -1, -1, 0})
+        Me.startFrequencyNumeric.Minimum = New Decimal(New Integer() {-1, -1, -1, -2147483648})
+        Me.startFrequencyNumeric.Name = "startFrequencyNumeric"
+        Me.startFrequencyNumeric.Size = New System.Drawing.Size(120, 20)
+        Me.startFrequencyNumeric.TabIndex = 0
+        Me.startFrequencyNumeric.Value = New Decimal(New Integer() {1000000000, 0, 0, 0})
+        '
+        'stopFrequencyNumeric
+        '
+        Me.stopFrequencyNumeric.DecimalPlaces = 6
+        Me.stopFrequencyNumeric.Location = New System.Drawing.Point(25, 93)
+        Me.stopFrequencyNumeric.Maximum = New Decimal(New Integer() {-1, -1, -1, 0})
+        Me.stopFrequencyNumeric.Minimum = New Decimal(New Integer() {-1, -1, -1, -2147483648})
+        Me.stopFrequencyNumeric.Name = "stopFrequencyNumeric"
+        Me.stopFrequencyNumeric.Size = New System.Drawing.Size(120, 20)
+        Me.stopFrequencyNumeric.TabIndex = 1
+        Me.stopFrequencyNumeric.Value = New Decimal(New Integer() {1020000000, 0, 0, 0})
+        '
+        'numberStepsNumeric
+        '
+        Me.numberStepsNumeric.Location = New System.Drawing.Point(25, 146)
+        Me.numberStepsNumeric.Maximum = New Decimal(New Integer() {2147483647, 0, 0, 0})
+        Me.numberStepsNumeric.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.numberStepsNumeric.Name = "numberStepsNumeric"
+        Me.numberStepsNumeric.Size = New System.Drawing.Size(120, 20)
+        Me.numberStepsNumeric.TabIndex = 3
+        Me.numberStepsNumeric.Value = New Decimal(New Integer() {21, 0, 0, 0})
+        '
+        'dwellTimeNumeric
+        '
+        Me.dwellTimeNumeric.DecimalPlaces = 3
+        Me.dwellTimeNumeric.Location = New System.Drawing.Point(25, 202)
+        Me.dwellTimeNumeric.Maximum = New Decimal(New Integer() {-1, -1, -1, 0})
+        Me.dwellTimeNumeric.Minimum = New Decimal(New Integer() {-1, -1, -1, -2147483648})
+        Me.dwellTimeNumeric.Name = "dwellTimeNumeric"
+        Me.dwellTimeNumeric.Size = New System.Drawing.Size(120, 20)
+        Me.dwellTimeNumeric.TabIndex = 3
+        Me.dwellTimeNumeric.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'resourceNameLabel
+        '
+        Me.resourceNameLabel.AutoSize = True
+        Me.resourceNameLabel.Location = New System.Drawing.Point(19, 16)
+        Me.resourceNameLabel.Name = "resourceNameLabel"
+        Me.resourceNameLabel.Size = New System.Drawing.Size(84, 13)
+        Me.resourceNameLabel.TabIndex = 0
+        Me.resourceNameLabel.Text = "Resource Name"
+        '
+        'deviceBandwidthToUseLabel
+        '
+        Me.deviceBandwidthToUseLabel.AutoSize = True
+        Me.deviceBandwidthToUseLabel.Location = New System.Drawing.Point(22, 82)
+        Me.deviceBandwidthToUseLabel.Name = "deviceBandwidthToUseLabel"
+        Me.deviceBandwidthToUseLabel.Size = New System.Drawing.Size(150, 13)
+        Me.deviceBandwidthToUseLabel.TabIndex = 1
+        Me.deviceBandwidthToUseLabel.Text = "Device Bandwidth to Use (Hz)"
+        '
+        'powerLevelLabel
+        '
+        Me.powerLevelLabel.AutoSize = True
+        Me.powerLevelLabel.Location = New System.Drawing.Point(22, 27)
+        Me.powerLevelLabel.Name = "powerLevelLabel"
+        Me.powerLevelLabel.Size = New System.Drawing.Size(96, 13)
+        Me.powerLevelLabel.TabIndex = 2
+        Me.powerLevelLabel.Text = "Power Level [dBm]"
+        '
+        'actualCurrentFrequencyLabel
+        '
+        Me.actualCurrentFrequencyLabel.AutoSize = True
+        Me.actualCurrentFrequencyLabel.Location = New System.Drawing.Point(458, 98)
+        Me.actualCurrentFrequencyLabel.Name = "actualCurrentFrequencyLabel"
+        Me.actualCurrentFrequencyLabel.Size = New System.Drawing.Size(116, 13)
+        Me.actualCurrentFrequencyLabel.TabIndex = 7
+        Me.actualCurrentFrequencyLabel.Text = "Current Frequency [Hz]"
+        '
+        'errorLabel
+        '
+        Me.errorLabel.AutoSize = True
+        Me.errorLabel.Location = New System.Drawing.Point(19, 283)
+        Me.errorLabel.Name = "errorLabel"
+        Me.errorLabel.Size = New System.Drawing.Size(120, 13)
+        Me.errorLabel.TabIndex = 8
+        Me.errorLabel.Text = "Warning/Error Message"
+        '
+        'phaseDetectorFrequencyLabel
+        '
+        Me.phaseDetectorFrequencyLabel.AutoSize = True
+        Me.phaseDetectorFrequencyLabel.Location = New System.Drawing.Point(21, 138)
+        Me.phaseDetectorFrequencyLabel.Name = "phaseDetectorFrequencyLabel"
+        Me.phaseDetectorFrequencyLabel.Size = New System.Drawing.Size(134, 13)
+        Me.phaseDetectorFrequencyLabel.TabIndex = 11
+        Me.phaseDetectorFrequencyLabel.Text = "Phase Detector Frequency"
+        '
+        'deviceBandwidthToUseNumeric
+        '
+        Me.deviceBandwidthToUseNumeric.DecimalPlaces = 3
+        Me.deviceBandwidthToUseNumeric.Location = New System.Drawing.Point(25, 102)
+        Me.deviceBandwidthToUseNumeric.Maximum = New Decimal(New Integer() {-1, -1, -1, 0})
+        Me.deviceBandwidthToUseNumeric.Minimum = New Decimal(New Integer() {-1, -1, -1, -2147483648})
+        Me.deviceBandwidthToUseNumeric.Name = "deviceBandwidthToUseNumeric"
+        Me.deviceBandwidthToUseNumeric.Size = New System.Drawing.Size(120, 20)
+        Me.deviceBandwidthToUseNumeric.TabIndex = 1
+        Me.deviceBandwidthToUseNumeric.Value = New Decimal(New Integer() {20000000, 0, 0, 0})
+        '
+        'powerLevelNumeric
+        '
+        Me.powerLevelNumeric.DecimalPlaces = 2
+        Me.powerLevelNumeric.Location = New System.Drawing.Point(24, 47)
+        Me.powerLevelNumeric.Maximum = New Decimal(New Integer() {-1, -1, -1, 0})
+        Me.powerLevelNumeric.Minimum = New Decimal(New Integer() {-1, -1, -1, -2147483648})
+        Me.powerLevelNumeric.Name = "powerLevelNumeric"
+        Me.powerLevelNumeric.Size = New System.Drawing.Size(120, 20)
+        Me.powerLevelNumeric.TabIndex = 0
+        Me.powerLevelNumeric.Value = New Decimal(New Integer() {20, 0, 0, -2147483648})
+        '
+        'resourceNameComboBox
+        '
+        Me.resourceNameComboBox.Location = New System.Drawing.Point(19, 37)
+        Me.resourceNameComboBox.Name = "resourceNameComboBox"
+        Me.resourceNameComboBox.Size = New System.Drawing.Size(120, 21)
+        Me.resourceNameComboBox.TabIndex = 0
+        '
+        'actualCurrentFrequencyTextBox
+        '
+        Me.actualCurrentFrequencyTextBox.Location = New System.Drawing.Point(458, 119)
+        Me.actualCurrentFrequencyTextBox.Name = "actualCurrentFrequencyTextBox"
+        Me.actualCurrentFrequencyTextBox.ReadOnly = True
+        Me.actualCurrentFrequencyTextBox.Size = New System.Drawing.Size(88, 20)
+        Me.actualCurrentFrequencyTextBox.TabIndex = 11
+        Me.actualCurrentFrequencyTextBox.TabStop = False
+        Me.actualCurrentFrequencyTextBox.Text = "0.00"
+        '
+        'errorTextBox
+        '
+        Me.errorTextBox.Location = New System.Drawing.Point(19, 303)
+        Me.errorTextBox.Multiline = True
+        Me.errorTextBox.Name = "errorTextBox"
+        Me.errorTextBox.ReadOnly = True
+        Me.errorTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both
+        Me.errorTextBox.Size = New System.Drawing.Size(577, 47)
+        Me.errorTextBox.TabIndex = 12
+        Me.errorTextBox.TabStop = False
+        Me.errorTextBox.Text = "No error."
+        '
+        'startButton
+        '
+        Me.startButton.Location = New System.Drawing.Point(440, 32)
+        Me.startButton.Name = "startButton"
+        Me.startButton.Size = New System.Drawing.Size(75, 23)
+        Me.startButton.TabIndex = 3
+        Me.startButton.Text = "St&art"
+        Me.startButton.UseVisualStyleBackColor = True
+        '
+        'stopButton
+        '
+        Me.stopButton.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.stopButton.Enabled = False
+        Me.stopButton.Location = New System.Drawing.Point(521, 32)
+        Me.stopButton.Name = "stopButton"
+        Me.stopButton.Size = New System.Drawing.Size(75, 23)
+        Me.stopButton.TabIndex = 4
+        Me.stopButton.Text = "St&op"
+        Me.stopButton.UseVisualStyleBackColor = True
+        '        '        '
+        'phaseDetectorFrequencyComboBox
+        '
+        Me.phaseDetectorFrequencyComboBox.Location = New System.Drawing.Point(25, 158)
+        Me.phaseDetectorFrequencyComboBox.Name = "phaseDetectorFrequencyComboBox"
+        Me.phaseDetectorFrequencyComboBox.Size = New System.Drawing.Size(120, 21)
+        Me.phaseDetectorFrequencyComboBox.TabIndex = 2
+        '
+        'configurationGroupBox
+        '
+        Me.configurationGroupBox.Controls.Add(Me.phaseDetectorFrequencyComboBox)
+        Me.configurationGroupBox.Controls.Add(Me.powerLevelNumeric)
+        Me.configurationGroupBox.Controls.Add(Me.deviceBandwidthToUseLabel)
+        Me.configurationGroupBox.Controls.Add(Me.deviceBandwidthToUseNumeric)
+        Me.configurationGroupBox.Controls.Add(Me.powerLevelLabel)
+        Me.configurationGroupBox.Controls.Add(Me.phaseDetectorFrequencyLabel)
+        Me.configurationGroupBox.Location = New System.Drawing.Point(19, 71)
+        Me.configurationGroupBox.Name = "configurationGroupBox"
+        Me.configurationGroupBox.Size = New System.Drawing.Size(191, 190)
+        Me.configurationGroupBox.TabIndex = 1
+        Me.configurationGroupBox.TabStop = False
+        Me.configurationGroupBox.Text = "Configuration"
+        '
+        'MainForm
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.AutoSize = True        Me.ClientSize = New System.Drawing.Size(618, 395)
+        Me.Controls.Add(Me.configurationGroupBox)
+        Me.Controls.Add(Me.frequencySweepGroupBox)
+        Me.Controls.Add(Me.resourceNameLabel)
+        Me.Controls.Add(Me.actualCurrentFrequencyLabel)
+        Me.Controls.Add(Me.errorLabel)
+        Me.Controls.Add(Me.resourceNameComboBox)
+        Me.Controls.Add(Me.actualCurrentFrequencyTextBox)
+        Me.Controls.Add(Me.errorTextBox)
+        Me.Controls.Add(Me.startButton)
+        Me.Controls.Add(Me.stopButton)        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
+        Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MaximizeBox = False
+        Me.Name = "MainForm"
+        Me.Text = "Forward Frequency Sweep (5672 In-band Retuning)"
+        Me.frequencySweepGroupBox.ResumeLayout(False)
+        Me.frequencySweepGroupBox.PerformLayout()
+        CType(Me.startFrequencyNumeric, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.stopFrequencyNumeric, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.numberStepsNumeric, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dwellTimeNumeric, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.deviceBandwidthToUseNumeric, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.powerLevelNumeric, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.configurationGroupBox.ResumeLayout(False)
+        Me.configurationGroupBox.PerformLayout()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
+
+    End Sub
+#End Region
+
+    Private frequencySweepGroupBox As System.Windows.Forms.GroupBox
+    Private resourceNameLabel As System.Windows.Forms.Label
+    Private deviceBandwidthToUseLabel As System.Windows.Forms.Label
+    Private powerLevelLabel As System.Windows.Forms.Label
+    Private startFrequencyLabel As System.Windows.Forms.Label
+    Private stopFrequencyLabel As System.Windows.Forms.Label
+    Private numberStepsLabel As System.Windows.Forms.Label
+    Private dwellTimeLabel As System.Windows.Forms.Label
+    Private actualCurrentFrequencyLabel As System.Windows.Forms.Label
+    Private errorLabel As System.Windows.Forms.Label
+    Private phaseDetectorFrequencyLabel As System.Windows.Forms.Label
+    Private deviceBandwidthToUseNumeric As System.Windows.Forms.NumericUpDown
+    Private powerLevelNumeric As System.Windows.Forms.NumericUpDown
+    Private startFrequencyNumeric As System.Windows.Forms.NumericUpDown
+    Private stopFrequencyNumeric As System.Windows.Forms.NumericUpDown
+    Private numberStepsNumeric As System.Windows.Forms.NumericUpDown
+    Private dwellTimeNumeric As System.Windows.Forms.NumericUpDown
+    Private resourceNameComboBox As System.Windows.Forms.ComboBox
+    Private actualCurrentFrequencyTextBox As System.Windows.Forms.TextBox
+    Private errorTextBox As System.Windows.Forms.TextBox
+    Private WithEvents startButton As System.Windows.Forms.Button
+    Private WithEvents stopButton As System.Windows.Forms.Button    Private phaseDetectorFrequencyComboBox As System.Windows.Forms.ComboBox
+    Private WithEvents rfsgStatusTimer As System.Windows.Forms.Timer
+    Private configurationGroupBox As System.Windows.Forms.GroupBox
+
+End Class
