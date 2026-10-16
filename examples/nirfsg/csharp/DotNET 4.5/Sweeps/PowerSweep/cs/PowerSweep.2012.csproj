@@ -40,18 +40,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ivi.Driver" />
-    <Reference Include="NationalInstruments.Common, Version=19.1.40.49152">
-      <SpecificVersion>True</SpecificVersion>
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="NationalInstruments.Common">
+		<SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.Common">
-      <SpecificVersion>False</SpecificVersion>
+		<SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.ModularInstrumentsSystem">
-      <SpecificVersion>False</SpecificVersion>
+		<SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.NIRfsg.Fx45">
-      <SpecificVersion>False</SpecificVersion>
+		<SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
