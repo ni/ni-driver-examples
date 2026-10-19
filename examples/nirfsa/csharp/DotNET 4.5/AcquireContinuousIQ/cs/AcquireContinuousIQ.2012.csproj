@@ -40,26 +40,43 @@
     <ApplicationIcon>App.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ivi.Driver" />
+    <Reference Include="Ivi.Driver">
+      <Name>Ivi.Driver</Name>
+      <HintPath />
+    </Reference>
     <Reference Include="NationalInstruments.Common, Version=19.1.40.49152">
       <SpecificVersion>True</SpecificVersion>
-      <SpecificVersion>False</SpecificVersion>
+      <Name>NationalInstruments.Common</Name>
+      <HintPath />
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.Common">
-      <SpecificVersion>False</SpecificVersion>
+      <Name>NationalInstruments.ModularInstruments.Common</Name>
+      <HintPath />
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.ModularInstrumentsSystem">
-      <SpecificVersion>False</SpecificVersion>
+      <Name>NationalInstruments.ModularInstruments.ModularInstrumentsSystem</Name>
+      <HintPath />
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.NIRfsa.Fx45">
-      <SpecificVersion>False</SpecificVersion>
+      <Name>NationalInstruments.ModularInstruments.NIRfsa.Fx45</Name>
+      <HintPath />
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.TClock.Fx45">
-      <SpecificVersion>False</SpecificVersion>
+      <Name>NationalInstruments.ModularInstruments.TClock.Fx45</Name>
+      <HintPath />
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System">
+      <Name>System</Name>
+      <HintPath />
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+      <HintPath />
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+      <HintPath />
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainForm.cs">
