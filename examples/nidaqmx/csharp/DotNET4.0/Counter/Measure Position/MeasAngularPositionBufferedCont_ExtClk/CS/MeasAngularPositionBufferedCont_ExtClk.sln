@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeasAngularPositionBufferedCont_ExtClk", "MeasAngularPositionBufferedCont_ExtClk.csproj", "{CD634754-C721-4890-A86A-6ACA5C43C756}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{CD634754-C721-4890-A86A-6ACA5C43C756}.Debug.ActiveCfg = Debug|.NET
+		{CD634754-C721-4890-A86A-6ACA5C43C756}.Debug.Build.0 = Debug|.NET
+		{CD634754-C721-4890-A86A-6ACA5C43C756}.Release.ActiveCfg = Release|.NET
+		{CD634754-C721-4890-A86A-6ACA5C43C756}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

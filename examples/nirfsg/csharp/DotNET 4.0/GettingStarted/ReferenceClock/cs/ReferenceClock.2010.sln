@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReferenceClock.2010", "ReferenceClock.2010.csproj", "{58E1024C-2C1D-4C91-86B8-F3ECCB4A2DBB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58E1024C-2C1D-4C91-86B8-F3ECCB4A2DBB}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{58E1024C-2C1D-4C91-86B8-F3ECCB4A2DBB}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{58E1024C-2C1D-4C91-86B8-F3ECCB4A2DBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58E1024C-2C1D-4C91-86B8-F3ECCB4A2DBB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

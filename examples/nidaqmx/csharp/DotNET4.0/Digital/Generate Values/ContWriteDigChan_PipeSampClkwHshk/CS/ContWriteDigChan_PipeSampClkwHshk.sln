@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContWriteDigChan_PipeSampClkwHshk", "ContWriteDigChan_PipeSampClkwHshk.csproj", "{8C31D0C8-C97A-4998-9A5D-6371C57B6BFA}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{8C31D0C8-C97A-4998-9A5D-6371C57B6BFA}.Debug.ActiveCfg = Debug|.NET
+		{8C31D0C8-C97A-4998-9A5D-6371C57B6BFA}.Debug.Build.0 = Debug|.NET
+		{8C31D0C8-C97A-4998-9A5D-6371C57B6BFA}.Release.ActiveCfg = Release|.NET
+		{8C31D0C8-C97A-4998-9A5D-6371C57B6BFA}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
