@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamBinaryIQDataToDisk.2010", "StreamBinaryIQDataToDisk.2010.csproj", "{C30FA296-4EE5-49AA-81EE-8AB0A1129AD5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C30FA296-4EE5-49AA-81EE-8AB0A1129AD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C30FA296-4EE5-49AA-81EE-8AB0A1129AD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C30FA296-4EE5-49AA-81EE-8AB0A1129AD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C30FA296-4EE5-49AA-81EE-8AB0A1129AD5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

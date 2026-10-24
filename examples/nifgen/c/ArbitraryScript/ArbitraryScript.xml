@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<nidna:ExampleProgram 
+    xmlns:nidna="http://www.ni.com/Schemas/DNA/1.0" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://www.ni.com/Schemas/DNA/1.0 ..\DNA\1.0\NiExampleProgram.xsd" 
+    SchemaVersion="1.0" 
+    ContentType="EXAMPLE" 
+<Title>
+	<Text Locale="US">ArbitraryScript.prj</Text>
+</Title>
+<Description>
+	<Text Locale="US">This example shows how to use Arbitrary Script mode.</Text>
+</Description>
+<Keywords>
+	<Item>generation</Item>
+	<Item>creating</Item>
+	<Item>fgen</Item>
+	<Item>NI-FGEN</Item>
+	<Item>niFgen</Item>
+	<Item>ARB</Item>
+	<Item>5421</Item>
+	<Item>54xx</Item>
+	<Item>waveforms</Item>
+	<Item>5422</Item>
+	<Item>5441</Item>
+	<Item>script</Item>
+	<Item>5442</Item>
+	<Item>5450</Item>
+	<Item>5451</Item>
+</Keywords>
+<Navigation>
+	<Item>4597</Item>
+	<Item>4786</Item>
+</Navigation>
+<ProgrammingLanguages>
+<Item>LabWindows/CVI</Item>
+</ProgrammingLanguages>
+<RequiredSoftware>
+<NiSoftware MinVersion="7.0">LabWindows/CVI</NiSoftware> 
+</RequiredSoftware>
+<RequiredNiFGenHardware>
+<Device>
+<Family>FGEN Script</Family>
+<Model>700B</Model>
+<Model>700C</Model>
+<Model>7111</Model>
+<Model>710F</Model>
+<Model>728BC4C4</Model>
+<Model>73C4C4C4</Model>
+<Model>728DC4C4</Model>
+</Device>
+</RequiredNiFGenHardware>

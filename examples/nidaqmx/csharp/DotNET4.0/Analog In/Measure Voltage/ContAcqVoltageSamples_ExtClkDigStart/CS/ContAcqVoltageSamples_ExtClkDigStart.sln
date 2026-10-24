@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContAcqVoltageSamples_ExtClkDigStart", "ContAcqVoltageSamples_ExtClkDigStart.csproj", "{C143822A-1D9C-48BF-AD23-4BE45FCBB3CB}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{C143822A-1D9C-48BF-AD23-4BE45FCBB3CB}.Debug.ActiveCfg = Debug|.NET
+		{C143822A-1D9C-48BF-AD23-4BE45FCBB3CB}.Debug.Build.0 = Debug|.NET
+		{C143822A-1D9C-48BF-AD23-4BE45FCBB3CB}.Release.ActiveCfg = Release|.NET
+		{C143822A-1D9C-48BF-AD23-4BE45FCBB3CB}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

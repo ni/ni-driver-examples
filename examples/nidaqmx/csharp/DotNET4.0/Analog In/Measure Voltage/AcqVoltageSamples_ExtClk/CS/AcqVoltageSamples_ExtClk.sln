@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcqVoltageSamples_ExtClk", "AcqVoltageSamples_ExtClk.csproj", "{36586B1C-1F15-431D-B2C2-A9DBFD5087FC}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{36586B1C-1F15-431D-B2C2-A9DBFD5087FC}.Debug.ActiveCfg = Debug|.NET
+		{36586B1C-1F15-431D-B2C2-A9DBFD5087FC}.Debug.Build.0 = Debug|.NET
+		{36586B1C-1F15-431D-B2C2-A9DBFD5087FC}.Release.ActiveCfg = Release|.NET
+		{36586B1C-1F15-431D-B2C2-A9DBFD5087FC}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

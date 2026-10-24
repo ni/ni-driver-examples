@@ -1,35 +1,41 @@
 /*********************************************************************
 *
 * ANSI C Example program:
-*    ContRVDTSamps-IntClk-SCXI1540.c
+*    ContAccelSamps-IntClk-AnlgStart-SCXI153x.c
 *
 * Example Category:
 *    AI
 *
 * Description:
 *    This example demonstrates how to make continuous, hardware-timed
-*    acceleration measurement using a SCXI-1540 module.
+*    acceleration measurement using a SCXI-153x module.
 *
 * Instructions for Running:
 *    1. Specify the Physical Channel where you have connected the
-*       RVDT.
-*    2. Enter the Minimum and Maximum distance values, in units based
-*       on the units control, you expect to measure. A smaller range
-*       will allow a more accurate measurement.
+*       accelerometer.
+*    2. Enter the Minimum and Maximum acceleration values, in g, you
+*       expect to measure. A smaller range will allow a more accurate
+*       measurement.
 *    3. Select the number of samples to acquire.
 *    4. Set the rate of the acquisition
-*    5. Specify the RVDT settings.
-*    6. If you are using multiple RVDTs and would like to synchronize
-*       their excitations, then enable synchronization for all the
-*       secondary RVDT channels via the Synchronization Enabled
-*       button. You must also connect the excitation output (EX+) of
-*       your primary RVDT channel to all the secondary RVDT channel's
-*       sync pin (SYNC).
+*    5. Set the source of the start trigger. By default this is
+*       APFI0.
+*    6. Set the slope and level of desired analog edge condition.
+*    7. Set the Hysteresis Level.
+*    8. Enter the Sensitivity and the Sensitivity Units for the
+*       accelerometer being used.
+*    9. Specify the cutoff frequency of the filter and the excitation
+*       settings.
+*    10. The SCXI-153x can tie the negative terminal to chassis
+*        ground by selecting reference single ended(RSE) mode. Select
+*        differential if you do not want the chassis ground to be
+*        connected
 *
 * Steps:
 *    1. Create a task.
-*    2. Create an analog input RVDT channel.
-*    3. Configure the synchronization of the SCXI-1540 module.
+*    2. Create an analog input accelerometer channel.
+*    3. Configure the ground referencing and lowpass cutoff frequency
+*       of the SCXI-153x module.
 *    4. Set the rate for the sample clock. Additionally, define the
 *       sample mode to be continuous.
 *    5. Call the Start function to start the acquisition.
@@ -39,12 +45,9 @@
 *    8. Display an error if any.
 *
 * I/O Connections Overview:
-*    Connect your RVDT to the terminals corresponding to the Physical
-*    Channel I/O Control value. The excitation lines connect to EX+
-*    and EX- while the analog input lines connect to CH+ and CH-. If
-*    you have set the Synchronization Enabled attribute, you must
-*    connect the excitation output (EX+) of your primary RVDT channel
-*    to all secondary RVDT channel's sync pin (SYNC).
+*    Connect your accelerometer to the terminals corresponding to the
+*    Physical Channel I/O Control value. Also, make sure your analog
+*    trigger terminal matches the Trigger Source Control.
 *
 *********************************************************************/
 
@@ -66,9 +69,11 @@ int main(void)
 	// DAQmx Configure Code
 	/*********************************************/
 	DAQmxErrChk (DAQmxCreateTask("",&taskHandle));
-	DAQmxErrChk (DAQmxCreateAIPosRVDTChan(taskHandle,"Dev1/ai0","",-70.0,70.0,DAQmx_Val_Degrees,50.0,DAQmx_Val_mVoltsPerVoltPerDegree,DAQmx_Val_Internal,1.0,2500,DAQmx_Val_4Wire,NULL));
-	DAQmxErrChk (DAQmxCfgSampClkTiming(taskHandle,"OnboardClock",10000.0,DAQmx_Val_Rising,DAQmx_Val_ContSamps,1000));
-	DAQmxErrChk (DAQmxSetAIACExcitSyncEnable(taskHandle, "", 0));
+	DAQmxErrChk (DAQmxCreateAIAccelChan(taskHandle,"Dev1/ai0","",DAQmx_Val_Diff,-10.0,10.0,DAQmx_Val_AccelUnit_g,50,DAQmx_Val_mVoltsPerG,DAQmx_Val_Internal,0.004,NULL));
+	DAQmxErrChk (DAQmxCfgSampClkTiming(taskHandle,"",10000.0,DAQmx_Val_Rising,DAQmx_Val_ContSamps,1000));
+	DAQmxErrChk (DAQmxCfgAnlgEdgeStartTrig(taskHandle,"APFI0",DAQmx_Val_Rising,0.0));
+	DAQmxErrChk (DAQmxSetAnlgEdgeStartTrigHyst(taskHandle, 1.0));
+	DAQmxErrChk (DAQmxSetAILowpassCutoffFreq(taskHandle, "", 20000));
 
 	DAQmxErrChk (DAQmxRegisterEveryNSamplesEvent(taskHandle,DAQmx_Val_Acquired_Into_Buffer,1000,0,EveryNCallback,NULL));
 	DAQmxErrChk (DAQmxRegisterDoneEvent(taskHandle,0,DoneCallback,NULL));

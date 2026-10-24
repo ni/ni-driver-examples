@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForwardFrequencySweep(5673In-bandRetuning).2010", "ForwardFrequencySweep(5673In-bandRetuning).2010.csproj", "{84DFC98B-D096-4C1D-B5D4-962E4D790A6C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{84DFC98B-D096-4C1D-B5D4-962E4D790A6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84DFC98B-D096-4C1D-B5D4-962E4D790A6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84DFC98B-D096-4C1D-B5D4-962E4D790A6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84DFC98B-D096-4C1D-B5D4-962E4D790A6C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

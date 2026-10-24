@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeasGpsTimestamp_BuffFinite", "MeasGpsTimestamp_BuffFinite.csproj", "{3F783ED8-2E12-468F-A07D-525B347D5777}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{3F783ED8-2E12-468F-A07D-525B347D5777}.Debug.ActiveCfg = Debug|.NET
+		{3F783ED8-2E12-468F-A07D-525B347D5777}.Debug.Build.0 = Debug|.NET
+		{3F783ED8-2E12-468F-A07D-525B347D5777}.Release.ActiveCfg = Release|.NET
+		{3F783ED8-2E12-468F-A07D-525B347D5777}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
