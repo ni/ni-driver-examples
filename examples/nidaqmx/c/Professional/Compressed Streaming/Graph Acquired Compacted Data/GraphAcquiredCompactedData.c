@@ -90,8 +90,8 @@ static int ReadScaleAndPlotDataFileData(const char filePath[]);
 static DataFileInfo *ParseDataFileHeader(const char filePath[]);
 static uInt8 *ReadDataFileData(DataFileInfo *info, const char filePath[], uInt32 *numBytes);
 static int PlotScaledData(float64 *data[100], uInt32 numChannels, uInt32 numSamples);
-static int DecodeDataWithoutPacking(DataFileInfo *info, uInt8 *rawData, uInt32 numBytes, float64 *data[100]);
-static int DecodeDataWithPacking(DataFileInfo *info, uInt8 *rawData, uInt32 numBytes, float64 *data[100]);
+static int DecodeDataWithoutPacking(DataFileInfo *info, uInt8 *rawData, uInt32 numBytes, float64 *data[100], uInt32 capacity);
+static int DecodeDataWithPacking(DataFileInfo *info, uInt8 *rawData, uInt32 numBytes, float64 *data[100], uInt32 capacity);
 static void FreeDataFileInfoContent(DataFileInfo *info);
 static long FindOutFileSize(const char filePath[]);
 
@@ -124,11 +124,11 @@ static int ReadScaleAndPlotDataFileData(const char filePath[])
 		if (info->channelInfoChain->compressionType==DAQmx_Val_None ||
 				(info->channelInfoChain->compressionByteOrder==LittleEndian && info->channelInfoChain->compressedSampleSizeInBits%8==0)) 
 		{
-			numSamples = DecodeDataWithoutPacking(info,rawData,numBytes,data);
+			numSamples = DecodeDataWithoutPacking(info,rawData,numBytes,data,size);
 		}
 		else
 		{
-			numSamples = DecodeDataWithPacking(info,rawData,numBytes,data);
+			numSamples = DecodeDataWithPacking(info,rawData,numBytes,data,size);
 		}
 		PlotScaledData(data,info->numberOfChannels,numSamples);
 	}
@@ -260,7 +260,7 @@ static int PlotScaledData(float64 *data[100], uInt32 numChannels, uInt32 numSamp
 	return 1;
 }
 
-static int DecodeDataWithoutPacking(DataFileInfo *info, uInt8 *rawData, uInt32 numBytes, float64 *data[100])
+static int DecodeDataWithoutPacking(DataFileInfo *info, uInt8 *rawData, uInt32 numBytes, float64 *data[100], uInt32 capacity)
 {
 	uInt32	numSamples=0,iSamp,iChan,iByte;
 	long	val;
@@ -270,6 +270,10 @@ static int DecodeDataWithoutPacking(DataFileInfo *info, uInt8 *rawData, uInt32 n
 		// For each sample
 		for(iSamp=0;iSamp<info->readBlockSize;++iSamp) {
 			ChannelInfo	*chan=info->channelInfoChain;
+
+			// Never store past the per-channel buffers sized by the caller.
+			if( numSamples>=capacity )
+				goto Error;
 
 			// For each channel
 			for(iChan=0;iChan<info->numberOfChannels;++iChan,chan=chan->next) {
@@ -311,7 +315,7 @@ Error:
 	return numSamples;
 }
 
-static int DecodeDataWithPacking(DataFileInfo *info, uInt8 *rawData, uInt32 numBytes, float64 *data[100])
+static int DecodeDataWithPacking(DataFileInfo *info, uInt8 *rawData, uInt32 numBytes, float64 *data[100], uInt32 capacity)
 {
 	uInt32	numSamples=0,iSamp,iChan;
 	long	val;
@@ -325,6 +329,10 @@ static int DecodeDataWithPacking(DataFileInfo *info, uInt8 *rawData, uInt32 numB
 		// For each sample
 		for(iSamp=0;iSamp<info->readBlockSize;++iSamp) {
 			ChannelInfo	*chan=info->channelInfoChain;
+
+			// Never store past the per-channel buffers sized by the caller.
+			if( numSamples>=capacity )
+				goto Error;
 
 			// For each channel
 			for(iChan=0;iChan<info->numberOfChannels;++iChan,chan=chan->next) {
