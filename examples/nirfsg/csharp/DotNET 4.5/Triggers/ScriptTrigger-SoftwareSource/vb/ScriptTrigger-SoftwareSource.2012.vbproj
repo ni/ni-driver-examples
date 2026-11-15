@@ -45,22 +45,39 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ivi.Driver" />
-    <Reference Include="NationalInstruments.Common">
-		<SpecificVersion>False</SpecificVersion>
+    <Reference Include="Ivi.Driver">
+      <Name>Ivi.Driver</Name>
+      <HintPath />
+    </Reference>
+    <Reference Include="NationalInstruments.Common, Version=19.1.40.49152">
+      <SpecificVersion>True</SpecificVersion>
+      <Name>NationalInstruments.Common</Name>
+      <HintPath />
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.Common">
-		<SpecificVersion>False</SpecificVersion>
+      <Name>NationalInstruments.ModularInstruments.Common</Name>
+      <HintPath />
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.ModularInstrumentsSystem">
-		<SpecificVersion>False</SpecificVersion>
+      <Name>NationalInstruments.ModularInstruments.ModularInstrumentsSystem</Name>
+      <HintPath />
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.NIRfsg.Fx45">
-		<SpecificVersion>False</SpecificVersion>
+      <Name>NationalInstruments.ModularInstruments.NIRfsg.Fx45</Name>
+      <HintPath />
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System">
+      <Name>System</Name>
+      <HintPath />
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+      <HintPath />
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+      <HintPath />
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Import Include="Microsoft.VisualBasic" />
