@@ -42,10 +42,10 @@
   <ItemGroup>
     <Reference Include="Ivi.Driver" />
     <Reference Include="NationalInstruments.ModularInstruments.Common">
-		<SpecificVersion>False</SpecificVersion>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="NationalInstruments.ModularInstruments.NIRfsg.Fx45">
-		<SpecificVersion>False</SpecificVersion>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
